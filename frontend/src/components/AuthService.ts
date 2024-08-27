@@ -18,13 +18,17 @@ class AuthService {
 
 	loggedInUsername(): string {
         let username = sessionStorage.getItem("authenticatedUser");
-		if (username == null) {return "NO LOGGED IN USER";};
+		if (username == null) {
+            return "NO LOGGED IN USER";
+        };
         return username;
 	};
 
     loggedInUserId(): number {
         let id = sessionStorage.getItem("authenticatedUserId");
-        if (id == null) {return -1;};
+        if (id == null) {
+            return -1;
+        };
 		return Number(id);
 	};
 
