@@ -11,6 +11,6 @@ export default function Redirector() {
         navigate('/dashboard')
     } 
     else {
-        navigate('/home')
+        navigate('/')
     }
 }

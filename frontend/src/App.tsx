@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -12,6 +11,7 @@ import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
+import NoPage from './pages/NoPage';
 
 const App = () => {
   const handleRegisterSuccess = () => {
@@ -23,13 +23,15 @@ const App = () => {
     <Router>
       <Layout>
         <Routes>
+          <Route path="/*" element={<NoPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route
             path="/register"
             element={<Register onRegisterSuccess={handleRegisterSuccess} />}
           />
-          <Route path="/login" element={<Login onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="register" element={<Register onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
           <Route path="/allcourses" element={<AllCourses />} />
