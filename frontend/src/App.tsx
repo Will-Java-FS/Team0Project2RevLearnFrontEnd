@@ -10,8 +10,11 @@ import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
+<<<<<<< HEAD
 import Dashboard from './pages/Dashboard';
 import ErrorPage from './pages/ErrorPage';
+=======
+>>>>>>> 119cf02 (	modified:   frontend/src/App.tsx)
 
 const App = () => {
 
@@ -20,6 +23,7 @@ const App = () => {
     <Router>
       <Layout>
         <Routes>
+<<<<<<< HEAD
           <Route path="/*" element={<ErrorPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -29,6 +33,17 @@ const App = () => {
           <Route path="/allprograms" element={<AllPrograms />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/about" element={<About />} />
+=======
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/register"
+            element={<Register onRegisterSuccess={handleRegisterSuccess} />}
+          />
+          <Route path="/login" element={<Login onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/allprograms" element={<AllPrograms />} />
+>>>>>>> 119cf02 (	modified:   frontend/src/App.tsx)
           <Route path="/allcourses" element={<AllCourses />} />
           <Route path="/course" element={<Course />} />
           <Route path="/lesson" element={<Lesson />} />
