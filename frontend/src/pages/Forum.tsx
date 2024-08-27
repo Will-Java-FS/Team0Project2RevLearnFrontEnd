@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function Forum(){
-    const [forumPostTitles, setForumPostTitles] = useState<string[]>([]);
+    const [forumPosts, setForumPosts] = useState([]);
+
+    useEffect(() => {
+        fetch('https://api.example.com/forums/')  // Need to change the endpoint probably
+          .then(response => response.json())
+          .then(data => setForumPosts(data))
+          .catch(error => console.error('Error fetching forum posts:', error));
+    }, []);
+
 
     return (
         <>
