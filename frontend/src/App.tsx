@@ -5,13 +5,13 @@ import Layout from './pages/Layout';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Course from './pages/Course';
-import Dashboard from './pages/Dashboard';
 import Lesson from './pages/Lesson';
 import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
 import NoPage from './pages/NoPage';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   const handleRegisterSuccess = () => {
