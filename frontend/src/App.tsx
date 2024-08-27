@@ -10,8 +10,8 @@ import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
-import NoPage from './pages/NoPage';
 import Dashboard from './pages/Dashboard';
+import ErrorPage from './pages/ErrorPage';
 
 const App = () => {
   const handleRegisterSuccess = () => {
@@ -23,7 +23,7 @@ const App = () => {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/*" element={<NoPage />} />
+          <Route path="/*" element={<ErrorPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route
