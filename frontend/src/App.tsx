@@ -11,54 +11,34 @@ import AllPrograms from './pages/AllPrograms';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
-<<<<<<< HEAD
-import NoPage from './pages/NoPage';
-=======
->>>>>>> 119cf02 (	modified:   frontend/src/App.tsx)
+import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
+import ErrorPage from './pages/ErrorPage';
 
 const App = () => {
-  const handleRegisterSuccess = () => {
-    console.log('Registration successful!');
-    window.location.href = "/login";
-  };
+
 
   return (
     <Router>
       <Layout>
         <Routes>
-<<<<<<< HEAD
-          <Route path="/*" element={<ErrorPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route
             path="/register"
-            element={<Register onRegisterSuccess={handleRegisterSuccess} />}
+            element={<Register />}
           />
-          <Route path="register" element={<Register onRegisterSuccess={handleRegisterSuccess} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/about" element={<About />} />
-=======
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route
-            path="/register"
-            element={<Register onRegisterSuccess={handleRegisterSuccess} />}
-          />
-          <Route path="/login" element={<Login onRegisterSuccess={handleRegisterSuccess} />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/allprograms" element={<AllPrograms />} />
->>>>>>> 119cf02 (	modified:   frontend/src/App.tsx)
           <Route path="/allcourses" element={<AllCourses />} />
           <Route path="/course" element={<Course />} />
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
           <Route path="/forumpost" element={<ForumPost />} />
-        </Routes >
-      </Layout >
-    </Router >
+          <Route path="/*" element={<ErrorPage />} /> {/* Handles undefined routes */}
+        </Routes>
+      </Layout>
+    </Router>
   );
 };
 

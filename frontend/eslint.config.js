@@ -20,28 +20,28 @@ export default [
 			sourceType: "module",
 			globals: globals.browser,
 			parserOptions: {
-				project: "./tsconfig.json", // Correct path to your TypeScript configuration
-			},
+				project: "./tsconfig.json" // Correct path to your TypeScript configuration
+			}
 		},
 		settings: {
-			react: { version: "18.3" },
+			react: { version: "18.3" }
 		},
 		plugins: {
 			"@typescript-eslint": tseslint,
 			"react-hooks": reactHooks,
 			"react-refresh": reactRefresh,
-			react,
+			react
 		},
 		rules: {
 			...reactHooks.configs.recommended.rules,
 			"react-refresh/only-export-components": [
 				"warn",
-				{ allowConstantExport: true },
+				{ allowConstantExport: true }
 			],
 			...react.configs.recommended.rules,
 			...react.configs["jsx-runtime"].rules,
 			...tseslint.configs.recommended.rules,
-			...tseslint.configs["recommended-requiring-type-checking"].rules,
-		},
-	},
+			...tseslint.configs["recommended-requiring-type-checking"].rules
+		}
+	}
 ];
