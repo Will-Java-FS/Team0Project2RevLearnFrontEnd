@@ -2,7 +2,7 @@ import { useState } from "react";
 
 
 export default function Dashboard(){
-    const [set, setTitle] = useState([]);
+    const [programTitles, setProgramTitles] = useState<string[]>([]);
 
     return (
         <>
