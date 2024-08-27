@@ -6,12 +6,12 @@ import Layout from './pages/Layout';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Course from './pages/Course';
-import Dashboard from './pages/Dashboard';
 import Lesson from './pages/Lesson';
 import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   const handleRegisterSuccess = () => {
@@ -29,7 +29,8 @@ const App = () => {
             path="/register"
             element={<Register onRegisterSuccess={handleRegisterSuccess} />}
           />
-          <Route path="/login" element={<Login onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="register" element={<Register onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
           <Route path="/allcourses" element={<AllCourses />} />
