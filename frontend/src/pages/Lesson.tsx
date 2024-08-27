@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 
 
-export default function Lesson(){
+
+export default function Lesson() {
     const [lesson, setLesson] = useState(null);
 
     useEffect(() => {
@@ -67,58 +68,58 @@ export default function Lesson(){
             <div>
                 <h1>Create a Lesson</h1>
                 <label className="form-control w-full max-w-xs">
-                <div className="label">
-                    <span className="label-text">What is the lesson title?</span>
-                </div>
+                    <div className="label">
+                        <span className="label-text">What is the lesson title?</span>
+                    </div>
 
-                <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                <div className="label">
-                </div>
+                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    <div className="label">
+                    </div>
                 </label>
 
                 <label className="form-control w-full max-w-xs">
-                <div className="label">
-                    <span className="label-text">What are the prerequisites and learning objectives?</span>
-                </div>
-                <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                <div className="label">
-                </div>
+                    <div className="label">
+                        <span className="label-text">What are the prerequisites and learning objectives?</span>
+                    </div>
+                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    <div className="label">
+                    </div>
                 </label>
 
                 <label className="form-control w-full max-w-xs">
-                <div className="label">
-                    <span className="label-text">What is the description ?</span>
-                </div>
-                <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                <div className="label">
-                </div>
+                    <div className="label">
+                        <span className="label-text">What is the description ?</span>
+                    </div>
+                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    <div className="label">
+                    </div>
                 </label>
 
                 <label className="form-control w-full max-w-xs">
-                <div className="label">
-                    <span className="label-text">What is the Real World Application ?</span>
-                </div>
-                <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                <div className="label">
-                </div>
+                    <div className="label">
+                        <span className="label-text">What is the Real World Application ?</span>
+                    </div>
+                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    <div className="label">
+                    </div>
                 </label>
 
                 <label className="form-control w-full max-w-xs">
-                <div className="label">
-                    <span className="label-text">What is the Implementation ?</span>
-                </div>
-                <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                <div className="label">
-                </div>
+                    <div className="label">
+                        <span className="label-text">What is the Implementation ?</span>
+                    </div>
+                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    <div className="label">
+                    </div>
                 </label>
 
                 <label className="form-control w-full max-w-xs">
-                <div className="label">
-                    <span className="label-text">What is the Summary ?</span>
-                </div>
-                <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                <div className="label">
-                </div>
+                    <div className="label">
+                        <span className="label-text">What is the Summary ?</span>
+                    </div>
+                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    <div className="label">
+                    </div>
                 </label>
                 <div>
                     <button className="btn btn-active">Create Lesson</button>
