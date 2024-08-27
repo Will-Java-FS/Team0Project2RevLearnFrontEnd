@@ -23,8 +23,41 @@ const Navbar = () => {
                     <Link to="/register" className="text-primary font-medium hover:text-secondary">
                         Register
                     </Link>
-
-                    {/* // should we auto assign the role to student or have a seperate reg for teachers? */}
+                </li>
+                <li>
+                    <Link to="/allprograms" className="text-primary font-medium hover:text-secondary">
+                        All Programs
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/dashboard" className="text-primary font-medium hover:text-secondary">
+                        Dashboard
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/allcourses" className="text-primary font-medium hover:text-secondary">
+                        All Courses
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/course" className="text-primary font-medium hover:text-secondary">
+                        Course
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/lesson" className="text-primary font-medium hover:text-secondary">
+                        Lesson
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/forum" className="text-primary font-medium hover:text-secondary">
+                        Forum
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/forumpost" className="text-primary font-medium hover:text-secondary">
+                        Forum Post
+                    </Link>
                 </li>
             </ul>
         </nav>
