@@ -13,10 +13,7 @@ import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
 
 const App = () => {
-  const handleRegisterSuccess = () => {
-    console.log('Registration successful!');
-    window.location.href = "/login";
-  };
+
 
   return (
     <Router>
@@ -26,9 +23,9 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route
             path="/register"
-            element={<Register onRegisterSuccess={handleRegisterSuccess} />}
+            element={<Register />}
           />
-          <Route path="/login" element={<Login onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
           <Route path="/allcourses" element={<AllCourses />} />
