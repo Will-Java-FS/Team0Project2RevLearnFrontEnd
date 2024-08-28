@@ -8,6 +8,8 @@ export default tseslint.config(
   { ignores: ['dist'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    settings: { react: { version: '18.3' } },
+    plugins: { react: { version: '18.3' } },
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -22,7 +24,8 @@ export default tseslint.config(
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
-      ],
+      ], ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
     },
   },
 )
