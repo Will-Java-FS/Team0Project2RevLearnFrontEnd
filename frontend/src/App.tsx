@@ -3,11 +3,11 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Layout from './pages/Layout';
 import Register from './pages/Register';
-import Login from './pages/Login';
 import Course from './pages/Course';
 import Dashboard from './pages/Dashboard';
 import Lesson from './pages/Lesson';
-import AllPrograms from './pages/AllPrograms';
+import Login from './pages/Login';
+import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
@@ -23,11 +23,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route
-            path="/register"
-            element={<Register />}
-          />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
           <Route path="/allcourses" element={<AllCourses />} />

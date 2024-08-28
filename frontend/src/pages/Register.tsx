@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import AxiosUserService from "../components/AxiosUserService";
+
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -14,8 +16,6 @@ const formSchema = z.object({
 });
 
 type FormData = z.infer<typeof formSchema>;
-
-
 
 function Register() {
   const [message, setMessage] = useState<string>("");
@@ -32,19 +32,25 @@ function Register() {
 
   const handleRegister: SubmitHandler<FormData> = async (data) => {
     try {
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Call AxiosUserService's registerUser method
+      const isRegistered = await AxiosUserService.registerUser(
+        data.username,
+        data.password,
+        data.email,
+        "user" // Assuming a default role; adjust as necessary
+      );
 
-      // Set mock successful message
-      setMessage("Registration successful!");
+      if (isRegistered) {
+        setMessage("Registration successful!");
 
-      // Delay redirect
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000); // Delay to allow the message to be displayed
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000); // Delay to allow the message to be displayed
 
-      // Show alert message
-      alert("Successfully created an account!");
+        alert("Successfully created an account!");
+      } else {
+        throw new Error("Registration failed");
+      }
     } catch (error) {
       console.error("Error:", error);
       setMessage("An error occurred. Please try again.");
