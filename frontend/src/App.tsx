@@ -5,13 +5,16 @@ import Layout from './pages/Layout';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Course from './pages/Course';
+import Dashboard from './pages/Dashboard';
 import Lesson from './pages/Lesson';
 import AllPrograms from './pages/AllPrograms';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
-import Dashboard from './pages/Dashboard';
-import ErrorPage from './pages/ErrorPage';
+<<<<<<< HEAD
+import NoPage from './pages/NoPage';
+=======
+>>>>>>> 119cf02 (	modified:   frontend/src/App.tsx)
 
 const App = () => {
   const handleRegisterSuccess = () => {
@@ -23,6 +26,7 @@ const App = () => {
     <Router>
       <Layout>
         <Routes>
+<<<<<<< HEAD
           <Route path="/*" element={<ErrorPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -34,14 +38,27 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/about" element={<About />} />
+=======
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/register"
+            element={<Register onRegisterSuccess={handleRegisterSuccess} />}
+          />
+          <Route path="/login" element={<Login onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/allprograms" element={<AllPrograms />} />
+>>>>>>> 119cf02 (	modified:   frontend/src/App.tsx)
           <Route path="/allcourses" element={<AllCourses />} />
           <Route path="/course" element={<Course />} />
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
           <Route path="/forumpost" element={<ForumPost />} />
-        </Routes>
-      </Layout>
-    </Router>
+        </Routes >
+      </Layout >
+    </Router >
   );
 };
 
