@@ -11,8 +11,10 @@ import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
+
 import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
 import ErrorPage from './pages/ErrorPage';
+
 
 const App = () => {
 
@@ -23,6 +25,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+
+          <Route
+            path="/register"
+            element={<Register />}
+          />
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />

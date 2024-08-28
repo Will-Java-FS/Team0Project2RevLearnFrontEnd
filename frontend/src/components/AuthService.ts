@@ -3,14 +3,14 @@ class AuthService {
         sessionStorage.setItem("authenticatedUserId", id);
         sessionStorage.setItem("authenticatedUser", username);
         sessionStorage.setItem("role", role);
-        sessionStorage.setItem("token", "Bearer " + token);
+        localStorage.setItem("token", "Bearer " + token);
 
         console.log("User " + username + " logged in successfully");
     };
 
     logout(): void {
-        localStorage.clear();
         sessionStorage.clear();
+        localStorage.clear();
         window.location.reload();
 
         console.log("User logged out successfully");
