@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import AxiosUserService from "../components/AxiosUserService";
 
 // Define Zod schema for form validation
 const loginSchema = z.object({
@@ -28,10 +29,10 @@ const Login: React.FC = () => {
 
   const handleLogin: SubmitHandler<LoginFormData> = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Mock login logic
-      if (data.username === "demo" && data.password === "password") {
+      const isLoggedIn = await AxiosUserService.login(data.username, data.password);
+
+      if (isLoggedIn) {
         setMessage("Login successful!");
         setShowPopup(true);
 
@@ -59,7 +60,7 @@ const Login: React.FC = () => {
           Welcome Back!
         </h2>
         <p className="text-center text-zinc-600 dark:text-zinc-400 mt-3">
-         Let's get to learning!
+          Let's get to learning!
         </p>
         <div className="mt-10">
           <div className="relative">
@@ -114,7 +115,7 @@ const Login: React.FC = () => {
               className="font-medium underline hover:text-blue-300 ml-1"
               onClick={() => navigate("/register")}
             >
-            Sign Up
+              Sign Up
             </button>
           </div>
         </div>
