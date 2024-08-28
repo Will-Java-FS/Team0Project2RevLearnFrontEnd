@@ -6,7 +6,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Course from './pages/Course';
 import Lesson from './pages/Lesson';
-import AllPrograms from './pages/AllCourses';
+import AllPrograms from './pages/AllPrograms';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
