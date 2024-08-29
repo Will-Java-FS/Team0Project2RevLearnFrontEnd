@@ -8,41 +8,53 @@ interface ThemeToggleProps {
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   useEffect(() => {
     themeChange(false); // Initialize theme-change for React
+
+    // Retrieve and apply the theme from local storage
+    const savedTheme = localStorage.getItem('theme') || 'business';
+    document.documentElement.classList.toggle('dark', savedTheme === 'business');
+
+    // Event listener for toggling theme
+    const inputElement = document.getElementById('toggle') as HTMLInputElement;
+    if (inputElement) {
+      const applyTheme = (event: Event) => {
+        const checked = (event.target as HTMLInputElement).checked;
+        const newTheme = checked ? 'business' : 'nord';
+        document.documentElement.classList.toggle('dark', checked);
+        localStorage.setItem('theme', newTheme); // Save selected theme
+      };
+      inputElement.addEventListener('change', applyTheme);
+
+      // Cleanup event listener on component unmount
+      return () => {
+        inputElement.removeEventListener('change', applyTheme);
+      };
+    }
   }, []);
 
   return (
     <label className={`inline-flex items-center relative ${className}`}>
-      {/* This hidden checkbox controls the theme */}
       <input
         type="checkbox"
         className="peer hidden"
         id="toggle"
-        data-toggle-theme="nord,business" // Toggle between 'light' and 'dark' themes
-        data-act-class="ACTIVECLASS" // Optional: Customize the active class if needed
+        defaultChecked={document.documentElement.classList.contains('dark')}
       />
-      {/* Toggle switch background */}
       <div className="relative w-[110px] h-[50px] bg-white peer-checked:bg-gray-800 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:from-gray-600 peer-checked:to-gray-600 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[50px] peer-checked:after:left-[105px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md" />
 
-      {/* Sun icon for light mode */}
       <svg
         height="0"
         width="100"
         viewBox="0 0 24 24"
-        data-name="Layer 1"
-        id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
         className="fill-gray-800 peer-checked:opacity-60 absolute w-5 h-5 sm:w-6 sm:h-6 left-[13px]"
       >
         <path d="M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5,5,2.24,5,5-2.24,5-5,5ZM13,0h-2V5h2V0Zm0,19h-2v5h2v-5ZM5,11H0v2H5v-2Zm19,0h-5v2h5v-2Zm-2.81-6.78l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54ZM7.76,17.66l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54Zm0-11.31l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Zm13.44,13.44l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Z" />
       </svg>
 
-      {/* Moon icon for dark mode */}
       <svg
         height="0"
         width="100"
         viewBox="0 0 24 24"
-        data-name="Layer 1"
-        id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
         className="fill-gray-800 opacity-60 peer-checked:opacity-70 peer-checked:fill-white absolute w-5 h-5 sm:w-6 sm:h-6 right-[13px]"
       >
