@@ -3,6 +3,20 @@ import AuthService from "./AuthService";
 
 class AxiosEnrollmentService {
 
+    getEnrollments(studentId:number) {
+        axios.get("/enrollments/" + studentId)
+        .then(response => {
+            console.log(response.data);
+            if (response.status === 200) {
+                return response.data;
+            }
+        })
+        .catch(error => {
+            console.error('Error enrolling student to program ' + studentId + '!', error);
+        });
+        return null;
+    }
+
     enrollInProgram(studentId = AuthService.loggedInUserId(), programId:number):boolean {
         axios.post("/program/" + programId + "/enroll/" + studentId)
         .then(response => {

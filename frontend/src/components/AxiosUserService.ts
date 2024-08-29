@@ -4,7 +4,7 @@ import AuthService from "./AuthService";
 class AxiosUserService {
 
 
-    registerUser(username:string, password:string, email:string, role:string, last:string, first:string):boolean {
+    registerUser(username:string, password:string, email:string, role:string, last?:string, first?:string):boolean {
 
         axios.post("/register", {
             username: username,
