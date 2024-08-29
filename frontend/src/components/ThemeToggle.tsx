@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { themeChange } from 'theme-change';
 
 interface ThemeToggleProps {
@@ -6,30 +6,25 @@ interface ThemeToggleProps {
 }
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    // Retrieve the saved theme from local storage
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'business';
+  });
+
   useEffect(() => {
     themeChange(false); // Initialize theme-change for React
 
-    // Retrieve and apply the theme from local storage
-    const savedTheme = localStorage.getItem('theme') || 'business';
-    document.documentElement.classList.toggle('dark', savedTheme === 'business');
+    // Apply the theme based on the state
+    document.documentElement.classList.toggle('dark', isDarkMode);
 
-    // Event listener for toggling theme
-    const inputElement = document.getElementById('toggle') as HTMLInputElement;
-    if (inputElement) {
-      const applyTheme = (event: Event) => {
-        const checked = (event.target as HTMLInputElement).checked;
-        const newTheme = checked ? 'business' : 'nord';
-        document.documentElement.classList.toggle('dark', checked);
-        localStorage.setItem('theme', newTheme); // Save selected theme
-      };
-      inputElement.addEventListener('change', applyTheme);
+    // Save the current theme to local storage
+    localStorage.setItem('theme', isDarkMode ? 'business' : 'nord');
+  }, [isDarkMode]);
 
-      // Cleanup event listener on component unmount
-      return () => {
-        inputElement.removeEventListener('change', applyTheme);
-      };
-    }
-  }, []);
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsDarkMode(event.target.checked);
+  };
 
   return (
     <label className={`inline-flex items-center relative ${className}`}>
@@ -37,7 +32,8 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
         type="checkbox"
         className="peer hidden"
         id="toggle"
-        defaultChecked={document.documentElement.classList.contains('dark')}
+        checked={isDarkMode}
+        onChange={handleToggleChange}
       />
       <div className="relative w-[110px] h-[50px] bg-white peer-checked:bg-gray-800 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:from-gray-600 peer-checked:to-gray-600 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[50px] peer-checked:after:left-[105px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md" />
 
