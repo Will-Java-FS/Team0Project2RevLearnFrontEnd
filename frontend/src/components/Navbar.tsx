@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle'; // Import the ThemeToggle component
 
 const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <nav className="flex flex-col sm:flex-row justify-between items-center p-4">
+    <nav className="flex flex-col sm:flex-row justify-between items-center p-4 bg-white min-h-[60px]">
+      {/* Container for header and mobile menu button */}
+      <div className="flex flex-1 items-center justify-between">
+        <h1 className="text-primary sm:hidden">revpro</h1>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="sm:hidden text-primary focus:outline-none"
+          onClick={toggleMenu}
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+      </div>
+
       {/* Navigation Links */}
-      <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 items-center">
+      <ul
+        className={`flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 ${isMenuOpen ? 'block' : 'hidden sm:flex'
+          } absolute sm:static right-0 top-16 sm:top-auto bg-white sm:bg-transparent shadow-md sm:shadow-none w-full sm:w-auto`}
+      >
         <li>
           <Link to="/" className="text-secondary hover:text-secondary">
             Home
@@ -42,30 +72,12 @@ const Navbar = () => {
             All Courses
           </Link>
         </li>
-        <li>
-          <Link to="/course" className="text-primary hover:text-secondary">
-            Course
-          </Link>
-        </li>
-        <li>
-          <Link to="/lesson" className="text-primary hover:text-secondary">
-            Lesson
-          </Link>
-        </li>
-        <li>
-          <Link to="/forum" className="text-primary hover:text-secondary">
-            Forum
-          </Link>
-        </li>
-        <li>
-          <Link to="/forumpost" className="text-primary hover:text-secondary">
-            Forum Post
-          </Link>
-        </li>
       </ul>
 
-      {/* Theme Toggle Button at the end of the Navbar */}
-      <ThemeToggle />
+      {/* ThemeToggle component */}
+      <div className="hidden sm:flex items-center ml-auto">
+        <ThemeToggle />
+      </div>
     </nav>
   );
 };

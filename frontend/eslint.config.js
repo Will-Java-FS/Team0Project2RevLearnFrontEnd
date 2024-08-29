@@ -20,11 +20,11 @@ export default [
 			sourceType: "module",
 			globals: globals.browser,
 			parserOptions: {
-				project: "./tsconfig.json" // Correct path to your TypeScript configuration
+				project: "./tsconfig.app.json" // Use the correct path to your TypeScript configuration
 			}
 		},
 		settings: {
-			react: { version: "18.3" }
+			react: { version: "detect" }
 		},
 		plugins: {
 			"@typescript-eslint": tseslint,
