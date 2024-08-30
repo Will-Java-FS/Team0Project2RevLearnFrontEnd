@@ -37,7 +37,7 @@ class AxiosUserService {
         .then(response => {
             console.log(response.data);
             if (response.status === 200) {
-                AuthService.login(response.data.id, response.data.username, response.data.role, response.data.token);
+                AuthService.login(response.data.id, response.data.username, response.data.role, response.data.token, response.data.programId);
                 return true;
             }
         })

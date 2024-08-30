@@ -1,8 +1,9 @@
 class AuthService {
-    login(id:string, username:string, role:string, token:string): void {
+    login(id:string, username:string, role:string, token:string, programId:string): void {
         sessionStorage.setItem("authenticatedUserId", id);
         sessionStorage.setItem("authenticatedUser", username);
         sessionStorage.setItem("role", role);
+        sessionStorage.setItem("programId", programId);
         localStorage.setItem("token", "Bearer " + token);
 
         console.log("User " + username + " logged in successfully");
@@ -26,6 +27,14 @@ class AuthService {
 
     loggedInUserId(): number {
         let id = sessionStorage.getItem("authenticatedUserId");
+        if (id == null) {
+            return -1;
+        };
+		return Number(id);
+	};
+
+    loggedInUserProgramId(): number {
+        let id = sessionStorage.getItem("programId");
         if (id == null) {
             return -1;
         };
