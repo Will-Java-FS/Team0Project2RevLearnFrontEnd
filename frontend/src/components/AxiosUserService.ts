@@ -3,9 +3,7 @@ import AuthService from "./AuthService";
 
 class AxiosUserService {
 
-
     registerUser(username:string, password:string, email:string, role:string, last?:string, first?:string):boolean {
-
         axios.post("/register", {
             username: username,
             password: password,
@@ -48,8 +46,8 @@ class AxiosUserService {
         return false;
     }
 
-    setEnrolledProgram(studentId = AuthService.loggedInUserId(), programId:number) {
-        axios.patch("/program/" + programId + "/enroll/" + studentId)
+    setEnrolledProgram(userId = AuthService.loggedInUserId(), programId:number) {
+        axios.patch("/program/" + programId + "/enroll/" + userId)
         .then(response => {
             console.log(response.data);
             if (response.status === 200) {
@@ -57,7 +55,7 @@ class AxiosUserService {
             }
         })
         .catch(error => {
-            console.error('Error enrolling student to program ' + programId + '!', error);
+            console.error('Error enrolling user to program ' + programId + '!', error);
         });
         return false;
     }

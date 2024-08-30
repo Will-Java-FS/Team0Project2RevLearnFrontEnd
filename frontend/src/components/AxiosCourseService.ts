@@ -45,6 +45,20 @@ class AxiosCourseService {
         return null;
     }
 
+    getStudents(id:number) {
+        axios.get("/courses/" + id + "/students")
+        .then(response => {
+            console.log(response.data);
+            if (response.status === 200) {
+                return response.data;
+            }
+        })
+        .catch(error => {
+            console.error('Error getting students for course ' + id + '!', error);
+        });
+        return null;
+    }
+
     create(courseName:string, description:string, programId:number) {
         axios.post("/courses", {
             courseName: courseName,
