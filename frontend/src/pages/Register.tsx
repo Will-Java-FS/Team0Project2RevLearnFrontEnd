@@ -13,7 +13,7 @@ const formSchema = z.object({
   lastName: z.string().min(2, "Last Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   username: z.string().min(3, "Username must be at least 3 characters"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters")
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -27,9 +27,9 @@ function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema)
   });
 
   const handleRegister: SubmitHandler<FormData> = async (data) => {
@@ -62,9 +62,8 @@ function Register() {
   return (
     <div className="flex items-center justify-center min-h-screen relative">
       <form
-        className="bg-white dark:bg-zinc-900 shadow-2xl rounded-2xl overflow-hidden border-4 border-blue-400 dark:border-blue-800 w-full max-w-md p-8"
-        onSubmit={handleSubmit(handleRegister)}
-      >
+        className="bg-neutral-content dark:bg-neutral shadow-2xl  rounded-2xl overflow-hidden border-4 border-accent dark:border-accent w-full max-w-md p-8"
+        onSubmit={handleSubmit(handleRegister)}>
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
           Create an Account
         </h2>
@@ -77,8 +76,7 @@ function Register() {
             <div className="relative flex-1">
               <label
                 className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-                htmlFor="firstName"
-              >
+                htmlFor="firstName">
                 First Name
               </label>
               <input
@@ -89,14 +87,15 @@ function Register() {
                 className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
               {errors.firstName && (
-                <span className="error text-red-500">{errors.firstName.message}</span>
+                <span className="error text-red-500">
+                  {errors.firstName.message}
+                </span>
               )}
             </div>
             <div className="relative flex-1">
               <label
                 className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-                htmlFor="lastName"
-              >
+                htmlFor="lastName">
                 Last Name
               </label>
               <input
@@ -107,15 +106,16 @@ function Register() {
                 className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
               {errors.lastName && (
-                <span className="error text-red-500">{errors.lastName.message}</span>
+                <span className="error text-red-500">
+                  {errors.lastName.message}
+                </span>
               )}
             </div>
           </div>
           <div className="relative mt-6">
             <label
               className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="email"
-            >
+              htmlFor="email">
               Email
             </label>
             <input
@@ -132,8 +132,7 @@ function Register() {
           <div className="relative mt-6">
             <label
               className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="username"
-            >
+              htmlFor="username">
               Username
             </label>
             <input
@@ -144,14 +143,15 @@ function Register() {
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.username && (
-              <span className="error text-red-500">{errors.username.message}</span>
+              <span className="error text-red-500">
+                {errors.username.message}
+              </span>
             )}
           </div>
           <div className="relative mt-6">
             <label
               className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="password"
-            >
+              htmlFor="password">
               Password
             </label>
             <input
@@ -162,15 +162,16 @@ function Register() {
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.password && (
-              <span className="error text-red-500">{errors.password.message}</span>
+              <span className="error text-red-500">
+                {errors.password.message}
+              </span>
             )}
           </div>
         </div>
         <div className="mt-10">
           <button
             type="submit"
-            className="w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800"
-          >
+            className="w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800">
             Sign Up
           </button>
         </div>
@@ -193,7 +194,9 @@ function Register() {
       </form>
 
       {/* Modal for Login */}
-      <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
+      <Modal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}>
         <Login /> {/* Render the Login component inside the modal */}
       </Modal>
     </div>
