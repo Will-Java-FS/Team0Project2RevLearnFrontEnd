@@ -4,7 +4,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import AxiosUserService from "../components/AxiosUserService";
-
+import Modal from "../utils/modal"; // Import Modal component
+import Login from "./Login"; // Import Login component
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -19,6 +20,7 @@ type FormData = z.infer<typeof formSchema>;
 
 function Register() {
   const [message, setMessage] = useState<string>("");
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false); // State to control modal visibility
   const navigate = useNavigate();
 
   // Integrate react-hook-form with Zod validation schema
@@ -70,42 +72,44 @@ function Register() {
           Join us today. It takes only a few steps.
         </p>
         <div className="mt-10">
-          {/* Input Fields */}
-          <div className="relative">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="firstName"
-            >
-              First Name
-            </label>
-            <input
-              id="firstName"
-              type="text"
-              {...register("firstName")}
-              required
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
-            />
-            {errors.firstName && (
-              <span className="error text-red-500">{errors.firstName.message}</span>
-            )}
-          </div>
-          <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="lastName"
-            >
-              Last Name
-            </label>
-            <input
-              id="lastName"
-              type="text"
-              {...register("lastName")}
-              required
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
-            />
-            {errors.lastName && (
-              <span className="error text-red-500">{errors.lastName.message}</span>
-            )}
+          {/* First Name and Last Name on the same row */}
+          <div className="flex gap-4">
+            <div className="relative flex-1">
+              <label
+                className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
+                htmlFor="firstName"
+              >
+                First Name
+              </label>
+              <input
+                id="firstName"
+                type="text"
+                {...register("firstName")}
+                required
+                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              />
+              {errors.firstName && (
+                <span className="error text-red-500">{errors.firstName.message}</span>
+              )}
+            </div>
+            <div className="relative flex-1">
+              <label
+                className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
+                htmlFor="lastName"
+              >
+                Last Name
+              </label>
+              <input
+                id="lastName"
+                type="text"
+                {...register("lastName")}
+                required
+                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              />
+              {errors.lastName && (
+                <span className="error text-red-500">{errors.lastName.message}</span>
+              )}
+            </div>
           </div>
           <div className="relative mt-6">
             <label
@@ -175,7 +179,7 @@ function Register() {
             Already have an account?
             <button
               className="font-medium underline hover:text-blue-300 ml-1"
-              onClick={() => navigate("/login")}
+              onClick={() => setIsLoginModalOpen(true)} // Show login modal on click
             >
               Sign In
             </button>
@@ -187,6 +191,11 @@ function Register() {
           </p>
         )}
       </form>
+
+      {/* Modal for Login */}
+      <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
+        <Login /> {/* Render the Login component inside the modal */}
+      </Modal>
     </div>
   );
 }
