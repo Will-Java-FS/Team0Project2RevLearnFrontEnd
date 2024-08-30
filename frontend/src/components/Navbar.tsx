@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle'; // Import the ThemeToggle component
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,7 +9,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex flex-col sm:flex-row justify-between items-center p-4 bg-white min-h-[60px]">
+    <nav className="flex flex-col sm:flex-row justify-between items-center p-4 bg-stone-200 dark:bg-slate-800 dark:text-white min-h-[50px] ">
+        <h1 className="text-primary dark:text-amber-600">revpro</h1>
       {/* Container for header and mobile menu button */}
       <div className="flex flex-1 items-center justify-between">
         <h1 className="text-primary sm:hidden">revpro</h1>
@@ -34,8 +34,8 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       <ul
-        className={`flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 ${isMenuOpen ? 'block' : 'hidden sm:flex'
-          } absolute sm:static right-0 top-16 sm:top-auto bg-white sm:bg-transparent shadow-md sm:shadow-none w-full sm:w-auto`}
+        className={`flex flex-col text-right p-4 sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 ${isMenuOpen ? 'block' : 'hidden sm:flex'
+          } absolute sm:static right-0 top-16 sm:top-auto bg-base-100 sm:bg-transparent shadow-md sm:shadow-none w-full sm:w-auto`}
       >
         <li>
           <Link to="/" className="text-secondary hover:text-secondary">
@@ -75,9 +75,9 @@ const Navbar = () => {
       </ul>
 
       {/* ThemeToggle component */}
-      <div className="hidden sm:flex items-center ml-auto">
+      {/* <div className="hidden sm:flex items-center ml-auto">
         <ThemeToggle />
-      </div>
+      </div> */}
     </nav>
   );
 };
