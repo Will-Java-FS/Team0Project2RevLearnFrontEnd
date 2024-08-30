@@ -12,13 +12,13 @@ class AxiosEnrollmentService {
             }
         })
         .catch(error => {
-            console.error('Error enrolling student to program ' + studentId + '!', error);
+            console.error('Error getting student enrollments!', error);
         });
         return null;
     }
 
-    enrollInProgram(studentId = AuthService.loggedInUserId(), programId:number):boolean {
-        axios.post("/program/" + programId + "/enroll/" + studentId)
+    enrollInCourse(studentId = AuthService.loggedInUserId(), courseId:number):boolean {
+        axios.post("/course/" + courseId + "/enroll/" + studentId)
         .then(response => {
             console.log(response.data);
             if (response.status === 200) {
@@ -26,13 +26,13 @@ class AxiosEnrollmentService {
             }
         })
         .catch(error => {
-            console.error('Error enrolling student to program ' + programId + '!', error);
+            console.error('Error enrolling student to course ' + courseId + '!', error);
         });
         return false;
     }
 
-    removeFromProgram(studentId:number, programId:number):boolean {
-        axios.post("/program/" + programId + "/remove/" + studentId)
+    removeFromCourse(studentId:number, courseId:number):boolean {
+        axios.post("/course/" + courseId + "/remove/" + studentId)
         .then(response => {
             console.log(response.data);
             if (response.status === 200) {
@@ -40,7 +40,7 @@ class AxiosEnrollmentService {
             }
         })
         .catch(error => {
-            console.error('Error removing student from program ' + programId + '!', error);
+            console.error('Error removing student from program ' + courseId + '!', error);
         });
         return false;
     }

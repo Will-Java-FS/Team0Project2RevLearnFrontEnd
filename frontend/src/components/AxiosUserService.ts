@@ -47,6 +47,21 @@ class AxiosUserService {
 
         return false;
     }
+
+    setEnrolledProgram(studentId = AuthService.loggedInUserId(), programId:number) {
+        axios.patch("/program/" + programId + "/enroll/" + studentId)
+        .then(response => {
+            console.log(response.data);
+            if (response.status === 200) {
+                return true;
+            }
+        })
+        .catch(error => {
+            console.error('Error enrolling student to program ' + programId + '!', error);
+        });
+        return false;
+    }
+
 }
 
 export default new AxiosUserService();
