@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { Skeleton } from "../utils/skeletons"; // Adjust the path as needed
+import Card from "../components/Card"; // Adjust the path to where the Card component is located
 
 export default function AllCourses() {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 8; // Number of skeleton components per page
-    const totalSkeletons = 24;
-    const totalPages = Math.ceil(totalSkeletons / itemsPerPage);
+    const itemsPerPage = 4; // Number of card components per page
+    const totalCards = 30; // Total number of card items
+    const totalPages = Math.ceil(totalCards / itemsPerPage);
 
-    // Get the skeleton components for the current page
-    const currentSkeletons = Array.from({ length: itemsPerPage }).map((_, index) => (
-        <Skeleton key={index} />
-    ));
+    // Dummy data for card components
+    const cardData = Array.from({ length: totalCards }, (_, index) => ({
+        title: `Data Structures & Algorithms ${index + 1}`,
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.",
+        link: "https://example.com",
+    }));
+
+    // Get the card components for the current page
+    const currentCards = cardData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const handlePreviousPage = () => {
         if (currentPage > 1) {
@@ -25,28 +30,31 @@ export default function AllCourses() {
     };
 
     return (
-        <>
-            <h1 className="text-primary text-4xl font-bold my-4 text-center">List of All Courses</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
-                {currentSkeletons}
+        <div className="flex flex-col items-center min-h-screen p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+                {currentCards.map((card, index) => (
+                    <Card key={index} title={card.title} description={card.description} link={card.link} />
+                ))}
             </div>
-            <div className="flex justify-center items-center mt-4 space-x-4">
+            <div className="flex justify-between items-center w-full max-w-md px-4">
                 <button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
-                    className="px-4 py-2 bg-gray-300 rounded-md"
+                    className="btn-sm hover:glass bg-orange-500/80 rounded-md disabled:opacity-50"
                 >
                     Previous
                 </button>
-                <span>Page {currentPage} of {totalPages}</span>
+                <span className="text-gray-700">
+                    Page {currentPage} of {totalPages}
+                </span>
                 <button
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
-                    className="px-4 py-2 bg-gray-300 rounded-md"
+                    className="btn-sm hover:glass bg-orange-500/80 rounded-md disabled:opacity-50"
                 >
                     Next
                 </button>
             </div>
-        </>
+        </div>
     );
 }
