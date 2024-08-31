@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Dashboard from '../pages/Dashboard';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,6 +71,11 @@ const Navbar = () => {
         <li>
           <Link to="/dashboard" className="text-primary hover:text-amber-600">
             Dashboard
+          </Link>
+        </li>
+        <li>
+          <Link to="/teacher" className="text-primary hover:text-amber-600">
+            Teacher Dashboard
           </Link>
         </li>
         <li>
