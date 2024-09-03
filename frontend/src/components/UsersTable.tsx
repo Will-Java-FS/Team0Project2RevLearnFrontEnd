@@ -1,11 +1,10 @@
 import React, { useState, useTransition, useEffect } from "react";
-import { lineWobble } from "ldrs"; // Import the loader from ldrs
-import { faker } from "@faker-js/faker"; // Import Faker for generating random users
-import { TbFilterDown, TbFilterUp } from "react-icons/tb"; // Import filter icons from react-icons
+import { lineWobble } from "ldrs";
+import { faker } from "@faker-js/faker";
+import { TbFilterDown, TbFilterUp } from "react-icons/tb";
 
-lineWobble.register(); // Register the loader
+lineWobble.register();
 
-// Define User type
 type User = {
     id: string;
     first_name: string;
@@ -16,7 +15,6 @@ type User = {
     createdAt: string;
 };
 
-// Function to generate random users
 const generateUsers = (count: number): User[] => {
     const users: User[] = [];
     for (let i = 0; i < count; i++) {
@@ -38,7 +36,6 @@ const generateUsers = (count: number): User[] => {
     return users;
 };
 
-// Component Props
 type Props = {
     users?: User[];
 };
@@ -47,21 +44,18 @@ export default function UsersTable({ users = [] }: Props) {
     const [searchTerm, setSearchTerm] = useState("");
     const [isPending, startTransition] = useTransition();
     const [showLoader, setShowLoader] = useState(false);
-    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc"); // State for sorting order
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [sortField, setSortField] = useState<"first_name" | "last_name">(
         "first_name"
-    ); // State for sorting field
-    const [currentPage, setCurrentPage] = useState(1); // State for current page
-    const [filters, setFilters] = useState<{ [key: string]: string }>({}); // State for filters
-    const usersPerPage = 10; // Number of users per page
+    );
+    const [currentPage, setCurrentPage] = useState(1);
+    const [filters, setFilters] = useState<{ [key: string]: string }>({});
+    const usersPerPage = 10;
 
-    // Generate random users if not passed as props
-    const generatedUsers = users.length > 0 ? users : generateUsers(50); // Generates 50 users
+    const generatedUsers = users.length > 0 ? users : generateUsers(50);
 
-    // Function to filter and sort users based on the search term and sort criteria
     const filteredAndSortedUsers = generatedUsers
         .filter(user => {
-            // Apply filters
             for (const [key, value] of Object.entries(filters)) {
                 if (user[key as keyof User]?.toLowerCase().indexOf(value.toLowerCase()) === -1) {
                     return false;
@@ -83,10 +77,7 @@ export default function UsersTable({ users = [] }: Props) {
             return 0;
         });
 
-    // Calculate total pages
     const totalPages = Math.ceil(filteredAndSortedUsers.length / usersPerPage);
-
-    // Get users for the current page
     const currentUsers = filteredAndSortedUsers.slice(
         (currentPage - 1) * usersPerPage,
         currentPage * usersPerPage
@@ -95,7 +86,7 @@ export default function UsersTable({ users = [] }: Props) {
     const handleSearch = (value: string) => {
         startTransition(() => {
             setSearchTerm(value);
-            setCurrentPage(1); // Reset to page 1 when searching
+            setCurrentPage(1);
         });
     };
 
@@ -138,7 +129,6 @@ export default function UsersTable({ users = [] }: Props) {
 
     return (
         <div className="p-4">
-            {/* Search Input and Sorting */}
             <div className="mb-4 flex items-center gap-4">
                 <input
                     type="text"
@@ -147,12 +137,7 @@ export default function UsersTable({ users = [] }: Props) {
                     value={searchTerm}
                     onChange={(e) => handleSearch(e.target.value)}
                 />
-                <button
-                    onClick={() => handleSort(sortField)}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-                >
-                    Sort {sortOrder === "asc" ? "Ascending" : "Descending"}
-                </button>
+                {/* Removed Sort Button */}
                 <select
                     value={sortField}
                     onChange={(e) =>
@@ -168,7 +153,6 @@ export default function UsersTable({ users = [] }: Props) {
             {/* Loading Spinner */}
             {showLoader && (
                 <div className="flex justify-center mb-4">
-                    {/* Use the custom loader */}
                     <l-line-wobble
                         size="80"
                         stroke="5"
@@ -180,8 +164,8 @@ export default function UsersTable({ users = [] }: Props) {
             )}
 
             {/* Table Component */}
-            <div className="overflow-x-auto rounded-lg border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200 bg-stone-50 dark:bg-gray-800 dark:text-white text-sm">
+            <div className="overflow-x-auto rounded-lg border border-gray-200 w-full">
+                <table className="w-full divide-y divide-gray-200 bg-stone-50 dark:bg-gray-800 dark:text-white text-sm">
                     <thead className="text-left">
                         <tr>
                             <th className="relative whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
@@ -196,7 +180,6 @@ export default function UsersTable({ users = [] }: Props) {
                                         <TbFilterUp
                                             className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
                                             onClick={() => {
-                                                // Clear filter when icon is clicked
                                                 const newFilters = { ...filters };
                                                 delete newFilters['first_name'];
                                                 setFilters(newFilters);
@@ -206,7 +189,6 @@ export default function UsersTable({ users = [] }: Props) {
                                         <TbFilterDown
                                             className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
                                             onClick={() => {
-                                                // Toggle filter input visibility
                                                 const newFilters = { ...filters };
                                                 if (filters['first_name']) {
                                                     delete newFilters['first_name'];
@@ -242,7 +224,6 @@ export default function UsersTable({ users = [] }: Props) {
                                         <TbFilterUp
                                             className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
                                             onClick={() => {
-                                                // Clear filter when icon is clicked
                                                 const newFilters = { ...filters };
                                                 delete newFilters['last_name'];
                                                 setFilters(newFilters);
@@ -252,7 +233,6 @@ export default function UsersTable({ users = [] }: Props) {
                                         <TbFilterDown
                                             className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
                                             onClick={() => {
-                                                // Toggle filter input visibility
                                                 const newFilters = { ...filters };
                                                 if (filters['last_name']) {
                                                     delete newFilters['last_name'];
@@ -315,26 +295,25 @@ export default function UsersTable({ users = [] }: Props) {
                         ))}
                     </tbody>
                 </table>
-                {/* Pagination */}
-                <div className="flex justify-between p-4">
-                    <button
-                        onClick={handlePreviousPage}
-                        disabled={currentPage === 1}
-                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
-                    >
-                        Previous
-                    </button>
-                    <span className="text-gray-700 dark:text-white">
-                        Page {currentPage} of {totalPages}
-                    </span>
-                    <button
-                        onClick={handleNextPage}
-                        disabled={currentPage === totalPages}
-                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
-                    >
-                        Next
-                    </button>
-                </div>
+            </div>
+            <div className="flex justify-between p-4">
+                <button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+                >
+                    Previous
+                </button>
+                <span className="text-gray-700 dark:text-white">
+                    Page {currentPage} of {totalPages}
+                </span>
+                <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+                >
+                    Next
+                </button>
             </div>
         </div>
     );
