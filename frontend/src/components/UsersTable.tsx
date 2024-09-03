@@ -1,6 +1,7 @@
 import React, { useState, useTransition, useEffect } from "react";
 import { lineWobble } from "ldrs"; // Import the loader from ldrs
 import { faker } from "@faker-js/faker"; // Import Faker for generating random users
+import { TbFilterDown, TbFilterUp } from "react-icons/tb"; // Import filter icons from react-icons
 
 lineWobble.register(); // Register the loader
 
@@ -51,6 +52,7 @@ export default function UsersTable({ users = [] }: Props) {
         "first_name"
     ); // State for sorting field
     const [currentPage, setCurrentPage] = useState(1); // State for current page
+    const [filters, setFilters] = useState<{ [key: string]: string }>({}); // State for filters
     const usersPerPage = 10; // Number of users per page
 
     // Generate random users if not passed as props
@@ -58,6 +60,15 @@ export default function UsersTable({ users = [] }: Props) {
 
     // Function to filter and sort users based on the search term and sort criteria
     const filteredAndSortedUsers = generatedUsers
+        .filter(user => {
+            // Apply filters
+            for (const [key, value] of Object.entries(filters)) {
+                if (user[key as keyof User]?.toLowerCase().indexOf(value.toLowerCase()) === -1) {
+                    return false;
+                }
+            }
+            return true;
+        })
         .filter(
             (user) =>
                 user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -88,12 +99,18 @@ export default function UsersTable({ users = [] }: Props) {
         });
     };
 
-    const handleSortChange = (field: "first_name" | "last_name") => {
+    const handleSort = (field: "first_name" | "last_name") => {
         setSortField(field);
+        setSortOrder((prevOrder) =>
+            sortField === field ? (prevOrder === "asc" ? "desc" : "asc") : "asc"
+        );
     };
 
-    const toggleSortOrder = () => {
-        setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+    const handleFilterChange = (field: keyof User, value: string) => {
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            [field]: value
+        }));
     };
 
     const handleNextPage = () => {
@@ -108,7 +125,7 @@ export default function UsersTable({ users = [] }: Props) {
         if (isPending) {
             const timer = setTimeout(() => {
                 setShowLoader(true);
-            }, 500); 
+            }, 500);
 
             return () => {
                 clearTimeout(timer);
@@ -131,7 +148,7 @@ export default function UsersTable({ users = [] }: Props) {
                     onChange={(e) => handleSearch(e.target.value)}
                 />
                 <button
-                    onClick={() => toggleSortOrder()}
+                    onClick={() => handleSort(sortField)}
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                 >
                     Sort {sortOrder === "asc" ? "Ascending" : "Descending"}
@@ -139,7 +156,7 @@ export default function UsersTable({ users = [] }: Props) {
                 <select
                     value={sortField}
                     onChange={(e) =>
-                        handleSortChange(e.target.value as "first_name" | "last_name")
+                        handleSort(e.target.value as "first_name" | "last_name")
                     }
                     className="px-4 py-2 border border-gray-300 rounded-lg"
                 >
@@ -163,119 +180,160 @@ export default function UsersTable({ users = [] }: Props) {
             )}
 
             {/* Table Component */}
-            <div className="rounded-lg border border-gray-200">
-                <div className="overflow-x-auto rounded-t-lg">
-                    <table className="min-w-full divide-y-2 divide-gray-200 bg-stone-50  dark:text-white table-zebra text-sm">
-                        <thead className="text-left">
-                            <tr>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    First Name
-                                </th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    Last Name
-                                </th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    Email
-                                </th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    Program ID
-                                </th>
-                                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                    Created At
-                                </th>
+            <div className="overflow-x-auto rounded-lg border border-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 bg-stone-50 dark:bg-gray-800 dark:text-white text-sm">
+                    <thead className="text-left">
+                        <tr>
+                            <th className="relative whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                <div className="flex items-center">
+                                    <span
+                                        onClick={() => handleSort("first_name")}
+                                        className="cursor-pointer"
+                                    >
+                                        First Name
+                                    </span>
+                                    {filters['first_name'] !== undefined ? (
+                                        <TbFilterUp
+                                            className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
+                                            onClick={() => {
+                                                // Clear filter when icon is clicked
+                                                const newFilters = { ...filters };
+                                                delete newFilters['first_name'];
+                                                setFilters(newFilters);
+                                            }}
+                                        />
+                                    ) : (
+                                        <TbFilterDown
+                                            className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
+                                            onClick={() => {
+                                                // Toggle filter input visibility
+                                                const newFilters = { ...filters };
+                                                if (filters['first_name']) {
+                                                    delete newFilters['first_name'];
+                                                } else {
+                                                    newFilters['first_name'] = '';
+                                                }
+                                                setFilters(newFilters);
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                                {filters['first_name'] !== undefined && (
+                                    <input
+                                        type="text"
+                                        placeholder="Filter..."
+                                        className="mt-1 w-full p-1 border border-gray-300 rounded-lg"
+                                        value={filters['first_name']}
+                                        onChange={(e) =>
+                                            handleFilterChange("first_name", e.target.value)
+                                        }
+                                    />
+                                )}
+                            </th>
+                            <th className="relative whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                <div className="flex items-center">
+                                    <span
+                                        onClick={() => handleSort("last_name")}
+                                        className="cursor-pointer"
+                                    >
+                                        Last Name
+                                    </span>
+                                    {filters['last_name'] !== undefined ? (
+                                        <TbFilterUp
+                                            className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
+                                            onClick={() => {
+                                                // Clear filter when icon is clicked
+                                                const newFilters = { ...filters };
+                                                delete newFilters['last_name'];
+                                                setFilters(newFilters);
+                                            }}
+                                        />
+                                    ) : (
+                                        <TbFilterDown
+                                            className="ml-2 h-4 w-4 text-gray-500 cursor-pointer"
+                                            onClick={() => {
+                                                // Toggle filter input visibility
+                                                const newFilters = { ...filters };
+                                                if (filters['last_name']) {
+                                                    delete newFilters['last_name'];
+                                                } else {
+                                                    newFilters['last_name'] = '';
+                                                }
+                                                setFilters(newFilters);
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                                {filters['last_name'] !== undefined && (
+                                    <input
+                                        type="text"
+                                        placeholder="Filter..."
+                                        className="mt-1 w-full p-1 border border-gray-300 rounded-lg"
+                                        value={filters['last_name']}
+                                        onChange={(e) =>
+                                            handleFilterChange("last_name", e.target.value)
+                                        }
+                                    />
+                                )}
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                Username
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                Program ID
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                Email
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white">
+                                Created At
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                        {currentUsers.map((user) => (
+                            <tr key={user.id}>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-white">
+                                    {user.first_name}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-white">
+                                    {user.last_name}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-white">
+                                    {user.username}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-white">
+                                    {user.program_id}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-white">
+                                    {user.email}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700 dark:text-white">
+                                    {new Date(user.createdAt).toLocaleDateString()}
+                                </td>
                             </tr>
-                        </thead>
-
-                        <tbody className="divide-y divide-gray-200">
-                            {currentUsers.map((user) => (
-                                <tr key={user.id}>
-                                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                                        {user.first_name}
-                                    </td>
-                                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                        {user.last_name}
-                                    </td>
-                                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                        {user.email}
-                                    </td>
-                                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                        {user.program_id}
-                                    </td>
-                                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                                        {new Intl.DateTimeFormat("en-US", {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                        }).format(new Date(user.createdAt))}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                {/* Pagination */}
-                <div className="rounded-b-lg border-t border-gray-200 px-4 py-2">
-                    <ol className="flex justify-end gap-1 text-xs font-medium">
-                        <li>
-                            <button
-                                onClick={handlePreviousPage}
-                                disabled={currentPage === 1}
-                                className="inline-flex items-center justify-center w-8 h-8 rounded border border-gray-100 bg-white text-gray-900"
-                            >
-                                <span className="sr-only">Previous Page</span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-3 h-3"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </button>
-                        </li>
-
-                        {/* Page Numbers */}
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <li key={index}>
-                                <button
-                                    onClick={() => setCurrentPage(index + 1)}
-                                    className={`block w-8 h-8 rounded border ${currentPage === index + 1
-                                        ? "border-blue-600 bg-blue-600 text-white"
-                                        : "border-gray-100 bg-white text-gray-900"
-                                        } text-center leading-8`}
-                                >
-                                    {index + 1}
-                                </button>
-                            </li>
                         ))}
-
-                        <li>
-                            <button
-                                onClick={handleNextPage}
-                                disabled={currentPage === totalPages}
-                                className="inline-flex items-center justify-center w-8 h-8 rounded border border-gray-100 bg-white text-gray-900"
-                            >
-                                <span className="sr-only">Next Page</span>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-3 h-3"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            </button>
-                        </li>
-                    </ol>
+                    </tbody>
+                </table>
+                {/* Pagination */}
+                <div className="flex justify-between p-4">
+                    <button
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+                    >
+                        Previous
+                    </button>
+                    <span className="text-gray-700 dark:text-white">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg"
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
         </div>

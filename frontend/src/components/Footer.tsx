@@ -1,5 +1,4 @@
-import logo from '../assets/Icon256.png';
-
+import logo from '../assets/Icon512.png';
 export default function Footer() {
   return (
     <div>
@@ -9,10 +8,10 @@ export default function Footer() {
             <img
               src={logo}
               alt="logo"
-              className="h-16 w-auto md:h-20 lg:h-24" // Responsive height
+              className="text-primary h-16 w-auto md:h-20 lg:h-24"
             />
             <p className="text-center text-sm mt-4">
-              <span className="font-semibold text-xl text-primary">
+              <span className="font-semibold text-xl" style={{ color: '#008FF5' }}>
                 CLEVERName
               </span>
               <br />

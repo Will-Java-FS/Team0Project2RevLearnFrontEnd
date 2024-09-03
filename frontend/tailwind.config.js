@@ -1,18 +1,23 @@
-module.exports = {
-	darkMode: "class", // Enables dark mode using the 'dark' class
-	content: ["./src/**/*.{js,jsx,ts,tsx,html}"], // Adjust the paths to match your project structure
-	theme: {
-		extend: {}
-	},
-	plugins: [require("daisyui")],
-	daisyui: {
-		themes: ["nord", "business"], // Include 'nord' and 'business' themes
-		darkTheme: "business", // Set 'business' as the default dark theme
-		base: true,
-		styled: true,
-		utils: true,
-		prefix: "",
-		logs: true,
-		themeRoot: ":root"
+/* eslint-disable no-undef */
+export const darkMode = "class";
+export const content = ["./src/**/*.{js,jsx,ts,tsx,html}"];
+export const theme = {
+	extend: {
+		colors: { "logo-blue": "#008FF5" },
+		fontFamily: {
+			inter: ["Inter", "sans-serif"],
+			suse: ["Suse", "sans-serif"]
+		}
 	}
+};
+export const plugins = [require("daisyui")];
+export const daisyui = {
+	themes: ["nord", "sunset"],
+	darkTheme: "sunset",
+	base: true,
+	styled: true,
+	utils: true,
+	prefix: "",
+	logs: true,
+	themeRoot: ":root"
 };

@@ -8,7 +8,7 @@ interface ThemeToggleProps {
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'business';
+    return savedTheme === 'sunset'; // Use 'business' for dark mode and 'nord' for light mode
   });
 
   useEffect(() => {
@@ -16,16 +16,25 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
 
     document.documentElement.classList.toggle('dark', isDarkMode);
 
-    localStorage.setItem('theme', isDarkMode ? 'business' : 'nord');
+    // Update localStorage and apply the theme
+    localStorage.setItem('theme', isDarkMode ? 'nord' : 'sunset');
   }, [isDarkMode]);
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsDarkMode(event.target.checked);
   };
 
+  useEffect(() => {
+    // Apply the saved theme on component mount
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'business');
+    }
+  }, []);
+
   return (
     <label
-      className={`fixed bottom-4 right-4 inline-flex items-center dark:bg-gray-800 rounded-full shadow-lg  ${className}`}
+      className={`fixed bottom-4 right-4 inline-flex items-center dark:bg-gray-800 rounded-full shadow-lg ${className} z-50`}
     >
       <input
         type="checkbox"
@@ -35,7 +44,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
         onChange={handleToggleChange}
       />
       <div className="relative w-[100px] h-[50px] bg-red-100 peer-checked:bg-gray-800 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:from-gray-600 peer-checked:to-gray-600 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[50px] peer-checked:after:left-[100px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md mr-1" />
-{/* Sun */}
+      {/* Sun */}
       <svg
         height="0"
         width="80"
@@ -45,10 +54,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
       >
         <path d="M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5,5,2.24,5,5-2.24,5-5,5ZM13,0h-2V5h2V0Zm0,19h-2v5h2v-5ZM5,11H0v2H5v-2Zm19,0h-5v2h5v-2Zm-2.81-6.78l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54ZM7.76,17.66l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54Zm0-11.31l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Zm13.44,13.44l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Z" />
       </svg>
-
-
-
-{/* Moon */}
+      {/* Moon */}
       <svg
         height="0"
         width="80"
