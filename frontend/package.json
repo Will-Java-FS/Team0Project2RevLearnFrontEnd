@@ -11,9 +11,11 @@
     "cleanup": "rm -rf node_modules dist && npm install && npm run build"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@hookform/resolvers": "^3.9.0",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.5",
+    "ldrs": "^1.0.2",
     "react": "^18.3.1",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.3.1",
