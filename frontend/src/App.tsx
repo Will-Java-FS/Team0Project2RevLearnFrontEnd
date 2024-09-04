@@ -4,7 +4,6 @@ import About from './pages/About';
 import Layout from './pages/Layout';
 import Register from './pages/Register';
 import Course from './pages/Course';
-import Dashboard from './pages/Dashboard';
 import Lesson from './pages/Lesson';
 import Login from './pages/_Login';
 import AllPrograms from './pages/AllCourses';
@@ -14,7 +13,7 @@ import ForumPost from './pages/ForumPost';
 
 import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
 import ErrorPage from './pages/ErrorPage';
-import TeacherDashboard from './pages/TeacherDashboard';
+import Dashboard from './pages/Dashboard';
 
 
 const App = () => {
@@ -40,7 +39,6 @@ const App = () => {
           <Route path="/course" element={<Course />} />
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
-          <Route path="/teacher" element={<TeacherDashboard />} />
           <Route path="/forumpost" element={<ForumPost />} />
           <Route path="/*" element={<ErrorPage />} /> {/* Handles undefined routes */}
         </Routes>
