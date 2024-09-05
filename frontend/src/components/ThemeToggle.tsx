@@ -8,7 +8,7 @@ interface ThemeToggleProps {
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'sunset'; // Use 'business' for dark mode and 'nord' for light mode
+    return savedTheme === 'dark'; // Use 'business' for dark mode and 'nord' for light mode
   });
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
     document.documentElement.classList.toggle('dark', isDarkMode);
 
     // Update localStorage and apply the theme
-    localStorage.setItem('theme', isDarkMode ? 'nord' : 'sunset');
+    localStorage.setItem('theme', isDarkMode ? 'nord' : 'dark');
   }, [isDarkMode]);
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

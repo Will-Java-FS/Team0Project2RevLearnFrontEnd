@@ -11,34 +11,16 @@ interface RegisterResult {
 interface LoginResult {
     success: boolean;
     message?: string;
-    token?: string; // Include token if applicable
+    token?: string;
+    error?: string; // Optional: Include error messages if necessary
 }
 
 class AxiosUserService {
-    async loginUser(
-        username: string,
-        password: string
-    ): Promise<LoginResult> {
+    async loginUser(username: string, password: string): Promise<LoginResult> {
         try {
-            // Construct the request payload
-            const payload = {
-                username,
-                password
-            };
-
-            console.log("Sending login payload:", payload);
-
-            // Use the axios instance for the request
-            const response: { status: number; data: { token?: string } } = await axiosInstance.post("/user/login", payload);
-
-            if (response.status === 200) {
-                console.log("Login response:", response.data);
-                return { success: true, message: "Login successful!", token: response.data.token };
-            }
-
-            return { success: false, message: "Unexpected response status during login." };
-        } catch (error: unknown) {
-            // Ensure type safety with TypeScript's type guard
+            const response = await axiosInstance.post("/user/login", { username, password });
+            return { success: true, token: response.data };
+        } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response) {
                     console.error("Error response data:", error.response.data);
@@ -48,7 +30,6 @@ class AxiosUserService {
                     return { success: false, message: "No response from server. Please check your connection." };
                 }
             } else {
-                // Handle unexpected errors
                 console.error("Unexpected error:", error);
             }
             return { success: false, message: "An error occurred. Please try again later." };
