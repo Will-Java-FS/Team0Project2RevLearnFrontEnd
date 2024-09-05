@@ -46,7 +46,7 @@ class AxiosForumService {
     }
 
     getPostById(id:number) {
-        axios.get("/forums/posts/" + id)
+        axios.get("/forumsposts/" + id)
         .then(response => {
             console.log(response.data);
             if (response.status === 200) {
@@ -79,7 +79,7 @@ class AxiosForumService {
     }
 
     createPost(content:string, forumId:number) {
-        axios.post("/forums/" + forumId + "/posts", {
+        axios.post("/forumpost/" + forumId, {
             content: content,
             posterId: AuthService.loggedInUserId(),
             forumId: forumId
@@ -114,7 +114,7 @@ class AxiosForumService {
     }
 
     updatePost(id:number, content:string) {
-        axios.put("/forums/posts" + id, {
+        axios.put("/forumpost/" + id, {
             content: content
         })
         .then(response => {
@@ -144,7 +144,7 @@ class AxiosForumService {
     }
 
     deletePost(id:number):boolean {
-        axios.delete("/forums/posts/" + id)
+        axios.delete("/forumposts/" + id)
         .then(response => {
             console.log(response.data);
             if (response.status === 204) {

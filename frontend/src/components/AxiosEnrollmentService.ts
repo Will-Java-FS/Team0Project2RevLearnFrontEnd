@@ -31,6 +31,20 @@ class AxiosEnrollmentService {
         return false;
     }
 
+    payForCourse(studentId = AuthService.loggedInUserId(), courseId:number):boolean {
+        axios.post("/course/" + courseId + "/pay/" + studentId)
+        .then(response => {
+            console.log(response.data);
+            if (response.status === 200) {
+                return true;
+            }
+        })
+        .catch(error => {
+            console.error('Error paying for course ' + courseId + '!', error);
+        });
+        return false;
+    }
+
     removeFromCourse(studentId:number, courseId:number):boolean {
         axios.post("/course/" + courseId + "/remove/" + studentId)
         .then(response => {
