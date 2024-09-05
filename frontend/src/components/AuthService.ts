@@ -1,12 +1,15 @@
 class AuthService {
-    login(id:string, username:string, role:string, token:string, programId:string): void {
+    login(id: string, username: string, role: string, token: string, programId: string): void {
+        // Set the temporary token to "generated_token"
+        const tempToken = "generated_token";
+
         sessionStorage.setItem("authenticatedUserId", id);
         sessionStorage.setItem("authenticatedUser", username);
-        sessionStorage.setItem("role", role);
+        sessionStorage.setItem("role", role);  // Make sure role is stored correctly
         sessionStorage.setItem("programId", programId);
-        localStorage.setItem("token", "Bearer " + token);
+        localStorage.setItem("token", "Bearer " + tempToken);  // Use the temporary token
 
-        console.log("User " + username + " logged in successfully");
+        console.log(`User ${username} logged in successfully with role ${role} and token ${tempToken}`);
     };
 
     logout(): void {
@@ -17,40 +20,35 @@ class AuthService {
         console.log("User logged out successfully");
     };
 
-	loggedInUsername(): string {
-        let username = sessionStorage.getItem("authenticatedUser");
-		if (username == null) {
-            return "NO LOGGED IN USER";
-        };
-        return username;
-	};
+    loggedInUsername(): string {
+        const username = sessionStorage.getItem("authenticatedUser");
+        return username ? username : "NO LOGGED IN USER";
+    };
 
     loggedInUserId(): number {
-        let id = sessionStorage.getItem("authenticatedUserId");
-        if (id == null) {
-            return -1;
-        };
-		return Number(id);
-	};
+        const id = sessionStorage.getItem("authenticatedUserId");
+        return id ? Number(id) : -1;
+    };
 
     loggedInUserProgramId(): number {
-        let id = sessionStorage.getItem("programId");
-        if (id == null) {
-            return -1;
-        };
-		return Number(id);
-	};
+        const id = sessionStorage.getItem("programId");
+        return id ? Number(id) : -1;
+    };
+
+    loggedInUserRole(): string {
+        return sessionStorage.getItem("role") ?? '';  // Retrieve role correctly
+    }
 
     isLoggedIn(): boolean {
-        return sessionStorage.getItem("role") == "student" || sessionStorage.getItem("role") == "teacher";
+        return !!sessionStorage.getItem("role");
     };
 
     isLoggedInStudent(): boolean {
-        return sessionStorage.getItem("role") == "student";
+        return sessionStorage.getItem("role") === "student";
     };
 
     isLoggedInTeacher(): boolean {
-        return sessionStorage.getItem("role") == "teacher";
+        return sessionStorage.getItem("role") === "teacher";
     };
 }
 

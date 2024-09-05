@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import AxiosUserService from "../components/AxiosUserService";
-import Modal from "../utils/modal"; // Import Modal component
-import Login from "./Login"; // Import Login component
+import Modal from "../utils/modal";
+import Login from "./Login";
+import axios from "../components/AxiosConfig"; // Assuming you have axios config here
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -13,15 +14,32 @@ const formSchema = z.object({
   lastName: z.string().min(2, "Last Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   username: z.string().min(3, "Username must be at least 3 characters"),
-  password: z.string().min(8, "Password must be at least 8 characters")
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  role: z.enum(["student", "teacher", "admin"]),
+  programId: z.string().min(1, "Program must be selected")
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-function Register() {
+export default function Register() {
   const [message, setMessage] = useState<string>("");
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false); // State to control modal visibility
+  const [isSuccess, setIsSuccess] = useState<boolean>(false); // New state for success message
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [programs, setPrograms] = useState<{ programId: number; programName: string }[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Fetch the list of programs from the backend
+    const fetchPrograms = async () => {
+      try {
+        const response = await axios.get("/programs");
+        setPrograms(response.data);
+      } catch (error) {
+        console.error("Error fetching programs:", error);
+      }
+    };
+    fetchPrograms();
+  }, []);
 
   // Integrate react-hook-form with Zod validation schema
   const {
@@ -39,31 +57,36 @@ function Register() {
         data.username,
         data.password,
         data.email,
-        "user" // Assuming a default role; adjust as necessary
+        data.role,
+        data.lastName,
+        data.firstName,
+        Number(data.programId)
       );
 
       if (isRegistered) {
-        setMessage("Registration successful!");
+        setMessage("Registration successful! Redirecting to login...");
+        setIsSuccess(true); // Set success state to true
 
+        // Redirect to login page after successful registration
         setTimeout(() => {
           navigate("/login");
-        }, 3000); // Delay to allow the message to be displayed
-
-        alert("Successfully created an account!");
+        }, 3000); // Redirect after 3 seconds
       } else {
         throw new Error("Registration failed");
       }
     } catch (error) {
       console.error("Error:", error);
       setMessage("An error occurred. Please try again.");
+      setIsSuccess(false); // Set success state to false
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen relative">
       <form
-        className="bg-neutral-content dark:bg-neutral shadow-2xl  rounded-2xl overflow-hidden border-4 border-accent dark:border-accent w-full max-w-md p-8"
-        onSubmit={handleSubmit(handleRegister)}>
+        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-2xl overflow-hidden border-4 border-accent dark:border-accent w-full max-w-md p-8"
+        onSubmit={handleSubmit(handleRegister)}
+      >
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
           Create an Account
         </h2>
@@ -71,12 +94,9 @@ function Register() {
           Join us today. It takes only a few steps.
         </p>
         <div className="mt-10">
-          {/* First Name and Last Name on the same row */}
           <div className="flex gap-4">
             <div className="relative flex-1">
-              <label
-                className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-                htmlFor="firstName">
+              <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="firstName">
                 First Name
               </label>
               <input
@@ -86,16 +106,10 @@ function Register() {
                 required
                 className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
-              {errors.firstName && (
-                <span className="error text-red-500">
-                  {errors.firstName.message}
-                </span>
-              )}
+              {errors.firstName && <span className="error text-red-500">{errors.firstName.message}</span>}
             </div>
             <div className="relative flex-1">
-              <label
-                className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-                htmlFor="lastName">
+              <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="lastName">
                 Last Name
               </label>
               <input
@@ -105,17 +119,11 @@ function Register() {
                 required
                 className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
-              {errors.lastName && (
-                <span className="error text-red-500">
-                  {errors.lastName.message}
-                </span>
-              )}
+              {errors.lastName && <span className="error text-red-500">{errors.lastName.message}</span>}
             </div>
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="email">
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="email">
               Email
             </label>
             <input
@@ -125,14 +133,10 @@ function Register() {
               required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            {errors.email && (
-              <span className="error text-red-500">{errors.email.message}</span>
-            )}
+            {errors.email && <span className="error text-red-500">{errors.email.message}</span>}
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="username">
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="username">
               Username
             </label>
             <input
@@ -142,16 +146,10 @@ function Register() {
               required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            {errors.username && (
-              <span className="error text-red-500">
-                {errors.username.message}
-              </span>
-            )}
+            {errors.username && <span className="error text-red-500">{errors.username.message}</span>}
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="password">
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="password">
               Password
             </label>
             <input
@@ -161,46 +159,69 @@ function Register() {
               required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            {errors.password && (
-              <span className="error text-red-500">
-                {errors.password.message}
-              </span>
-            )}
+            {errors.password && <span className="error text-red-500">{errors.password.message}</span>}
           </div>
-        </div>
-        <div className="mt-10">
+          <div className="relative mt-6">
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="role">
+              Role
+            </label>
+            <select
+              id="role"
+              {...register("role")}
+              required
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+            >
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="admin">Admin</option>
+            </select>
+            {errors.role && <span className="error text-red-500">{errors.role.message}</span>}
+          </div>
+          <div className="relative mt-6">
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="programId">
+              Program
+            </label>
+            <select
+              id="programId"
+              {...register("programId")}
+              required
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+            >
+              <option value="">Select a Program</option>
+              {programs.map((program) => (
+                <option key={program.programId} value={program.programId.toString()}>
+                  {program.programName}
+                </option>
+              ))}
+            </select>
+            {errors.programId && <span className="error text-red-500">{errors.programId.message}</span>}
+          </div>
+          {message && (
+            <p className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"}`}>
+              {message}
+            </p>
+          )}
           <button
             type="submit"
-            className="w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800">
-            Sign Up
+            className="w-full px-4 py-3 mt-8 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            Register
           </button>
-        </div>
-        <div className="px-8 py-2">
-          <div className="text-sm text-blue-900 dark:text-blue-300 text-center">
-            Already have an account?
+          <div className="flex justify-center mt-4 text-zinc-600 dark:text-zinc-400">
+            <p className="text-center">Already have an account?</p>
             <button
-              className="font-medium underline hover:text-blue-300 ml-1"
-              onClick={() => setIsLoginModalOpen(true)} // Show login modal on click
+              type="button"
+              className="ml-2 text-blue-600 dark:text-blue-400 hover:underline"
+              onClick={() => setIsLoginModalOpen(true)}
             >
-              Sign In
+              Login
             </button>
           </div>
         </div>
-        {message && (
-          <p className="text-center mt-4 text-red-500 dark:text-red-400">
-            {message}
-          </p>
-        )}
       </form>
-
-      {/* Modal for Login */}
-      <Modal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}>
-        <Login /> {/* Render the Login component inside the modal */}
+      <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
+        <Login />
       </Modal>
     </div>
   );
 }
-
-export default Register;

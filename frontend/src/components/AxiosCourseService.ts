@@ -1,94 +1,87 @@
-import axios from "./AxiosConfig"
+import axios from "./AxiosConfig";
 import AuthService from "./AuthService";
 
 class AxiosCourseService {
-
-    getAll() {
-        axios.get("/courses")
-        .then(response => {
-            console.log(response.data);
+    async getAll() {
+        try {
+            const response = await axios.get("/course");
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error getting all courses!', error);
-        });
+            throw error; // Ensure errors are propagated
+        }
         return null;
     }
 
-    getAllByProgram(programId:number) {
-        axios.get("/programs/" + programId + "/courses")
-        .then(response => {
-            console.log(response.data);
+    async getAllByProgram(programId: number) {
+        try {
+            const response = await axios.get(`/programs/${programId}/courses`);
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error getting all courses for program ' + programId + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error getting all courses for program ${programId}!`, error);
+            throw error;
+        }
         return null;
     }
 
-    getById(id:number) {
-        axios.get("/courses/" + id)
-        .then(response => {
-            console.log(response.data);
+    async getById(id: number) {
+        try {
+            const response = await axios.get(`/courses/${id}`);
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error getting course ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error getting course ${id}!`, error);
+            throw error;
+        }
         return null;
     }
 
-    getStudents(id:number) {
-        axios.get("/courses/" + id + "/students")
-        .then(response => {
-            console.log(response.data);
+    async getStudents(id: number) {
+        try {
+            const response = await axios.get(`/courses/${id}/students`);
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error getting students for course ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error getting students for course ${id}!`, error);
+            throw error;
+        }
         return null;
     }
 
-    create(courseName:string, description:string, programId:number) {
-        axios.post("/courses", {
-            courseName: courseName,
-            description: description,
-            teacherId: AuthService.loggedInUserId(),
-            programId: programId
-        })
-        .then(response => {
-            console.log(response.data);
+    async create(courseName: string, description: string, programId: number) {
+        try {
+            const response = await axios.post("/courses", {
+                courseName,
+                description,
+                teacherId: AuthService.loggedInUserId(),
+                programId
+            });
             if (response.status === 201) {
                 return response.data;
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error on course creation attempt!', error);
-        });
+            throw error;
+        }
         return null;
     }
 
-    delete(id:number):boolean {
-        axios.delete("/courses/" + id)
-        .then(response => {
-            console.log(response.data);
+    async delete(id: number): Promise<boolean> {
+        try {
+            const response = await axios.delete(`/courses/${id}`);
             if (response.status === 204) {
                 return true;
             }
-        })
-        .catch(error => {
-            console.error('Error deleting course ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error deleting course ${id}!`, error);
+            throw error;
+        }
         return false;
     }
 }

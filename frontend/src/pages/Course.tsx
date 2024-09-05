@@ -1,31 +1,39 @@
 import { useEffect, useState } from "react";
+import AxiosCourseService from "../components/AxiosCourseService"; // Adjust import path
 
+interface Lesson {
+    courseId: string;
+    courseName: string;
+    description: string;
+}
 
-export default function Course(){
-    const [lessons, setLessons] = useState([]);
+export default function Course() {
+    const [lessons, setLessons] = useState<Lesson[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch('https://api.example.com/courses/')  // Need to change the endpoint probably
-          .then(response => response.json())
-          .then(data => setLessons(data))
-          .catch(error => console.error('Error fetching lessons:', error));
+        // Fetch courses using AxiosCourseService
+        AxiosCourseService.getAll()
+            .then(data => {
+                if (data) {
+                    setLessons(data);
+                }
+            })
+            .catch(error => setError(error.message));
     }, []);
 
     return (
         <>
-            {/* <ul>
-                {lessons.map(lesson => (
-                <li key={lesson.id}>
-                    <h2>{lesson.title}</h2>
-                    <p>{lesson.description}</p>
-                </li>
-                ))}
-            </ul> */}
-
             <h1>List of your courses</h1>
-            <h3>Card 1</h3>
-            <h3>Card 2</h3>
-
+            {error && <p>Error: {error}</p>}
+            <ul>
+                {lessons.map(lesson => (
+                    <li key={lesson.courseId}>
+                        <h2>{lesson.courseName}</h2>
+                        <p>{lesson.description}</p>
+                    </li>
+                ))}
+            </ul>
         </>
-    )
+    );
 }

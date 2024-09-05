@@ -30,28 +30,30 @@ const Login: React.FC = () => {
 
     const handleLogin: SubmitHandler<LoginFormData> = async (data) => {
         try {
-            const isLoggedIn = await AxiosUserService.login(data.username, data.password);
+            // Call the login function from AxiosUserService
+            const { success, message } = await AxiosUserService.login(data.username, data.password);
 
-            if (isLoggedIn) {
-                setMessage("Login successful!");
+            if (success) {
+                setMessage(message ?? "Login successful!");
                 setIsModalOpen(true);
 
+                // Redirect to dashboard after a delay
                 setTimeout(() => {
                     setIsModalOpen(false);
-                    console.log("Navigating to /dashboard...");
                     navigate("/dashboard");
                 }, 2000);
             } else {
-                throw new Error("Invalid credentials");
+                // Handle login failure
+                setMessage(message ?? "An error occurred. Please try again.");
             }
         } catch (error) {
-            console.error("Error:", error);
-            setMessage("Invalid username or password. Please try again.");
+            console.error("Error during login:", error);
+            setMessage("An error occurred. Please try again later.");
         }
     };
 
     return (
-        <div className="flex items-center justify-center ">
+        <div className="flex items-center justify-center min-h-screen">
             <form
                 className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-2xl overflow-hidden border-4 border-blue-400 dark:border-blue-800 w-full max-w-md p-8"
                 onSubmit={handleSubmit(handleLogin)}
@@ -120,7 +122,7 @@ const Login: React.FC = () => {
                     </div>
                 </div>
                 {message && (
-                    <p className="text-center mt-4 text-red-500 dark:text-red-400">
+                    <p className={`text-center mt-4 ${success ? "text-green-500" : "text-red-500"}`}>
                         {message}
                     </p>
                 )}
@@ -128,7 +130,7 @@ const Login: React.FC = () => {
 
             {/* Use Modal for the success message */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <h3 className="text-xl font-bold text-green-600">Login Successful</h3> {/* Green text */}
+                <h3 className="text-xl font-bold text-green-600">Login Successful</h3>
                 <p className="mt-2">You will be redirected to the dashboard shortly.</p>
             </Modal>
         </div>
