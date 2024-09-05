@@ -11,7 +11,7 @@ import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
 
-import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
+// import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
 import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
 

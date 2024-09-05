@@ -1,22 +1,62 @@
 import { useEffect, useState } from "react";
+import AxiosForumService from "../components/AxiosForumService"; // Adjust the import path as needed
 
+interface Course {
+    course_id: number;
+    courseName: string;
+    description: string;
+    teacherId: number;
+    course_created_at: string;
+    course_updated_at: string;
+}
 
-export default function ForumPost(){
-    const [forumPost, setForumPost] = useState([]);
+interface ForumPostData {
+    forumId: number;
+    title: string;
+    forumCreatedAt: string;
+    forumUpdatedAt: string;
+    course: Course;
+}
+
+export default function ForumPost() {
+    const [forumPost, setForumPost] = useState<ForumPostData | null>(null);
 
     useEffect(() => {
-        fetch('https://api.example.com/forumpost/')  // Need to change the endpoint probably
-          .then(response => response.json())
-          .then(data => setForumPost(data))
-          .catch(error => console.error('Error fetching forum posts:', error));
+        async function fetchForumPost() {
+            try {
+                const data = await AxiosForumService.getPostById(1); // Replace `1` with the actual forum post ID
+                if (data) {
+                    // Transform the data if needed to match the ForumPostData structure
+                    const transformedData: ForumPostData = {
+                        forumId: data.forumId,
+                        title: data.title,
+                        forumCreatedAt: data.forumCreatedAt,
+                        forumUpdatedAt: data.forumUpdatedAt,
+                        course: data.course, // assuming course structure matches
+                    };
+                    setForumPost(transformedData);
+                } else {
+                    console.warn("No forum post data available.");
+                }
+            } catch (error) {
+                console.error("Error fetching forum post:", error);
+            }
+        }
+
+        void fetchForumPost();
     }, []);
+
+    if (!forumPost) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <>
-        <h1>Forum Post Title</h1>
-        <h3>Username</h3>
-        <h3>Lorem ipsem comment</h3>
+            <h1>{forumPost.title}</h1>
+            <h3>Course: {forumPost.course.courseName}</h3>
+            <p><strong>Description:</strong> {forumPost.course.description}</p>
+            <p><strong>Created At:</strong> {new Date(forumPost.forumCreatedAt).toLocaleString()}</p>
+            <p><strong>Last Updated:</strong> {new Date(forumPost.forumUpdatedAt).toLocaleString()}</p>
         </>
-    )
+    );
 }
-

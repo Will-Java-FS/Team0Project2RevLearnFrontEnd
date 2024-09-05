@@ -1,5 +1,8 @@
 class AuthService {
-    login(id: string, username: string, role: string, token: string, programId: string): void {
+    login(id: string, username: string, role:
+        string,
+        // token: string,
+        programId: string): void {
         // Set the temporary token to "generated_token"
         const tempToken = "generated_token";
 

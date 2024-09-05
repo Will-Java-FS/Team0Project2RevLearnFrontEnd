@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect
+    ,
+    // useState
+} from "react";
 
 export default function Lesson() {
-    const [lesson, setLesson] = useState({});
+    // const [lesson, setLesson] = useState({});
 
     const dummyLesson = {
         lessonName: "Introduction to Object-Oriented Programming",

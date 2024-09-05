@@ -1,159 +1,172 @@
-import axios from "./AxiosConfig"
+import axios from "./AxiosConfig";
 import AuthService from "./AuthService";
 
+// Define the structure of a forum
+interface Forum {
+    forumId: any;
+    title: any;
+    forumCreatedAt: any;
+    forumUpdatedAt: any;
+    course: any;
+    id: number;
+    forumTitle: string;
+    content: string;
+    posterId: number;
+    courseId: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// Define the structure of a post within a forum
+interface ForumPost {
+    forumId: number;
+    title: string;
+    forumCreatedAt: string;
+    forumUpdatedAt: string;
+    course: {
+        course_id: number;
+        courseName: string;
+        description: string;
+        teacherId: number;
+        course_created_at: string;
+        course_updated_at: string;
+    };
+    content: string; // additional fields that are part of the response
+    posterId: number; // any other fields
+}
+
 class AxiosForumService {
-
-    getAllForums() {
-        axios.get("/fourms")
-        .then(response => {
-            console.log(response.data);
+    async getAllForums(): Promise<Forum[] | null> {
+        try {
+            const response = await axios.get<Forum[]>("/forum");
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error getting all fourms!', error);
-        });
+        } catch (error) {
+            console.error("Error getting all forums!", error);
+        }
         return null;
     }
 
-    getPostsByForum(forumId:number) {
-        axios.get("/forums/" + forumId + "/posts")
-        .then(response => {
-            console.log(response.data);
+    async getPostsByForum(forumId: number): Promise<ForumPost[] | null> {
+        try {
+            const response = await axios.get<ForumPost[]>(`/forums/${forumId}/posts`);
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error getting all posts for forum ' + forumId + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error getting all posts for forum ${forumId}!`, error);
+        }
         return null;
     }
 
-    getForumById(id:number) {
-        axios.get("/forums/" + id)
-        .then(response => {
-            console.log(response.data);
+    async getForumById(id: number): Promise<Forum | null> {
+        try {
+            const response = await axios.get<Forum>(`/forums/${id}`);
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error getting forum ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error getting forum ${id}!`, error);
+        }
         return null;
     }
 
-    getPostById(id:number) {
-        axios.get("/forumsposts/" + id)
-        .then(response => {
-            console.log(response.data);
+    async getPostById(id: number): Promise<ForumPost | null> {
+        try {
+            const response = await axios.get<ForumPost>(`/forumsposts/${id}`);
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error getting post ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error getting post ${id}!`, error);
+        }
         return null;
     }
 
-    createForum(forumTitle:string, content:string, courseId:number) {
-        axios.post("/forums", {
-            forumTitle: forumTitle,
-            content: content,
-            posterId: AuthService.loggedInUserId(),
-            courseId: courseId
-        })
-        .then(response => {
-            console.log(response.data);
+    async createForum(forumTitle: string, content: string, courseId: number): Promise<Forum | null> {
+        try {
+            const response = await axios.post<Forum>("/forums", {
+                forumTitle,
+                content,
+                posterId: AuthService.loggedInUserId(),
+                courseId,
+            });
             if (response.status === 201) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error on forum creation attempt!', error);
-        });
+        } catch (error) {
+            console.error("Error on forum creation attempt!", error);
+        }
         return null;
     }
 
-    createPost(content:string, forumId:number) {
-        axios.post("/forumpost/" + forumId, {
-            content: content,
-            posterId: AuthService.loggedInUserId(),
-            forumId: forumId
-        })
-        .then(response => {
-            console.log(response.data);
+    async createPost(content: string, forumId: number): Promise<ForumPost | null> {
+        try {
+            const response = await axios.post<ForumPost>(`/forumpost/${forumId}`, {
+                content,
+                posterId: AuthService.loggedInUserId(),
+                forumId,
+            });
             if (response.status === 201) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error on post creation attempt!', error);
-        });
+        } catch (error) {
+            console.error("Error on post creation attempt!", error);
+        }
         return null;
     }
 
-    updateForum(id:number, forumTitle:string, content:string) {
-        axios.put("/forums/" + id, {
-            forumTitle: forumTitle,
-            content: content
-        })
-        .then(response => {
-            console.log(response.data);
+    async updateForum(id: number, forumTitle: string, content: string): Promise<Forum | null> {
+        try {
+            const response = await axios.put<Forum>(`/forums/${id}`, {
+                forumTitle,
+                content,
+            });
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error updating forum ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error updating forum ${id}!`, error);
+        }
         return null;
     }
 
-    updatePost(id:number, content:string) {
-        axios.put("/forumpost/" + id, {
-            content: content
-        })
-        .then(response => {
-            console.log(response.data);
+    async updatePost(id: number, content: string): Promise<ForumPost | null> {
+        try {
+            const response = await axios.put<ForumPost>(`/forumpost/${id}`, {
+                content,
+            });
             if (response.status === 200) {
                 return response.data;
             }
-        })
-        .catch(error => {
-            console.error('Error updating post ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error updating post ${id}!`, error);
+        }
         return null;
     }
 
-    deleteForum(id:number):boolean {
-        axios.delete("/forums/" + id)
-        .then(response => {
-            console.log(response.data);
+    async deleteForum(id: number): Promise<boolean> {
+        try {
+            const response = await axios.delete(`/forums/${id}`);
             if (response.status === 204) {
                 return true;
             }
-        })
-        .catch(error => {
-            console.error('Error deleting forum ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error deleting forum ${id}!`, error);
+        }
         return false;
     }
 
-    deletePost(id:number):boolean {
-        axios.delete("/forumposts/" + id)
-        .then(response => {
-            console.log(response.data);
+    async deletePost(id: number): Promise<boolean> {
+        try {
+            const response = await axios.delete(`/forumposts/${id}`);
             if (response.status === 204) {
                 return true;
             }
-        })
-        .catch(error => {
-            console.error('Error deleting post ' + id + '!', error);
-        });
+        } catch (error) {
+            console.error(`Error deleting post ${id}!`, error);
+        }
         return false;
     }
 }
