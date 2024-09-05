@@ -1,35 +1,38 @@
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook from react-router-dom
 
-
-function Home() {
-    const [args] = useState({});
+const Home: React.FC = () => {
     const navigate = useNavigate();
-
 
     const handleNavigation = () => {
         navigate('/allprograms'); // Navigate to the About page
     };
 
 
+
     return (
         <div className="min-h-screen w-full bg-gray-900 flex">
-            <section className="hero min-h-screen bg-orange-500">
-                <div className="hero-content text-center">
-                    <div className="max-w-md">
-                        <h1 className="text-5xl text-primary font-suse font-bold">RevLearn</h1>
-                        <p className="py-6">
-                            Pinnacle of learning. Unlock your destined potential and buy now.
-                        </p>
-                        <button className="btn btn-primary hover:bg-neutral-50" onClick={handleNavigation} >Programs</button>
+
+            <section className="hero min-h-screen" style={{ backgroundImage: 'linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%)' }}> {/* Remove the extra quotes around the style property */}
+                <div className="hero-content text-center text-white">
+                    <div className="max-w-md mx-auto">
+                        <h1 className="text-6xl font-bold" style={{ color: '#2274a5' }}>RevLearn</h1>
+                        <h2 className="text-xl py-6">Pinnacle of learning.</h2>
+                        <p className="text-md font-light py-5">Unlock your destined potential and buy now.</p>
+                        <button
+                            className="btn text-white bg-primary glass hover:bg-primaryActive transition duration-300 py-2.5 px-5 rounded-xl shadow-md hover:translate-y-[-2px]"
+                            onClick={handleNavigation}
+                        >
+                            Our Programs
+                        </button>
                     </div>
                 </div>
             </section>
+
+
+
         </div>
     );
-}
-
-
-
+};
 
 export default Home;
