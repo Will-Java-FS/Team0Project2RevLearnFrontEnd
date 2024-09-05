@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-stone-100/90 py-5">
+    <div className="navbar bg-base-200 py-5">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
