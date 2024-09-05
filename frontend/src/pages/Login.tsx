@@ -16,7 +16,9 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 const Login: React.FC = () => {
     const [message, setMessage] = useState<string>("");
+    const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     // Integrate react-hook-form with Zod validation schema
@@ -29,12 +31,16 @@ const Login: React.FC = () => {
     });
 
     const handleLogin: SubmitHandler<LoginFormData> = async (data) => {
+        setLoading(true); // Set loading to true when login starts
         try {
             // Call the login function from AxiosUserService
-            const { success, message } = await AxiosUserService.login(data.username, data.password);
+            const { success, message,
+                // token
+            } = await AxiosUserService.loginUser(data.username, data.password);
 
             if (success) {
                 setMessage(message ?? "Login successful!");
+                setIsSuccess(true);
                 setIsModalOpen(true);
 
                 // Redirect to dashboard after a delay
@@ -45,10 +51,14 @@ const Login: React.FC = () => {
             } else {
                 // Handle login failure
                 setMessage(message ?? "An error occurred. Please try again.");
+                setIsSuccess(false);
             }
         } catch (error) {
             console.error("Error during login:", error);
             setMessage("An error occurred. Please try again later.");
+            setIsSuccess(false);
+        } finally {
+            setLoading(false); // Set loading to false after the request is complete
         }
     };
 
@@ -62,7 +72,7 @@ const Login: React.FC = () => {
                     Welcome Back!
                 </h2>
                 <p className="text-center text-zinc-600 dark:text-zinc-400 mt-3">
-                    Let's get to learning!
+                    Let&rsquo;s get to learning!
                 </p>
                 <div className="mt-10">
                     <div className="relative">
@@ -104,9 +114,10 @@ const Login: React.FC = () => {
                     <div className="mt-10">
                         <button
                             type="submit"
-                            className="w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800"
+                            disabled={loading} // Disable button when loading
+                            className={`w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
-                            Let's Go
+                            {loading ? "Logging in..." : "Let's Go"}
                         </button>
                     </div>
                 </div>
@@ -122,7 +133,7 @@ const Login: React.FC = () => {
                     </div>
                 </div>
                 {message && (
-                    <p className={`text-center mt-4 ${success ? "text-green-500" : "text-red-500"}`}>
+                    <p className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"}`}>
                         {message}
                     </p>
                 )}
