@@ -6,7 +6,7 @@ import { z } from "zod";
 import AxiosUserService from "../components/AxiosUserService";
 import Modal from "../utils/modal";
 import Login from "./Login";
-import axios from "../components/AxiosConfig"; // Assuming you have axios config here
+import axios from "../components/AxiosConfig";
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -16,29 +16,28 @@ const formSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   role: z.enum(["student", "teacher", "admin"]),
-  programId: z.string().min(1, "Program must be selected")
+  programId: z.string().nullable().optional() // Allow programId to be optional and nullable
 });
 
 type FormData = z.infer<typeof formSchema>;
 
 export default function Register() {
   const [message, setMessage] = useState<string>("");
-  const [isSuccess, setIsSuccess] = useState<boolean>(false); // New state for success message
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [programs, setPrograms] = useState<{ programId: number; programName: string }[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the list of programs from the backend
     const fetchPrograms = async () => {
       try {
-        const response = await axios.get("/programs");
+        const response = await axios.get<{ programId: number; programName: string }[]>("/programs");
         setPrograms(response.data);
       } catch (error) {
         console.error("Error fetching programs:", error);
       }
     };
-    fetchPrograms();
+    void fetchPrograms();
   }, []);
 
   // Integrate react-hook-form with Zod validation schema
@@ -49,35 +48,59 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
-
   const handleRegister: SubmitHandler<FormData> = async (data) => {
     try {
-      // Call AxiosUserService's registerUser method
-      const isRegistered = await AxiosUserService.registerUser(
+      // Convert programId to number or null
+      const programId = data.programId ? Number(data.programId) : null;
+
+      // Prepare the payload following the curl request format
+      const payload = {
+        email: data.email,
+        username: data.username,
+        passwordHash: data.password, // The backend expects `passwordHash` field
+        firstName: data.firstName,
+        lastName: data.lastName,
+        role: data.role,
+        program: programId ? { programId } : null // Use object for program
+      };
+
+      console.log("Payload to be sent:", payload);
+
+      // Call the registerUser method with the updated payload
+      const result = await AxiosUserService.registerUser(
         data.username,
         data.password,
         data.email,
         data.role,
         data.lastName,
         data.firstName,
-        Number(data.programId)
+        programId // Pass the correctly converted programId
       );
 
-      if (isRegistered) {
-        setMessage("Registration successful! Redirecting to login...");
-        setIsSuccess(true); // Set success state to true
+      if (result.success) {
+        setMessage(result.message || "Registration successful! Redirecting to login...");
+        setIsSuccess(true);
 
         // Redirect to login page after successful registration
         setTimeout(() => {
           navigate("/login");
-        }, 3000); // Redirect after 3 seconds
+        }, 3000);
       } else {
-        throw new Error("Registration failed");
+        throw new Error(result.message || "Registration failed");
       }
     } catch (error) {
-      console.error("Error:", error);
-      setMessage("An error occurred. Please try again.");
-      setIsSuccess(false); // Set success state to false
+      console.error("Error during registration:", error);
+
+      // Handle different types of errors more robustly
+      if (error instanceof Error) {
+        setMessage(error.message || "An error occurred. Please try again.");
+      } else if (typeof error === 'string') {
+        setMessage(error);
+      } else {
+        setMessage("An unexpected error occurred. Please try again.");
+      }
+
+      setIsSuccess(false);
     }
   };
 
@@ -103,7 +126,6 @@ export default function Register() {
                 id="firstName"
                 type="text"
                 {...register("firstName")}
-                required
                 className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
               {errors.firstName && <span className="error text-red-500">{errors.firstName.message}</span>}
@@ -116,7 +138,6 @@ export default function Register() {
                 id="lastName"
                 type="text"
                 {...register("lastName")}
-                required
                 className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
               {errors.lastName && <span className="error text-red-500">{errors.lastName.message}</span>}
@@ -130,7 +151,6 @@ export default function Register() {
               id="email"
               type="email"
               {...register("email")}
-              required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.email && <span className="error text-red-500">{errors.email.message}</span>}
@@ -143,7 +163,6 @@ export default function Register() {
               id="username"
               type="text"
               {...register("username")}
-              required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.username && <span className="error text-red-500">{errors.username.message}</span>}
@@ -156,7 +175,6 @@ export default function Register() {
               id="password"
               type="password"
               {...register("password")}
-              required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.password && <span className="error text-red-500">{errors.password.message}</span>}
@@ -168,7 +186,6 @@ export default function Register() {
             <select
               id="role"
               {...register("role")}
-              required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             >
               <option value="student">Student</option>
@@ -184,7 +201,6 @@ export default function Register() {
             <select
               id="programId"
               {...register("programId")}
-              required
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             >
               <option value="">Select a Program</option>

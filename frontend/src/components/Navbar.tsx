@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-stone-100/90 py-5">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -111,9 +111,9 @@ const Navbar = () => {
       {/* Navbar Center - Logo and Title */}
       <div className="navbar-center">
 
-        <Link className="text-3xl font-suse font-bold text-logo-blue" to={"/"}>
+        <Link className="text-3xl font-suse font-bold" style={{ color: '#2274a5' }} to={"/"}>
           <img src={logo} alt="logo" className="h-12 w-auto inline-block mr-2" />
-          RevPro
+          RevLearn
         </Link>
 
       </div>
