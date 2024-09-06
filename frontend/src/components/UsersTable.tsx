@@ -1,8 +1,10 @@
-import React, { useState, useTransition, useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { useState, useTransition, useEffect } from "react";
 import { lineWobble } from "ldrs";
 import { faker } from "@faker-js/faker";
 import { TbFilterDown, TbFilterUp } from "react-icons/tb";
 
+// Register ldrs loader
 lineWobble.register();
 
 type User = {
@@ -15,6 +17,7 @@ type User = {
     createdAt: string;
 };
 
+// Function to generate dummy users
 const generateUsers = (count: number): User[] => {
     const users: User[] = [];
     for (let i = 0; i < count; i++) {
@@ -41,23 +44,24 @@ type Props = {
 };
 
 export default function UsersTable({ users = [] }: Props) {
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState<string>("");
     const [isPending, startTransition] = useTransition();
-    const [showLoader, setShowLoader] = useState(false);
+    const [showLoader, setShowLoader] = useState<boolean>(false);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-    const [sortField, setSortField] = useState<"first_name" | "last_name">(
-        "first_name"
-    );
-    const [currentPage, setCurrentPage] = useState(1);
+    const [sortField, setSortField] = useState<"first_name" | "last_name">("first_name");
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [filters, setFilters] = useState<{ [key: string]: string }>({});
     const usersPerPage = 10;
 
+    // Use the passed users or generate users
     const generatedUsers = users.length > 0 ? users : generateUsers(50);
 
+    // Filter and sort users
     const filteredAndSortedUsers = generatedUsers
         .filter(user => {
             for (const [key, value] of Object.entries(filters)) {
-                if (user[key as keyof User]?.toLowerCase().indexOf(value.toLowerCase()) === -1) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                if (user[key as keyof User]?.toString().toLowerCase().indexOf(value.toLowerCase()) === -1) {
                     return false;
                 }
             }
@@ -137,7 +141,7 @@ export default function UsersTable({ users = [] }: Props) {
                     value={searchTerm}
                     onChange={(e) => handleSearch(e.target.value)}
                 />
-                {/* Removed Sort Button */}
+                {/* Sort Selection */}
                 <select
                     value={sortField}
                     onChange={(e) =>

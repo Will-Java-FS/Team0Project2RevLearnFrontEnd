@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import AxiosCourseService from "./AxiosCourseService";
 // import AxiosUserService from "components/AxiosUserService";
@@ -105,9 +107,15 @@ export default function UserDashboard() {
               <div className="flex flex-col justify-between">
                 <h2 className="card-title">{course.courseName}</h2>
                 <p>{course.description}</p>
-                <p><strong>Teacher ID:</strong> {course.teacherId}</p>
-                <p><strong>Created At:</strong> {new Date(course.course_created_at).toLocaleString()}</p>
-                <p><strong>Updated At:</strong> {new Date(course.course_updated_at).toLocaleString()}</p>
+                <p>
+                  <strong>Teacher ID:</strong> {course.teacherId}
+                </p>
+                <p>
+                  <strong>Created At:</strong> {new Date(course.course_created_at).toLocaleString()}
+                </p>
+                <p>
+                  <strong>Updated At:</strong> {new Date(course.course_updated_at).toLocaleString()}
+                </p>
               </div>
               <div className="card-actions">
                 <button className="btn btn-primary">Click here</button>
