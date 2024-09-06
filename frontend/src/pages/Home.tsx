@@ -1,14 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook from react-router-dom
 
+// Show basic info about the website and have a link to list of programs
 const Home: React.FC = () => {
     const navigate = useNavigate();
 
     const handleNavigation = () => {
         navigate('/allprograms'); // Navigate to the About page
     };
-
-
 
     return (
         <div className="min-h-screen w-full bg-gray-900 flex">

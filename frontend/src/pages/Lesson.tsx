@@ -4,6 +4,9 @@ import {
     // useState
 } from "react";
 
+// Show all parts of the lesson
+// Give students a way to complete the lesson
+// Give teachers a way to edit/delete the lesson
 export default function Lesson() {
     // const [lesson, setLesson] = useState({});
 

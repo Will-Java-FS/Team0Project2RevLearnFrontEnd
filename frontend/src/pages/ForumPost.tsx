@@ -18,6 +18,11 @@ interface ForumPostData {
     course: Course;
 }
 
+// Show the fourm info + all posts for the forum
+// Give the forums owner option to delete/edit the forum
+// Have a form to create a new forum post
+// Allow users to edit/delete posts they own
+// Give teachers the ability to delete the forum and any of the fourm posts
 export default function ForumPost() {
     const [forumPost, setForumPost] = useState<ForumPostData | null>(null);
 

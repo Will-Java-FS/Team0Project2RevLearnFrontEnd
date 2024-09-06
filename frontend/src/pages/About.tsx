@@ -1,5 +1,6 @@
 import Card from "../components/Card";
 
+// Show all info about the project (what it is, who made it, ect)
 export default function About() {
     return (
 

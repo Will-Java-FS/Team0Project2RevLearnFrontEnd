@@ -3,6 +3,7 @@ import TeacherDashboard from '../components/TeacherDashboard';
 import UserDashboard from '../components/UserDashboard';
 import AuthService from '../components/AuthService';
 
+// Display user info
 const Dashboard: React.FC = () => {
     const [role, setRole] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true); // State to control loading animation

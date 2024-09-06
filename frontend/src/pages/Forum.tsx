@@ -19,6 +19,7 @@ interface ForumPost {
     course: Course; // Include course details in the interface
 }
 
+// Show a list of all forums as well as a form to create a new one (each forum should have a link to its page)
 export default function Forum() {
     const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
 
