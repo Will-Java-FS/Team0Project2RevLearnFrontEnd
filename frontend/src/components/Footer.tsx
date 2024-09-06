@@ -2,7 +2,7 @@ import logo from '../assets/Icon512.png';
 export default function Footer() {
   return (
     <div>
-      <footer className="footer bg-base-200 text-base-content p-6 md:p-10 flex flex-col items-center">
+      <footer className="footer bg-base-300 text-base-content p-6 md:p-10 flex flex-col items-center">
         <div className="flex flex-col md:flex-row justify-center items-start w-full">
           <div className="flex flex-col items-center mb-6 md:mb-0 w-full md:w-1/3">
             <img
@@ -11,7 +11,7 @@ export default function Footer() {
               className="text-primary h-16 w-auto md:h-20 lg:h-24"
             />
             <p className="text-center text-sm mt-4">
-              <span className="font-semibold text-xl" style={{ color: '#008FF5' }}>
+              <span className="font-semibold text-xl text-primary">
                 CLEVERName
               </span>
               <br />
