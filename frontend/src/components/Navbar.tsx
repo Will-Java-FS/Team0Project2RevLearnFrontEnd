@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-300 py-5">
+    <div className="navbar sticky top-0 bg-base-100/80 backdrop-blur-md shadow-md py-5 z-50">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -22,7 +22,7 @@ const Navbar = () => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-5 w-5 text-xl text-primary"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -40,82 +40,25 @@ const Navbar = () => {
             className={`menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 w-52 p-2 shadow ${isMenuOpen ? 'block' : 'hidden'
               }`}
           >
-            <li>
-              <Link
-                to="/"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/about"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/login"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/register"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                Register
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/allprograms"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                All Programs
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/dashboard"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/teacher"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                Teacher Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/allcourses"
-                className="text-primary btn btn-nav-sm btn-ghost hover:text-secondary hover:shadow-glow transition-shadow duration-300"
-              >
-                All Courses
-              </Link>
-            </li>
+            {/* Menu Links */}
+            <li><Link to="/" className="btn btn-nav-sm btn-ghost">Home</Link></li>
+            <li><Link to="/about" className="btn btn-nav-sm btn-ghost">About</Link></li>
+            <li><Link to="/login" className="btn btn-nav-sm btn-ghost">Login</Link></li>
+            <li><Link to="/register" className="btn btn-nav-sm btn-ghost">Register</Link></li>
+            <li><Link to="/allprograms" className="btn btn-nav-sm btn-ghost">All Programs</Link></li>
+            <li><Link to="/dashboard" className="btn btn-nav-sm btn-ghost">Dashboard</Link></li>
+            <li><Link to="/teacher" className="btn btn-nav-sm btn-ghost">Teacher Dashboard</Link></li>
+            <li><Link to="/allcourses" className="btn btn-nav-sm btn-ghost">All Courses</Link></li>
           </ul>
         </div>
       </div>
 
       {/* Navbar Center - Logo and Title */}
       <div className="navbar-center">
-
         <Link className="drop-shadow-xl text-3xl font-suse font-bold text-primary" to={"/"}>
           <img src={logo} alt="logo" className="h-12 w-auto inline-block mr-2" />
           <p className="align-middle inline-block">RevLearn</p>
         </Link>
-
       </div>
 
       {/* Navbar End - Actions */}

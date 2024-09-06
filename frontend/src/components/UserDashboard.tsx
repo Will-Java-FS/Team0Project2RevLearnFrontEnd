@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import AxiosCourseService from "./AxiosCourseService";
-// import AxiosUserService from "components/AxiosUserService";
 import Card from './Card'; // Assuming the Card component is in the same directory
 
 // User interface definition
@@ -78,15 +77,21 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
 
 export default function UserDashboard() {
   const [courses, setCourses] = useState(dummyCourses); // Initialize with dummy courses
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch courses data using AxiosCourseService
     const fetchCourses = async () => {
+      setLoading(true);
       try {
         const response = await AxiosCourseService.getAll(); // Replace with actual API call
         setCourses(response.data); // Set fetched courses
       } catch (error) {
+        setError("Failed to fetch courses.");
         console.error("Failed to fetch courses:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCourses();
@@ -99,31 +104,39 @@ export default function UserDashboard() {
         <h3 className="text-xl">Your Programs</h3>
       </div>
 
+      {/* Loading and Error States */}
+      {loading && <p>Loading courses...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+
       {/* Displaying Course List */}
-      <div className="flex flex-col space-y-4">
-        {courses.map(course => (
-          <div key={course.course_id} className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300">
-            <div className="card-body flex flex-row items-center justify-between">
-              <div className="flex flex-col justify-between">
-                <h2 className="card-title">{course.courseName}</h2>
-                <p>{course.description}</p>
-                <p>
-                  <strong>Teacher ID:</strong> {course.teacherId}
-                </p>
-                <p>
-                  <strong>Created At:</strong> {new Date(course.course_created_at).toLocaleString()}
-                </p>
-                <p>
-                  <strong>Updated At:</strong> {new Date(course.course_updated_at).toLocaleString()}
-                </p>
-              </div>
-              <div className="card-actions">
-                <button className="btn btn-primary">Click here</button>
+      {!loading && !error && courses.length > 0 ? (
+        <div className="flex flex-col space-y-4">
+          {courses.map(course => (
+            <div key={course.course_id} className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300">
+              <div className="card-body flex flex-row items-center justify-between">
+                <div className="flex flex-col justify-between">
+                  <h2 className="card-title">{course.courseName}</h2>
+                  <p>{course.description}</p>
+                  <p>
+                    <strong>Teacher ID:</strong> {course.teacherId}
+                  </p>
+                  <p>
+                    <strong>Created At:</strong> {new Date(course.course_created_at).toLocaleString()}
+                  </p>
+                  <p>
+                    <strong>Updated At:</strong> {new Date(course.course_updated_at).toLocaleString()}
+                  </p>
+                </div>
+                <div className="card-actions">
+                  <button className="btn btn-primary">Click here</button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p>No courses available.</p>
+      )}
 
       {/* Progress Tracker */}
       <div className="mt-8 text-center">
