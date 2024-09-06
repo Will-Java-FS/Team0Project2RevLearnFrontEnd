@@ -5,13 +5,13 @@ import Layout from './pages/Layout';
 import Register from './pages/Register';
 import Course from './pages/Course';
 import Lesson from './pages/Lesson';
-import Login from './pages/_Login';
+import Login from './pages/Login';
 import AllPrograms from './pages/AllCourses';
 import AllCourses from './pages/AllCourses';
 import Forum from './pages/Forum';
 import ForumPost from './pages/ForumPost';
 
-import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
+// import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
 import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
 

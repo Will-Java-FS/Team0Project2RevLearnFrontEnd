@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/Icon256.png';
 
@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-stone-100/90 py-5">
+    <div className="navbar bg-base-300 py-5">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -37,7 +37,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className={`menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow ${isMenuOpen ? 'block' : 'hidden'
+            className={`menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 w-52 p-2 shadow ${isMenuOpen ? 'block' : 'hidden'
               }`}
           >
             <li>
@@ -111,9 +111,9 @@ const Navbar = () => {
       {/* Navbar Center - Logo and Title */}
       <div className="navbar-center">
 
-        <Link className="text-3xl font-suse font-bold" style={{ color: '#2274a5' }} to={"/"}>
+        <Link className="drop-shadow-xl text-3xl font-suse font-bold text-primary" to={"/"}>
           <img src={logo} alt="logo" className="h-12 w-auto inline-block mr-2" />
-          RevLearn
+          <p className="align-middle inline-block">RevLearn</p>
         </Link>
 
       </div>

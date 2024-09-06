@@ -80,7 +80,7 @@ const Login: React.FC = () => {
                             id="username"
                             type="text"
                             {...register("username")}
-                            required
+                            aria-invalid={errors.username ? "true" : "false"}
                             className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
                         />
                         {errors.username && (
@@ -98,7 +98,7 @@ const Login: React.FC = () => {
                             id="password"
                             type="password"
                             {...register("password")}
-                            required
+                            aria-invalid={errors.password ? "true" : "false"}
                             className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
                         />
                         {errors.password && (
@@ -119,8 +119,12 @@ const Login: React.FC = () => {
                     <div className="text-sm text-blue-900 dark:text-blue-300 text-center">
                         Need an account?
                         <button
+                            type="button"
                             className="font-medium underline hover:text-blue-300 ml-1"
-                            onClick={() => navigate("/register")}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate("/register");
+                            }}
                         >
                             Sign Up
                         </button>
