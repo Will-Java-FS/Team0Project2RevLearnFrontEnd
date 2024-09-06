@@ -1,5 +1,5 @@
 import axiosInstance from "../components/AxiosConfig"; // Import your axios instance
-import axios from "axios"; // Import axios for type safety check
+import axios from "axios"; // Import axios and AxiosError for type safety
 
 // Define an interface for the result of the registration attempt
 interface RegisterResult {
@@ -18,18 +18,22 @@ interface LoginResult {
 class AxiosUserService {
     async loginUser(username: string, password: string): Promise<LoginResult> {
         try {
-            // Ensure that you're sending the right headers
-            const response = await axiosInstance.post("/user/login", { username, password }, {
-                headers: {
-                    "Content-Type": "application/json" // Ensure content type is set correctly
+            // Ensure that you're sending the right payload and headers
+            const response = await axiosInstance.post(
+                "/user/login",
+                { username, passwordHash: password }, // Ensure 'passwordHash' is used if that's expected by the API
+                {
+                    headers: {
+                        "Content-Type": "application/json", // Ensure content type is set correctly
+                    },
                 }
-            });
+            );
 
-            return { success: true, token: response.data.token };
-        } catch (error) {
+            return { success: true, token: (response.data as { token?: string }).token };
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 if (error.response) {
-                    const errorMessage = error.response.data?.message || "Invalid credentials";
+                    const errorMessage: string = (error.response.data as { message?: string }).message || "Invalid credentials";
                     console.error("Error response data:", error.response.data);
                     return { success: false, message: errorMessage };
                 } else if (error.request) {
@@ -43,6 +47,7 @@ class AxiosUserService {
             return { success: false, message: "An error occurred. Please try again later." };
         }
     }
+
     async registerUser(
         username: string,
         password: string,
@@ -76,14 +81,16 @@ class AxiosUserService {
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 if (error.response) {
+                    const errorMessage: string = (error.response.data as { message?: string }).message || "An error occurred during registration.";
                     console.error("Error response data:", error.response.data);
-                    return { success: false, message: `Error: ${error.response.data}` };
+                    return { success: false, message: errorMessage };
                 } else if (error.request) {
                     console.error("No response received:", error.request);
                     return { success: false, message: "No response from server. Please check your connection." };
                 }
-            } else {
-                console.error("Unexpected error:", error);
+            } else if (error instanceof Error) {
+                console.error("Unexpected error:", error.message);
+                return { success: false, message: `An unexpected error occurred: ${error.message}` };
             }
             return { success: false, message: "An error occurred. Please try again later." };
         }
