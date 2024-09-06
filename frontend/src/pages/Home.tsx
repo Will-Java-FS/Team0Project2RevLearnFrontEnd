@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook from react-router-dom
 
 // Show basic info about the website and have a link to list of programs
+// Use authService to get logged in user's info, use the axios services for http requests
 const Home: React.FC = () => {
     const navigate = useNavigate();
 

@@ -23,6 +23,7 @@ interface ForumPostData {
 // Have a form to create a new forum post
 // Allow users to edit/delete posts they own
 // Give teachers the ability to delete the forum and any of the fourm posts
+// Use authService to get logged in user's info, use the axios services for http requests
 export default function ForumPost() {
     const [forumPost, setForumPost] = useState<ForumPostData | null>(null);
 

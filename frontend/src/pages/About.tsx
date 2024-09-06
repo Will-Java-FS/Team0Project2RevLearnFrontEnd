@@ -1,6 +1,7 @@
 import Card from "../components/Card";
 
 // Show all info about the project (what it is, who made it, ect)
+// Use authService to get logged in user's info, use the axios services for http requests
 export default function About() {
     return (
 
