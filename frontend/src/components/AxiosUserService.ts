@@ -1,5 +1,6 @@
 import axiosInstance from "../components/AxiosConfig"; // Import your axios instance
 import axios from "axios"; // Import axios and AxiosError for type safety
+import AuthService from "./AuthService"; // Import AuthService to store login details
 
 // Define an interface for the result of the registration attempt
 interface RegisterResult {
@@ -12,6 +13,9 @@ interface LoginResult {
     success: boolean;
     message?: string;
     token?: string;
+    userId?: number;
+    role?: string;
+    programId?: number;
     error?: string; // Optional: Include error messages if necessary
 }
 
@@ -21,15 +25,21 @@ class AxiosUserService {
             // Ensure that you're sending the right payload and headers
             const response = await axiosInstance.post(
                 "/user/login",
-                { username, passwordHash: password }, // Ensure 'passwordHash' is used if that's expected by the API
+                { username, passwordHash: password },
                 {
                     headers: {
-                        "Content-Type": "application/json", // Ensure content type is set correctly
+                        "Content-Type": "application/json",
                     },
                 }
             );
 
-            return { success: true, token: (response.data as { token?: string }).token };
+            // Extract the response data
+            const { token, userId, username: responseUsername, role, programId } = response.data;
+
+            // Store the user details using AuthService
+            AuthService.login(userId, responseUsername, role, programId, token);
+
+            return { success: true, token };
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 if (error.response) {

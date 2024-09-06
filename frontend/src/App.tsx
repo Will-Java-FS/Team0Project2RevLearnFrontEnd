@@ -14,6 +14,7 @@ import ForumPost from './pages/ForumPost';
 // import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
 import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
+import User from './pages/User';
 
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/course" element={<Course />} />
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
+          <Route path='/user' element={<User />} />
           <Route path="/forumpost" element={<ForumPost />} />
           <Route path="/*" element={<ErrorPage />} /> {/* Handles undefined routes */}
         </Routes>

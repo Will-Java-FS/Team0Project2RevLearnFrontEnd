@@ -46,11 +46,13 @@ const Login: React.FC = () => {
             } else {
                 setMessage(message ?? "An error occurred. Please try again.");
                 setIsSuccess(false);
+                setIsModalOpen(true); // Show modal on error
             }
         } catch (error) {
             console.error("Error during login:", error);
             setMessage("An error occurred. Please try again later.");
             setIsSuccess(false);
+            setIsModalOpen(true); // Show modal on error
         } finally {
             setLoading(false);
         }
@@ -139,8 +141,14 @@ const Login: React.FC = () => {
 
             {/* Use Modal for the success message */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <h3 className="text-xl font-bold text-green-600">Login Successful</h3>
-                <p className="mt-2">You will be redirected to the dashboard shortly.</p>
+                <h3 className={`text-xl font-bold ${isSuccess ? "text-green-600" : "text-red-600"}`}>
+                    {isSuccess ? "Login Successful" : "Login Failed"}
+                </h3>
+                <p className="mt-2">
+                    {isSuccess
+                        ? "You will be redirected to the dashboard shortly."
+                        : "Please check your credentials and try again."}
+                </p>
             </Modal>
         </div>
     );
