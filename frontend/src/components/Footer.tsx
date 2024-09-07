@@ -12,7 +12,7 @@ export default function Footer() {
             />
             <p className="text-center text-sm mt-4">
               <span className="font-semibold text-xl text-primary">
-                CLEVERName
+                RevLearn
               </span>
               <br />
               Providing Reliable Tech Since <span className="font-bold">2024</span>
