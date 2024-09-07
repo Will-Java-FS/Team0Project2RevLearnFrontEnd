@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Card from "../components/Card"; // Adjust the path to where the Card component is located
 
+// Show all courses for the user's program and be able to select one and go it's page
+// If user is teacher show a form to create a new course
+// Use authService to get logged in user's info, use the axios services for http requests
 export default function AllCourses() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4; // Number of card components per page

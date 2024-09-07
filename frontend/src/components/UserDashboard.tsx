@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
+import AuthService from './AuthService';
 import AxiosCourseService from "./AxiosCourseService";
 import Card from './Card'; // Assuming the Card component is in the same directory
 
@@ -79,6 +80,7 @@ export default function UserDashboard() {
   const [courses, setCourses] = useState(dummyCourses); // Initialize with dummy courses
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const username = AuthService.loggedInUsername();
 
   useEffect(() => {
     // Fetch courses data using AxiosCourseService
@@ -100,7 +102,7 @@ export default function UserDashboard() {
   return (
     <>
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-2">{username !== "NO LOGGED IN USER" ? username : "Guest"} Dashboard</h1>
         <h3 className="text-xl">Your Programs</h3>
       </div>
 

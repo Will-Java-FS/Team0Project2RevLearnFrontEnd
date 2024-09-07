@@ -8,9 +8,8 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   return (
-    <div className="navbar sticky top-0 bg-base-100/80 backdrop-blur-md shadow-md py-5 z-50">
+    <div className="navbar sticky top-0 bg-base-100/90 dark:bg-content-100 backdrop-blur-md shadow-md py-5 z-50">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -37,25 +36,28 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className={`menu menu-sm dropdown-content bg-base-200 rounded-box z-[1] mt-3 w-52 p-2 shadow ${isMenuOpen ? 'block' : 'hidden'
+            className={`menu menu-sm dropdown-content font-poppins font-light bg-base-200 rounded-box z-[1] mt-3 w-48 p-2 shadow ${isMenuOpen ? 'block' : 'hidden'
               }`}
           >
             {/* Menu Links */}
-            <li><Link to="/" className="btn btn-nav-sm btn-ghost">Home</Link></li>
-            <li><Link to="/about" className="btn btn-nav-sm btn-ghost">About</Link></li>
-            <li><Link to="/login" className="btn btn-nav-sm btn-ghost">Login</Link></li>
-            <li><Link to="/register" className="btn btn-nav-sm btn-ghost">Register</Link></li>
-            <li><Link to="/allprograms" className="btn btn-nav-sm btn-ghost">All Programs</Link></li>
-            <li><Link to="/dashboard" className="btn btn-nav-sm btn-ghost">Dashboard</Link></li>
-            <li><Link to="/teacher" className="btn btn-nav-sm btn-ghost">Teacher Dashboard</Link></li>
-            <li><Link to="/allcourses" className="btn btn-nav-sm btn-ghost">All Courses</Link></li>
+            <li><Link to="/" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Home</Link></li>
+            <li><Link to="/about" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">About</Link></li>
+            <li><Link to="/login" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</Link></li>
+            <li><Link to="/register" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Register</Link></li>
+            <li><Link to="/allprograms" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">All Programs</Link></li>
+            <li><Link to="/dashboard" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Dashboard</Link></li>
+            <li><Link to="/teacher" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Teacher Dashboard</Link></li>
+            <li><Link to="/allcourses" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">All Courses</Link></li>
           </ul>
         </div>
       </div>
 
       {/* Navbar Center - Logo and Title */}
       <div className="navbar-center">
-        <Link className="drop-shadow-xl text-3xl font-suse font-bold text-primary" to={"/"}>
+        <Link
+          className="drop-shadow-xl text-3xl font-suse font-bold text-primary"
+          to={"/"}
+        >
           <img src={logo} alt="logo" className="h-12 w-auto inline-block mr-2" />
           <p className="align-middle inline-block">RevLearn</p>
         </Link>

@@ -5,7 +5,9 @@ export const theme = {
 	extend: {
 		fontFamily: {
 			inter: ["Inter", "sans-serif"],
-			suse: ["Suse", "sans-serif"]
+			suse: ["Suse", "sans-serif"],
+			poppins: ['Poppins', 'sans-serif'],
+			
 		}
 	}
 };
@@ -46,6 +48,7 @@ export const daisyui = {
 			  "success": "#1dbc0e",
 			  "warning": "#f0bc23",
 			  "error": "#991b1b",
+			
 
 			  "--rounded-box": "0.2rem", // border radius rounded-box utility class, used in card and other large boxes
 			  "--rounded-btn": "0.2rem", // border radius rounded-btn utility class, used in buttons and similar element
@@ -59,7 +62,7 @@ export const daisyui = {
 			},
 		},
 	],
-	darkTheme: "dark",
+	darkTheme: "dracula",
 	base: true,
 	styled: true,
 	utils: true,

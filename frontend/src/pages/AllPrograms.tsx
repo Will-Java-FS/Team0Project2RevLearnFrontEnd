@@ -1,3 +1,9 @@
+
+// Show a list of all available programs
+// If user has a program highlight it and have link to all courses aswell a option to leave it
+// If user has no program show buttons on each program to set it as the user's current program
+// If user is a teacher and has no program show a form to create a new one
+// Use authService to get logged in user's info, use the axios services for http requests
 export default function AllPrograms(){
 
   const items = [

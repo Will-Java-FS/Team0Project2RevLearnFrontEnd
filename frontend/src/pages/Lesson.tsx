@@ -4,6 +4,10 @@ import {
     // useState
 } from "react";
 
+// Show all parts of the lesson
+// Give students a way to complete the lesson
+// Give teachers a way to edit/delete the lesson
+// Use authService to get logged in user's info, use the axios services for http requests
 export default function Lesson() {
     // const [lesson, setLesson] = useState({});
 

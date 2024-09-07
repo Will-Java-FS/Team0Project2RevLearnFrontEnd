@@ -19,6 +19,8 @@ interface ForumPost {
     course: Course; // Include course details in the interface
 }
 
+// Show a list of all forums for the course as well as a form to create a new one (each forum should have a link to its page)
+// Use authService to get logged in user's info, use the axios services for http requests
 export default function Forum() {
     const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
 
