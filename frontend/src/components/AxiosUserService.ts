@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import axiosInstance from "../components/AxiosConfig"; // Import your axios instance
-import axios from "axios"; // Import axios and AxiosError for type safety
+import axios, { AxiosError } from "axios"; // Import axios and AxiosError for type safety
 import AuthService from "./AuthService"; // Import AuthService to store login details
 
 // Define an interface for the result of the registration attempt
@@ -19,13 +20,27 @@ interface LoginResult {
     error?: string; // Optional: Include error messages if necessary
 }
 
+// Define the expected response structure for login
+interface LoginResponseData {
+    token: string;
+    userId: number;
+    username: string;
+    role: string;
+    programId: number;
+}
+
+// Define the expected response structure for registration
+interface RegisterResponseData {
+    message?: string;
+}
+
 class AxiosUserService {
     async loginUser(username: string, password: string): Promise<LoginResult> {
         try {
-            // Ensure that you're sending the right payload and headers
-            const response = await axiosInstance.post(
+            // Use the generic type to specify the expected response structure
+            const response = await axiosInstance.post<LoginResponseData>(
                 "/user/login",
-                { username, passwordHash: password },
+                { username, password },
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -33,18 +48,19 @@ class AxiosUserService {
                 }
             );
 
-            // Extract the response data
+            // TypeScript now knows the type of response.data
             const { token, userId, username: responseUsername, role, programId } = response.data;
 
             // Store the user details using AuthService
             AuthService.login(userId, responseUsername, role, programId, token);
 
-            return { success: true, token };
+            return { success: true, token, userId, role, programId };
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
-                if (error.response) {
-                    const errorMessage: string = (error.response.data as { message?: string }).message || "Invalid credentials";
-                    console.error("Error response data:", error.response.data);
+                if (error.response && error.response.data) {
+                    const errorData = error.response.data as RegisterResponseData;
+                    const errorMessage = errorData.message || "Invalid credentials";
+                    console.error("Error response data:", errorData);
                     return { success: false, message: errorMessage };
                 } else if (error.request) {
                     console.error("No response received:", error.request);
@@ -80,7 +96,7 @@ class AxiosUserService {
 
             console.log("Sending registration payload:", payload);
 
-            const response = await axiosInstance.post("/user/register", payload);
+            const response = await axiosInstance.post<RegisterResponseData>("/user/register", payload);
 
             if (response.status === 201) {
                 console.log("Registration response:", response.data);
@@ -90,9 +106,10 @@ class AxiosUserService {
             return { success: false, message: "Unexpected response status during registration." };
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
-                if (error.response) {
-                    const errorMessage: string = (error.response.data as { message?: string }).message || "An error occurred during registration.";
-                    console.error("Error response data:", error.response.data);
+                if (error.response && error.response.data) {
+                    const errorData = error.response.data as RegisterResponseData;
+                    const errorMessage = errorData.message || "An error occurred during registration.";
+                    console.error("Error response data:", errorData);
                     return { success: false, message: errorMessage };
                 } else if (error.request) {
                     console.error("No response received:", error.request);
