@@ -12,12 +12,12 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   });
 
   useEffect(() => {
-    themeChange(false); // Initialize theme-change for React
+    themeChange(false); 
 
     document.documentElement.classList.toggle('dark', isDarkMode);
 
     // Update localStorage and apply the theme
-    localStorage.setItem('theme', isDarkMode ? 'light' : 'dark');
+    localStorage.setItem('theme', isDarkMode ? 'nord' : 'dark');
   }, [isDarkMode]);
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

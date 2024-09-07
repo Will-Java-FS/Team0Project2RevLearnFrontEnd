@@ -6,7 +6,7 @@ export default function About() {
     return (
 
 
-        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
+        <div className="flex justify-center items-center min-h-screen  p-6">
         <Card
           title="Tailwind Card"
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula."

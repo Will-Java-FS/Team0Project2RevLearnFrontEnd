@@ -2,22 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Root styles */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
-
+/* Light mode styles */
+body {
+  background-color: white;
+  color: black;
+}
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+/* Dark mode styles using Tailwind's dark class */
+.dark {
+  --tw-bg-opacity: 1;
+  background-color: rgba(17, 24, 39, var(--tw-bg-opacity)); /* Example dark background color */
+  color: rgba(255, 255, 255, var(--tw-text-opacity)); /* Example light text color */
+}
+
+.dark h1 {
+  color: rgba(255, 255, 255, var(--tw-text-opacity)); /* Example light text color for h1 */
+}
+
+/* Alternatively, using prefers-color-scheme to set dark mode preferences */
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: #111827; /* Example dark background color */
+    color: #ffffff; /* Example light text color */
+  }
+
+  h1 {
+    color: #ffffff; /* Example light text color for h1 */
+  }
 }
