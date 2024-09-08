@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import CourseCard, { Lesson, Course } from "../components/CourseCard"; // Adjust the path to where the Card component is located
 import AxiosCourseService from "../components/AxiosCourseService";
 import AxiosLessonService from "../components/AxiosLessonService";
+import axios from "axios";
 
 // Show all courses for the user's program and be able to select one and go it's page
 // If user is teacher show a form to create a new course
 // Use authService to get logged in user's info, use the axios services for http requests
 export default function AllCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [lessons, setLessons] = useState<{ [key: number]: Lesson[] }>({}); // Store lessons for each course
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4; // Number of card components per page
   const totalCards = 30; // Total number of card items
@@ -22,19 +22,30 @@ export default function AllCourses() {
   //   link: "https://example.com",
   // }));
 
+  const dummyLessons: Lesson[] = [
+    { lesson_plan_id: 1, title: "Lesson 1", content: "Content 1", lp_created_at: "2021-09-01", lp_updated_at: "2021-09-01" },
+    { lesson_plan_id: 2, title: "Lesson 2", content: "Content 2", lp_created_at: "2021-09-02", lp_updated_at: "2021-09-02" },
+    { lesson_plan_id: 3, title: "Lesson 3", content: "Content 3", lp_created_at: "2021-09-03", lp_updated_at: "2021-09-03" }
+  ];
+
   useEffect(() => {
-    // Fetch courses and lessons data
     const fetchCourseData = async () => {
       try {
-        const courseData = await AxiosCourseService.getAll();
-        setCourses(courseData);
-
-        const lessonsData: { [key: number]: Lesson[] } = {};
-        for (const course of courseData) {
-          const courseLessons = await AxiosLessonService.getAllByCourse(course.course_id);
-          lessonsData[course.course_id] = courseLessons || [];
-        }
-        setLessons(lessonsData);
+        const courseData = await axios.get<Course[]>('http://localhost:8080/courses');
+        const courseWithLessonsData = await Promise.all(
+          courseData.data.map(async (course) => {
+            const lessonsData = await axios.get<Lesson[]>(`http://localhost:8080/course/${course.course_id}/lessons`) || [];
+            return {
+              ...course,
+              lessons: lessonsData.data,
+            };
+          })
+        );
+        
+        setCourses(courseWithLessonsData);
+        // console.log(dummyLessons);
+        // console.log(lessonsData);
+        
       } catch (error) {
         console.error("Error fetching course data:", error);
       }
@@ -67,8 +78,7 @@ export default function AllCourses() {
         {currentCards.map((course) => (
           <CourseCard
             key={course.course_id}
-            course={course} 
-            lessons={lessons[course.course_id] || []}
+            course={course}
           />
         ))}
       </div>

@@ -19,7 +19,7 @@ class AxiosLessonService {
 
   getAllByCourse(courseId: number) {
     axios
-      .get("/courses/" + courseId + "/lessons")
+      .get("/course/" + courseId + "/lessons")
       .then((response) => {
         console.log(response.data);
         if (response.status === 200) {

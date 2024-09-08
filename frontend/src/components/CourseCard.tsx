@@ -7,6 +7,7 @@ export interface Course {
     teacherId: number;
     course_created_at: string;
     course_updated_at: string;
+    lessons: Lesson[] | [];
 }
   
 export interface Lesson {
@@ -17,14 +18,14 @@ export interface Lesson {
     lp_updated_at: string;
 }
 
-const CourseCard: React.FC<{ course: Course; lessons: Lesson[] }> = ({ course, lessons }) => {
+const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
     return (
         <div className="course-card">
             <h2>{course.courseName}</h2>
             <p>{course.description}</p>
             <h3>Lessons</h3>
             <ul>
-                {lessons.slice(0, 3).map((lesson) => (
+                {course.lessons.slice(0, 3).map((lesson) => (
                     <li key={lesson.lesson_plan_id}>
                         <h4>{lesson.title}</h4>
                         <p>{lesson.content}</p>
