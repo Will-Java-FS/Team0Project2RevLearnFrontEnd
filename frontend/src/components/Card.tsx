@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface CardProps {
   title: string;
@@ -21,9 +21,7 @@ const Card: React.FC<CardProps> = ({ title, description, link }) => {
           <h5 className="mb-2 text-lg font-semibold text-orange-500 line-clamp-2">
             {title}
           </h5>
-          <p className="text-sm text-gray-700 line-clamp-3">
-            {description}
-          </p>
+          <p className="text-sm text-gray-700 line-clamp-3">{description}</p>
         </div>
         <div className="p-4 pt-0">
           <a

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../assets/Icon256.png';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import logo from "../assets/Icon256.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,18 +36,75 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className={`menu menu-sm dropdown-content font-poppins font-light bg-base-200 rounded-box z-[1] mt-3 w-48 p-2 shadow ${isMenuOpen ? 'block' : 'hidden'
-              }`}
+            className={`menu menu-sm dropdown-content font-poppins font-light bg-base-200 rounded-box z-[1] mt-3 w-48 p-2 shadow ${
+              isMenuOpen ? "block" : "hidden"
+            }`}
           >
             {/* Menu Links */}
-            <li><Link to="/" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Home</Link></li>
-            <li><Link to="/about" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">About</Link></li>
-            <li><Link to="/login" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</Link></li>
-            <li><Link to="/register" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Register</Link></li>
-            <li><Link to="/allprograms" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">All Programs</Link></li>
-            <li><Link to="/dashboard" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Dashboard</Link></li>
-            <li><Link to="/teacher" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Teacher Dashboard</Link></li>
-            <li><Link to="/allcourses" className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">All Courses</Link></li>
+            <li>
+              <Link
+                to="/"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/about"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/login"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                Login
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/register"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                Register
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/allprograms"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                All Programs
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/dashboard"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/teacher"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                Teacher Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/allcourses"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                All Courses
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -58,7 +115,11 @@ const Navbar = () => {
           className="drop-shadow-xl text-3xl font-suse font-bold text-primary"
           to={"/"}
         >
-          <img src={logo} alt="logo" className="h-12 w-auto inline-block mr-2" />
+          <img
+            src={logo}
+            alt="logo"
+            className="h-12 w-auto inline-block mr-2"
+          />
           <p className="align-middle inline-block">RevLearn</p>
         </Link>
       </div>

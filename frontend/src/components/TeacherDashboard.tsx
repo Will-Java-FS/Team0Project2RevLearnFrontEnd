@@ -1,4 +1,4 @@
-import AuthService from './AuthService';
+import AuthService from "./AuthService";
 import UsersTable from "./UsersTable";
 import users from "./Users.json";
 

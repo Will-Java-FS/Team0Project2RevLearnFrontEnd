@@ -1,4 +1,4 @@
-import logo from '../assets/Icon512.png';
+import logo from "../assets/Icon512.png";
 export default function Footer() {
   return (
     <div>
@@ -15,7 +15,8 @@ export default function Footer() {
                 RevLearn
               </span>
               <br />
-              Providing Reliable Tech Since <span className="font-bold">2024</span>
+              Providing Reliable Tech Since{" "}
+              <span className="font-bold">2024</span>
             </p>
           </div>
 
