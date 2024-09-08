@@ -4,7 +4,7 @@ import AuthService from "./AuthService";
 class AxiosCourseService {
   async getAll() {
     try {
-      const response = await axios.get("/course");
+      const response = await axios.get("/courses");
       if (response.status === 200) {
         return response.data;
       }
