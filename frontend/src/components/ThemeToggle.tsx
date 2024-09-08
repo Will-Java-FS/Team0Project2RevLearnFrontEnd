@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { themeChange } from 'theme-change';
+import React, { useEffect, useState } from "react";
+import { themeChange } from "theme-change";
 
 interface ThemeToggleProps {
   className?: string;
@@ -7,17 +7,17 @@ interface ThemeToggleProps {
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark'; // Use 'business' for dark mode and 'nord' for light mode
+    const savedTheme = localStorage.getItem("theme");
+    return savedTheme === "dark"; // Use 'business' for dark mode and 'nord' for light mode
   });
 
   useEffect(() => {
-    themeChange(false); 
+    themeChange(false);
 
-    document.documentElement.classList.toggle('dark', isDarkMode);
+    document.documentElement.classList.toggle("dark", isDarkMode);
 
     // Update localStorage and apply the theme
-    localStorage.setItem('theme', isDarkMode ? 'nord' : 'dark');
+    localStorage.setItem("theme", isDarkMode ? "nord" : "dark");
   }, [isDarkMode]);
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,9 +26,9 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
 
   useEffect(() => {
     // Apply the saved theme on component mount
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
+      setIsDarkMode(savedTheme === "dark");
     }
   }, []);
 

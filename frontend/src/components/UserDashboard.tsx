@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
-import AuthService from './AuthService';
+import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
-import Card from './Card'; // Assuming the Card component is in the same directory
+import Card from "./Card"; // Assuming the Card component is in the same directory
 
 // User interface definition
 interface User {
@@ -52,7 +52,8 @@ const dummyCourses = [
   {
     course_id: 2,
     courseName: "Advanced Java Concepts",
-    description: "Explore advanced topics in Java, including concurrency and JVM internals.",
+    description:
+      "Explore advanced topics in Java, including concurrency and JVM internals.",
     teacherId: 102,
     course_created_at: "2024-09-03T10:00:00Z",
     course_updated_at: "2024-09-03T10:00:00Z",
@@ -64,7 +65,7 @@ const dummyCourses = [
     teacherId: 103,
     course_created_at: "2024-09-03T10:00:00Z",
     course_updated_at: "2024-09-03T10:00:00Z",
-  }
+  },
 ];
 
 // UserCard Component
@@ -102,7 +103,9 @@ export default function UserDashboard() {
   return (
     <>
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold mb-2">{username !== "NO LOGGED IN USER" ? username : "Guest"} Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-2">
+          {username !== "NO LOGGED IN USER" ? username : "Guest"} Dashboard
+        </h1>
         <h3 className="text-xl">Your Programs</h3>
       </div>
 
@@ -113,8 +116,11 @@ export default function UserDashboard() {
       {/* Displaying Course List */}
       {!loading && !error && courses.length > 0 ? (
         <div className="flex flex-col space-y-4">
-          {courses.map(course => (
-            <div key={course.course_id} className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300">
+          {courses.map((course) => (
+            <div
+              key={course.course_id}
+              className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300"
+            >
               <div className="card-body flex flex-row items-center justify-between">
                 <div className="flex flex-col justify-between">
                   <h2 className="card-title">{course.courseName}</h2>
@@ -123,10 +129,12 @@ export default function UserDashboard() {
                     <strong>Teacher ID:</strong> {course.teacherId}
                   </p>
                   <p>
-                    <strong>Created At:</strong> {new Date(course.course_created_at).toLocaleString()}
+                    <strong>Created At:</strong>{" "}
+                    {new Date(course.course_created_at).toLocaleString()}
                   </p>
                   <p>
-                    <strong>Updated At:</strong> {new Date(course.course_updated_at).toLocaleString()}
+                    <strong>Updated At:</strong>{" "}
+                    {new Date(course.course_updated_at).toLocaleString()}
                   </p>
                 </div>
                 <div className="card-actions">
@@ -149,9 +157,18 @@ export default function UserDashboard() {
           <h1 className="text-3xl text-primary mb-4">Course Progress</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[70, 40, 90].map((progress, index) => (
-              <div key={index} className="card bg-base-100 shadow-md rounded-lg p-4 flex flex-col items-center justify-center h-40">
-                <h2 className="text-lg font-semibold mb-2">Course Progress {index + 1}</h2>
-                <div className="radial-progress text-primary" style={{ "--value": progress } as React.CSSProperties} role="progressbar">
+              <div
+                key={index}
+                className="card bg-base-100 shadow-md rounded-lg p-4 flex flex-col items-center justify-center h-40"
+              >
+                <h2 className="text-lg font-semibold mb-2">
+                  Course Progress {index + 1}
+                </h2>
+                <div
+                  className="radial-progress text-primary"
+                  style={{ "--value": progress } as React.CSSProperties}
+                  role="progressbar"
+                >
                   {progress}%
                 </div>
               </div>
