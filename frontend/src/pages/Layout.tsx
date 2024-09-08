@@ -1,8 +1,7 @@
-// Layout.tsx
 import React, { ReactNode } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import ThemeToggle from "../components/ThemeToggle"; // Adjust path as needed
+import ThemeToggle from "../components/ThemeToggle";
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,15 +9,18 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-content dark:bg-neutral">
-      <header>
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar should be inside header and positioned sticky */}
+      <header className="sticky top-0 z-50">
         <Navbar />
       </header>
+      {/* Main content area */}
       <main role="main" className="flex-grow">
         {children}
       </main>
+      {/* Footer and other components */}
       <Footer />
-      <ThemeToggle className="z-50" /> {/* Ensure it's on top */}
+      <ThemeToggle className="z-50" />
     </div>
   );
 };
