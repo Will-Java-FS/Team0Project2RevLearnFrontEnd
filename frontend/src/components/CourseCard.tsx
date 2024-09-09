@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
+import AxiosLessonService from "./AxiosLessonService";
 
 export interface Course {
     course_id: number;
@@ -9,7 +10,7 @@ export interface Course {
     teacherId: number;
     course_created_at: string;
     course_updated_at: string;
-    lessons: Lesson[] | [];
+    lessons: Lesson[];
 }
   
 export interface Lesson {
@@ -23,6 +24,8 @@ export interface Lesson {
 const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
     const [showAllLessons, setShowAllLessons] = useState(false);
     const [showLessonForm, setShowLessonForm] = useState(false);
+    const [lessonTitle, setLessonTitle] = useState("");
+    const [lessonContent, setLessonContent] = useState("");
 
     const toggleShowAllLessons = () => {
         setShowAllLessons(!showAllLessons);
@@ -36,6 +39,23 @@ const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
         AxiosCourseService.delete(course.course_id)
         console.log("Delete course:", course.course_id);
     };
+
+    const handleLessonSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const newLesson: Lesson = await AxiosLessonService.create(lessonTitle, lessonContent, course.course_id);
+            if (newLesson) {
+                // Update the course lessons state with the new lesson
+                course.lessons.push(newLesson);
+                setShowLessonForm(false);
+                setLessonTitle("");
+                setLessonContent("");
+            }
+        } catch (error) {
+            console.error("Error creating lesson:", error);
+        }
+    };
+
 
     return (
         <div className="relative flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md overflow-hidden">
@@ -78,11 +98,26 @@ const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
                                 {showLessonForm ? "Cancel" : "Create New Lesson"}
                             </button>
                             {showLessonForm && (
-                                <form>
-                                    {/* Implement the form to create a new lesson */}
-                                    <input type="text" placeholder="Lesson Title" />
-                                    <textarea placeholder="Lesson Content"></textarea>
-                                    <button type="submit">Submit</button>
+                                <form onSubmit={handleLessonSubmit} className="mt-4">
+                                    <input 
+                                        type="text" 
+                                        placeholder="Lesson Title" 
+                                        value={lessonTitle} 
+                                        onChange={(e) => setLessonTitle(e.target.value)} 
+                                        className="block w-3/4 mb-2 p-2 border border-gray-300 rounded"
+                                    />
+                                    <textarea 
+                                        placeholder="Lesson Content" 
+                                        value={lessonContent} 
+                                        onChange={(e) => setLessonContent(e.target.value)} 
+                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded"
+                                    ></textarea>
+                                    <button 
+                                        type="submit" 
+                                        className="block w-3/4 text-center rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md transition-all hover:shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        Submit
+                                    </button>
                                 </form>
                             )}
                             <button 

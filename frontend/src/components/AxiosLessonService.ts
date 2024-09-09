@@ -65,25 +65,45 @@ class AxiosLessonService {
     return null;
   }
 
-  create(lessonTitle: string, content: string, courseId: number) {
-    axios
-      .post("/lessons", {
-        lessonTitle: lessonTitle,
+  // Function reimplementation with async/await
+  async create(lessonTitle: string, content: string, courseId: number) {
+    try {
+      const response = await axios.post("/lessons", {
+        title: lessonTitle,
         content: content,
         teacherId: AuthService.loggedInUserId(),
         courseId: courseId,
-      })
-      .then((response) => {
-        console.log(response.data);
-        if (response.status === 201) {
-          return response.data;
-        }
-      })
-      .catch((error) => {
-        console.error("Error on lesson creation attempt!", error);
       });
+      console.log(response.data);
+      if (response.status === 201) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error on lesson creation attempt!", error);
+      throw error; // Ensure errors are propagated
+    }
     return null;
   }
+
+  // create(lessonTitle: string, content: string, courseId: number) {
+  //   axios
+  //     .post("/lessons", {
+  //       lessonTitle: lessonTitle,
+  //       content: content,
+  //       teacherId: AuthService.loggedInUserId(),
+  //       courseId: courseId,
+  //     })
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       if (response.status === 201) {
+  //         return response.data;
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error on lesson creation attempt!", error);
+  //     });
+  //   return null;
+  // }
 
   update(id: number, lessonTitle: string, content: string) {
     axios
