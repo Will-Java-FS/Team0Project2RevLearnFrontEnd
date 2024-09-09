@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
@@ -81,7 +79,7 @@ export default function UserDashboard() {
   const [courses, setCourses] = useState(dummyCourses); // Initialize with dummy courses
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const username = AuthService.loggedInUsername();
+  const username = AuthService.getLoggedInUsername(); // Correct method call
 
   useEffect(() => {
     // Fetch courses data using AxiosCourseService

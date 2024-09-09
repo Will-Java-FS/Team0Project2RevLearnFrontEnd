@@ -11,7 +11,7 @@ class AuthService {
     sessionStorage.setItem("authenticatedUser", username);
     sessionStorage.setItem("role", role);
     sessionStorage.setItem("programId", programId.toString());
-    localStorage.setItem("token", "Bearer " + token); // Use the token returned from the server
+    localStorage.setItem("token", `Bearer ${token}`); // Use the token returned from the server
 
     console.log(
       `User ${username} logged in successfully with role ${role} and token ${token}`,
@@ -22,39 +22,56 @@ class AuthService {
     sessionStorage.clear();
     localStorage.clear();
     window.location.reload();
-
     console.log("User logged out successfully");
   }
 
-  loggedInUsername() {
-    const username = sessionStorage.getItem("authenticatedUser");
-    return username ? username : "NO LOGGED IN USER";
+  getLoggedInUsername(): string {
+    return sessionStorage.getItem("authenticatedUser") || "NO LOGGED IN USER";
   }
 
-  loggedInUserId() {
+  getLoggedInUserId(): number {
     const id = sessionStorage.getItem("authenticatedUserId");
     return id ? Number(id) : -1;
   }
 
-  loggedInUserProgramId() {
+  getLoggedInUserProgramId(): number {
     const id = sessionStorage.getItem("programId");
     return id ? Number(id) : -1;
   }
 
-  loggedInUserRole() {
-    return sessionStorage.getItem("role") ?? "";
+  getLoggedInUserRole(): string {
+    return sessionStorage.getItem("role") || "";
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return !!sessionStorage.getItem("role");
   }
 
-  isLoggedInStudent() {
-    return sessionStorage.getItem("role") === "student";
+  isLoggedInStudent(): boolean {
+    return this.getLoggedInUserRole() === "student";
   }
 
-  isLoggedInTeacher() {
-    return sessionStorage.getItem("role") === "teacher";
+  isLoggedInTeacher(): boolean {
+    return this.getLoggedInUserRole() === "teacher";
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem("token");
+  }
+
+  // Add a method to check for token expiry (assuming the token is a JWT)
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    try {
+      const [, payload] = token.split(".");
+      const decodedPayload = JSON.parse(atob(payload));
+      return decodedPayload.exp < Date.now() / 1000;
+    } catch (error) {
+      console.error("Error parsing token:", error);
+      return true;
+    }
   }
 }
 
