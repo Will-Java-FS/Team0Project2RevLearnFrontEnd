@@ -43,7 +43,6 @@ export default function About() {
                           also has functionality to allow teachers to create and manage
                           programs, courses and lessons.
                       </p>
-                      
                     </div>
                     <h2 className="drop-shadow-xl text-3xl py-2 font-bold">Technology Used:</h2>
                     <div className="drop-shadow-xl text-lg font-light">

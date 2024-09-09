@@ -25,9 +25,9 @@ const Home: React.FC = () => {
                         <h1 className="drop-shadow-xl text-6xl font-bold text-white">
                             RevLearn
                         </h1>
-                        <h2 className="text-xl py-6">Pinnacle of learning.</h2>
+                        <h2 className="text-xl py-4">The pinnacle of learning.</h2>
                         <p className="text-md font-light py-5">
-                            Unlock your destined potential and buy now.
+                            Sign up for one of our many in-depth programs today!
                         </p>
                         <button
                             className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]"
