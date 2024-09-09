@@ -9,7 +9,7 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <div className="navbar sticky top-0 bg-base-100/90 dark:bg-content-100 backdrop-blur-md shadow-md py-5 z-50">
+    <div className="navbar sticky top-0 bg-base-300/90 dark:bg-content-100 backdrop-blur-md shadow-md py-5 z-50">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
