@@ -10,6 +10,7 @@ import axios from "axios";
 export default function AllCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState<string | null>(null);
   const itemsPerPage = 4; // Number of card components per page
   const totalCards = 30; // Total number of card items
   const totalPages = Math.ceil(totalCards / itemsPerPage);
@@ -31,13 +32,13 @@ export default function AllCourses() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const courseData = await axios.get<Course[]>('http://localhost:8080/courses');
+        const courseData = await AxiosCourseService.getAll();
         const courseWithLessonsData = await Promise.all(
-          courseData.data.map(async (course) => {
-            const lessonsData = await axios.get<Lesson[]>(`http://localhost:8080/course/${course.course_id}/lessons`) || [];
+          courseData.map(async (course: Course) => {
+            const lessonsData = await AxiosLessonService.getAllByCourse(course.course_id);
             return {
               ...course,
-              lessons: lessonsData.data,
+              lessons: lessonsData || [],
             };
           })
         );
@@ -48,6 +49,7 @@ export default function AllCourses() {
         
       } catch (error) {
         console.error("Error fetching course data:", error);
+        setError((error as Error).message)
       }
     };
 
@@ -75,6 +77,7 @@ export default function AllCourses() {
   return (
     <div className="flex flex-col items-center min-h-screen p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+        {error && <p>Error: {error}</p>}
         {currentCards.map((course) => (
           <CourseCard
             key={course.course_id}

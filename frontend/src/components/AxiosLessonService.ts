@@ -17,23 +17,36 @@ class AxiosLessonService {
     return null;
   }
 
-  getAllByCourse(courseId: number) {
-    axios
-      .get("/course/" + courseId + "/lessons")
-      .then((response) => {
-        console.log(response.data);
-        if (response.status === 200) {
-          return response.data;
-        }
-      })
-      .catch((error) => {
-        console.error(
-          "Error getting all lessons for course " + courseId + "!",
-          error,
-        );
-      });
+  async getAllByCourse(courseId: number) {
+    try {
+      const response = await axios.get("/course/" + courseId + "/lessons");
+      console.log(response.data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error getting all courses!", error);
+      throw error; // Ensure errors are propagated
+    }
     return null;
   }
+  // getAllByCourse(courseId: number) {
+  //   axios
+  //     .get("/course/" + courseId + "/lessons")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       if (response.status === 200) {
+  //         return response.data;
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(
+  //         "Error getting all lessons for course " + courseId + "!",
+  //         error,
+  //       );
+  //     });
+  //   return null;
+  // }
 
   getById(id: number) {
     axios
