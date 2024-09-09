@@ -12,7 +12,7 @@ export default function About() {
             lg:bg-gradient-to-r lg:from-amber-200 lg:via-orange-400 lg:to-red-600
             dark:lg:from-yellow-500 dark:lg:via-orange-500 dark:lg:to-red-500"
         >
-            <div className="hero-content text-center text-white">
+            <div className="hero-content text-center text-white dark:text-black">
                 <div className="max-w-xl mx-auto">
                     <h1 className="drop-shadow-xl py-4 text-5xl font-bold">
                       Revature Training Capstone Project - RevLearn
