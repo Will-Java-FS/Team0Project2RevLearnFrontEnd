@@ -1,20 +1,23 @@
 class AuthService {
+  getLoggedInUserEmail() {
+    throw new Error("Method not implemented.");
+  }
   login(
     id: number,
     username: string,
     role: string,
     programId: number,
-    token: string,
+    token: string
   ) {
     // Store the token and other details provided by the server
     sessionStorage.setItem("authenticatedUserId", id.toString());
     sessionStorage.setItem("authenticatedUser", username);
     sessionStorage.setItem("role", role);
     sessionStorage.setItem("programId", programId.toString());
-    localStorage.setItem("token", "Bearer " + token); // Use the token returned from the server
+    localStorage.setItem("token", `Bearer ${token}`); // Properly store the token with 'Bearer' prefix
 
     console.log(
-      `User ${username} logged in successfully with role ${role} and token ${token}`,
+      `User ${username} logged in successfully with role ${role} and token ${token}`
     );
   }
 
@@ -26,35 +29,38 @@ class AuthService {
     console.log("User logged out successfully");
   }
 
-  loggedInUsername() {
-    const username = sessionStorage.getItem("authenticatedUser");
-    return username ? username : "NO LOGGED IN USER";
+  getLoggedInUsername(): string {
+    return sessionStorage.getItem("authenticatedUser") || "NO LOGGED IN USER";
   }
 
-  loggedInUserId() {
+  getLoggedInUserId(): number {
     const id = sessionStorage.getItem("authenticatedUserId");
     return id ? Number(id) : -1;
   }
 
-  loggedInUserProgramId() {
+  getLoggedInUserProgramId(): number {
     const id = sessionStorage.getItem("programId");
     return id ? Number(id) : -1;
   }
 
-  loggedInUserRole() {
-    return sessionStorage.getItem("role") ?? "";
+  getLoggedInUserRole(): string {
+    return sessionStorage.getItem("role") || "";
   }
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return !!sessionStorage.getItem("role");
   }
 
-  isLoggedInStudent() {
+  isLoggedInStudent(): boolean {
     return sessionStorage.getItem("role") === "student";
   }
 
-  isLoggedInTeacher() {
+  isLoggedInTeacher(): boolean {
     return sessionStorage.getItem("role") === "teacher";
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem("token");
   }
 }
 

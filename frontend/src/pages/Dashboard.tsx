@@ -6,14 +6,14 @@ import AuthService from "../components/AuthService";
 // Display user info/ program info
 // Students should see their progress for each course
 // Teachers should be able to see students for each course
-// Use authService to get logged in user's info, use the axios services for http requests
+// Use AuthService to get logged in user's info, use the axios services for http requests
 const Dashboard: React.FC = () => {
   const [role, setRole] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true); // State to control loading animation
 
   useEffect(() => {
     // Fetch the role using AuthService
-    const userRole = AuthService.loggedInUserRole();
+    const userRole = AuthService.getLoggedInUserRole(); // Corrected method name
     setRole(userRole);
 
     // Show loading animation for 5 seconds

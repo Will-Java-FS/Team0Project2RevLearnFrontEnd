@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Icon256.png";
+import Logout from "./AuthButton";
+import AuthButton from "./AuthButton";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -126,6 +128,7 @@ const Navbar = () => {
 
       {/* Navbar End - Actions */}
       <div className="navbar-end">
+       
         <button className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -162,6 +165,7 @@ const Navbar = () => {
           </div>
         </button>
       </div>
+      <AuthButton/>
     </div>
   );
 };
