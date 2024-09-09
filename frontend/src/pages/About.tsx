@@ -41,10 +41,12 @@ export default function About() {
                           The project consists of a learning platform where students can
                           enroll in programs and complete courses in various subjects. It
                           also has functionality to allow teachers to create and manage
-                          programs, courses and lessons.
+                          programs, courses and lessons. Additionally there are forums for
+                          each course that students can post in and teachers can 
+                          moderate.
                       </p>
                     </div>
-                    <h2 className="drop-shadow-xl text-3xl py-2 font-bold">Technology Used:</h2>
+                    <h2 className="drop-shadow-xl text-3xl py-2 font-bold">Technologies Used:</h2>
                     <div className="drop-shadow-xl text-lg font-light">
                       <p>Backend - Java, Spring, Kafka, Postgresql</p>
                       <p>Frontend - React, HTML, Typescript, Vite, TailwindCSS, DaisyUI</p>
