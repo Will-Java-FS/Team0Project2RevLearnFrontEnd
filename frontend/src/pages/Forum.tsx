@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import AxiosForumService from "../components/AxiosForumService";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 // Define a more detailed interface for forum posts
 interface Course {
@@ -23,7 +26,8 @@ interface ForumPost {
 // Use authService to get logged in user's info, use the axios services for http requests
 export default function Forum() {
   const [forumPosts, setForumPosts] = useState<ForumPost[]>([]);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     async function fetchForumPosts() {
       try {
@@ -48,6 +52,12 @@ export default function Forum() {
 
     void fetchForumPosts();
   }, []);
+  const handleViewDetails = (forumId: number) => {
+    // Save forumId to local storage
+    localStorage.setItem('selectedForumId', forumId.toString());
+    // Redirect to the forum post page
+    navigate(`/forumpost`);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -74,6 +84,12 @@ export default function Forum() {
               <p className="text-sm text-gray-500">
                 <strong>Last Updated:</strong>{" "}
                 {new Date(post.forumUpdatedAt).toLocaleString()}
+              </p>
+              <p  className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">
+                  
+              <button onClick={() => handleViewDetails(post.forumId)}>
+                  View Details
+              </button>
               </p>
             </div>
           ))}
