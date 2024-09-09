@@ -2,20 +2,36 @@ import axios from "./AxiosConfig";
 import AuthService from "./AuthService";
 
 class AxiosEnrollmentService {
-  getEnrollments(studentId: number) {
-    axios
-      .get("/enrollments/" + studentId)
-      .then((response) => {
-        console.log(response.data);
-        if (response.status === 200) {
-          return response.data;
-        }
-      })
-      .catch((error) => {
-        console.error("Error getting student enrollments!", error);
-      });
+
+  // Function reimplementation with async/await
+  async getEnrollments(studentId: number) {
+    try {
+      const response = await axios.get("/enrollments/courses/" + studentId);
+      console.log(response.data);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error getting student enrollments!", error);
+      throw error; // Ensure errors are propagated
+    }
     return null;
   }
+
+  // getEnrollments(studentId: number) {
+  //   axios
+  //     .get("/enrollments/" + studentId)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       if (response.status === 200) {
+  //         return response.data;
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error getting student enrollments!", error);
+  //     });
+  //   return null;
+  // }
 
   enrollInCourse(
     studentId = AuthService.loggedInUserId(),
