@@ -1,20 +1,23 @@
 class AuthService {
+  getLoggedInUserEmail() {
+    throw new Error("Method not implemented.");
+  }
   login(
     id: number,
     username: string,
     role: string,
     programId: number,
-    token: string,
+    token: string
   ) {
     // Store the token and other details provided by the server
     sessionStorage.setItem("authenticatedUserId", id.toString());
     sessionStorage.setItem("authenticatedUser", username);
     sessionStorage.setItem("role", role);
     sessionStorage.setItem("programId", programId.toString());
-    localStorage.setItem("token", `Bearer ${token}`); // Use the token returned from the server
+    localStorage.setItem("token", `Bearer ${token}`); // Properly store the token with 'Bearer' prefix
 
     console.log(
-      `User ${username} logged in successfully with role ${role} and token ${token}`,
+      `User ${username} logged in successfully with role ${role} and token ${token}`
     );
   }
 
@@ -22,6 +25,7 @@ class AuthService {
     sessionStorage.clear();
     localStorage.clear();
     window.location.reload();
+
     console.log("User logged out successfully");
   }
 
@@ -48,30 +52,15 @@ class AuthService {
   }
 
   isLoggedInStudent(): boolean {
-    return this.getLoggedInUserRole() === "student";
+    return sessionStorage.getItem("role") === "student";
   }
 
   isLoggedInTeacher(): boolean {
-    return this.getLoggedInUserRole() === "teacher";
+    return sessionStorage.getItem("role") === "teacher";
   }
 
   getToken(): string | null {
     return localStorage.getItem("token");
-  }
-
-  // Add a method to check for token expiry (assuming the token is a JWT)
-  isTokenExpired(): boolean {
-    const token = this.getToken();
-    if (!token) return true;
-
-    try {
-      const [, payload] = token.split(".");
-      const decodedPayload = JSON.parse(atob(payload));
-      return decodedPayload.exp < Date.now() / 1000;
-    } catch (error) {
-      console.error("Error parsing token:", error);
-      return true;
-    }
   }
 }
 

@@ -4,8 +4,8 @@ import users from "./Users.json";
 
 export default function TeacherDashboard() {
   // Get the logged-in user's name using AuthService
-  const username = AuthService.loggedInUsername();
-
+  const username = AuthService.getLoggedInUsername();
+  const role = AuthService.getLoggedInUserRole();
   return (
     <div className="p-6 w-full mx-auto flex flex-col items-center">
       {/* Welcome Back Message */}
@@ -14,7 +14,7 @@ export default function TeacherDashboard() {
       </h1>
 
       {/* Dashboard Title */}
-      <h1 className="text-3xl font-bold text-center my-8">Teacher Dashboard</h1>
+      <h1 className="text-3xl font-bold text-center my-8"> {role} Dashboard</h1>
 
       {/* Subheading */}
       <h2 className="text-xl font-semibold text-left mb-4">Find Student</h2>
