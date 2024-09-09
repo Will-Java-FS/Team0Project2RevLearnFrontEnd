@@ -30,7 +30,7 @@ const Home: React.FC = () => {
                             Sign up for one of our many in-depth programs today!
                         </p>
                         <button
-                            className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]"
+                            className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 shadow-md hover:translate-y-[-2px]"
                             onClick={handleNavigation}
                         >
                             Our Programs
