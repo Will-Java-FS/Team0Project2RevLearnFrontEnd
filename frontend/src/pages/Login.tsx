@@ -64,7 +64,7 @@ const Login: React.FC = () => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
-        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-2xl overflow-hidden border-4 border-blue-400 dark:border-blue-800 w-full max-w-md p-8"
+        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-xl overflow-hidden border-2 border-primary w-full max-w-md p-8"
         onSubmit={handleSubmit(handleLogin)}
       >
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
