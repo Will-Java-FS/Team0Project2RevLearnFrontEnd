@@ -17,6 +17,7 @@ class AxiosLessonService {
     return null;
   }
 
+  // Function reimplementation with async/await
   async getAllByCourse(courseId: number) {
     try {
       const response = await axios.get("/course/" + courseId + "/lessons");
@@ -30,6 +31,7 @@ class AxiosLessonService {
     }
     return null;
   }
+
   // getAllByCourse(courseId: number) {
   //   axios
   //     .get("/course/" + courseId + "/lessons")
