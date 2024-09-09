@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
-import axiosInstance from "./AxiosConfig"; // Import the configured Axios instance
-import Card from "./Card";
+import UserCard from "./UserCard"; // Import the updated UserCard
+import axios from "axios";
+import AuthService from "./AuthService"; // Import AuthService to get session ID
 
 // User interface definition
 interface User {
@@ -21,33 +21,33 @@ interface User {
   };
 }
 
-// UserCard Component
-const UserCard: React.FC<{ user: User }> = ({ user }) => {
-  const title = `${user.firstName} ${user.lastName} (${user.role})`;
-  const description = `Username: ${user.username}\nEmail: ${user.email}\nProgram: ${user.program.programName}`;
-  const link = `/users/${user.userId}`;
-
-  return <Card title={title} description={description} link={link} />;
-};
-
 export default function UserDashboard() {
-  const [courses, setCourses] = useState<any[]>([]); // Initialize with empty array for actual courses
-  const [loading, setLoading] = useState<boolean>(false);
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     // Fetch user details using the stored user ID from AuthService
     const fetchUserDetails = async () => {
-      const userId = AuthService.getLoggedInUserId();
+      const userId = AuthService.getLoggedInUserId(); // Get the logged-in user ID from AuthService
       if (userId !== -1) {
+        const userUrl = `http://localhost:8080/user/${userId}`;
+        console.log("Fetching user details from:", userUrl);
+
         try {
-          const response = await axiosInstance.get<User>(`/user/${userId}`);
+          const response = await axios.get(userUrl);
           setUser(response.data);
+          console.log("Fetched user data:", response.data);
         } catch (err) {
           console.error("Failed to fetch user details:", err);
           setError("Failed to fetch user details.");
+        } finally {
+          setLoading(false); // Set loading to false after fetching
         }
+      } else {
+        setError("User not logged in.");
+        setLoading(false);
       }
     };
 
@@ -59,13 +59,13 @@ export default function UserDashboard() {
     const fetchCourses = async () => {
       setLoading(true);
       try {
-        const response = await AxiosCourseService.getAll(); // Replace with actual API call
-        setCourses(response.data); // Set fetched courses
+        const response = await AxiosCourseService.getAll();
+        setCourses(response.data);
       } catch (err) {
         setError("Failed to fetch courses.");
         console.error("Failed to fetch courses:", err);
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false after fetching
       }
     };
     fetchCourses();
@@ -81,7 +81,7 @@ export default function UserDashboard() {
       </div>
 
       {/* Loading and Error States */}
-      {loading && <p>Loading courses...</p>}
+      {loading && <p>Loading data...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
       {/* Displaying Course List */}
@@ -116,13 +116,13 @@ export default function UserDashboard() {
           ))}
         </div>
       ) : (
-        <p>No courses available.</p>
+        !loading && <p>No courses available.</p>
       )}
 
       {/* Progress Tracker */}
       <div className="mt-8 text-center">
         <h2 className="text-2xl">Progress Tracker</h2>
-        {user && <UserCard user={user} />}
+        {user && <UserCard user={user} />} {/* Render the UserCard if user data is available */}
 
         <div className="mt-6 w-3/4 mx-auto">
           <h1 className="text-3xl text-primary mb-4">Course Progress</h1>

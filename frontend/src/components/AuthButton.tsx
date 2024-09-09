@@ -21,7 +21,7 @@ const AuthButton: React.FC = () => {
   return (
     <button
       onClick={handleButtonClick}
-      className={`btn glass btm-nav-sm ${
+      className={`btn btm-nav-sm ${
         isLoggedIn ? "btn-error text-white" : "btn-success"
       }`}
     >

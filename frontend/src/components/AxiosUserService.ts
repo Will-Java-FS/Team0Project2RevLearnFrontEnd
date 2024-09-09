@@ -77,6 +77,17 @@ class AxiosUserService {
     }
   }
 
+  // Method to fetch user details
+  async fetchUserDetails(userId: number) {
+    try {
+      const response = await axiosInstance.get(`/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      throw error; // Re-throw the error for further handling
+    }
+  }
+
   // Error handling method
   private handleError(error: unknown, defaultMessage: string): RegisterResult | LoginResult {
     if (axios.isAxiosError(error)) {
