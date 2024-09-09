@@ -1,9 +1,8 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
-import Card from "./Card"; // Assuming the Card component is in the same directory
+import axiosInstance from "./AxiosConfig"; // Import the configured Axios instance
+import Card from "./Card";
 
 // User interface definition
 interface User {
@@ -22,52 +21,6 @@ interface User {
   };
 }
 
-// Dummy user data
-const user: User = {
-  userId: 1,
-  email: "john.doe@example.com",
-  username: "johndoe",
-  passwordHash: "hashedpassword1",
-  firstName: "John",
-  lastName: "Doe",
-  userCreatedAt: "2024-09-05T15:33:44.286185Z",
-  role: "teacher",
-  userUpdatedAt: "2024-09-05T15:33:44.286185Z",
-  program: {
-    programId: 1,
-    programName: "Computer Science",
-  },
-};
-
-// Dummy courses data
-const dummyCourses = [
-  {
-    course_id: 1,
-    courseName: "Introduction to Programming",
-    description: "Learn the basics of programming using Java.",
-    teacherId: 101,
-    course_created_at: "2024-09-03T10:00:00Z",
-    course_updated_at: "2024-09-03T10:00:00Z",
-  },
-  {
-    course_id: 2,
-    courseName: "Advanced Java Concepts",
-    description:
-      "Explore advanced topics in Java, including concurrency and JVM internals.",
-    teacherId: 102,
-    course_created_at: "2024-09-03T10:00:00Z",
-    course_updated_at: "2024-09-03T10:00:00Z",
-  },
-  {
-    course_id: 3,
-    courseName: "Web Development with Spring Boot",
-    description: "Develop full-stack web applications using Spring Boot.",
-    teacherId: 103,
-    course_created_at: "2024-09-03T10:00:00Z",
-    course_updated_at: "2024-09-03T10:00:00Z",
-  },
-];
-
 // UserCard Component
 const UserCard: React.FC<{ user: User }> = ({ user }) => {
   const title = `${user.firstName} ${user.lastName} (${user.role})`;
@@ -78,10 +31,28 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
 };
 
 export default function UserDashboard() {
-  const [courses, setCourses] = useState(dummyCourses); // Initialize with dummy courses
+  const [courses, setCourses] = useState<any[]>([]); // Initialize with empty array for actual courses
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const username = AuthService.loggedInUsername();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    // Fetch user details using the stored user ID from AuthService
+    const fetchUserDetails = async () => {
+      const userId = AuthService.getLoggedInUserId();
+      if (userId !== -1) {
+        try {
+          const response = await axiosInstance.get<User>(`/user/${userId}`);
+          setUser(response.data);
+        } catch (err) {
+          console.error("Failed to fetch user details:", err);
+          setError("Failed to fetch user details.");
+        }
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
 
   useEffect(() => {
     // Fetch courses data using AxiosCourseService
@@ -90,9 +61,9 @@ export default function UserDashboard() {
       try {
         const response = await AxiosCourseService.getAll(); // Replace with actual API call
         setCourses(response.data); // Set fetched courses
-      } catch (error) {
+      } catch (err) {
         setError("Failed to fetch courses.");
-        console.error("Failed to fetch courses:", error);
+        console.error("Failed to fetch courses:", err);
       } finally {
         setLoading(false);
       }
@@ -104,7 +75,7 @@ export default function UserDashboard() {
     <>
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold mb-2">
-          {username !== "NO LOGGED IN USER" ? username : "Guest"} Dashboard
+          {user ? `${user.firstName} ${user.lastName}` : "Guest"} Dashboard
         </h1>
         <h3 className="text-xl">Your Programs</h3>
       </div>
@@ -151,7 +122,7 @@ export default function UserDashboard() {
       {/* Progress Tracker */}
       <div className="mt-8 text-center">
         <h2 className="text-2xl">Progress Tracker</h2>
-        <UserCard user={user} />
+        {user && <UserCard user={user} />}
 
         <div className="mt-6 w-3/4 mx-auto">
           <h1 className="text-3xl text-primary mb-4">Course Progress</h1>
