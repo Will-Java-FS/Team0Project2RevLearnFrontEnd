@@ -7,7 +7,7 @@ const UserCard = ({ user }) => {
       <div className="flex justify-center mt-4">
         <img
           className="h-24 w-24 rounded-full object-cover border-2 border-primary"
-          src={user.profilePicture}
+          src={user.profilePicture || "https://via.placeholder.com/150"} // Fallback if profilePicture is undefined
           alt="User Profile"
         />
       </div>
@@ -17,10 +17,9 @@ const UserCard = ({ user }) => {
         <h2 className="text-2xl font-bold text-primary">
           {user.firstName} {user.lastName}
         </h2>
-        <p className="text-gray-500">{user.title}</p>
+        <p className="text-gray-500">{user.title || "Title not available"}</p>
         <p className="text-gray-500 mt-1">
-          <span className="font-semibold">Role:</span>
-          {user.role}
+          <span className="font-semibold">Role:</span> {user.role}
         </p>
         <p className="text-gray-500 mt-1">Username: {user.username}</p>
         <p className="text-gray-500 mt-1">Email: {user.email}</p>
@@ -34,7 +33,7 @@ const UserCard = ({ user }) => {
 
       {/* User Actions */}
       <div className="flex justify-around py-4 bg-gray-100">
-        <button className="btn  btn-warning rounded-xl">Edit</button>
+        <button className="btn btn-warning rounded-xl">Edit</button>
         <button className="btn btn-error">Delete</button>
       </div>
     </div>

@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "target": "ESNext", // Updated to a modern target to support import.meta
+    "lib": ["dom", "esnext"], // Updated to 'esnext' to support the latest features
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,26 +9,18 @@
     "skipLibCheck": true,
     "baseUrl": "./src",
     "paths": {
-      "*": [
-        "src/*"
-      ]
+      "*": ["src/*"]
     },
-    /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "bundler", // Use bundler mode for module resolution
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
-    /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "module": "ESNext" // Updated to ESNext for import.meta compatibility
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

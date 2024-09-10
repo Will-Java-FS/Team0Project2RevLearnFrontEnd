@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Icon256.png";
+import Logout from "./AuthButton";
+import AuthButton from "./AuthButton";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,7 +11,7 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <div className="navbar sticky top-0 bg-base-100/90 dark:bg-content-100 backdrop-blur-md shadow-md py-5 z-50">
+    <div className="navbar sticky top-0 bg-base-300/90 dark:bg-content-100 backdrop-blur-md shadow-md py-5 z-50">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -126,6 +128,7 @@ const Navbar = () => {
 
       {/* Navbar End - Actions */}
       <div className="navbar-end">
+       
         <button className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -162,6 +165,7 @@ const Navbar = () => {
           </div>
         </button>
       </div>
+      <AuthButton/>
     </div>
   );
 };

@@ -64,7 +64,7 @@ const Login: React.FC = () => {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
-        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-2xl overflow-hidden border-4 border-blue-400 dark:border-blue-800 w-full max-w-md p-8"
+        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-box overflow-hidden border-2 border-primary w-full max-w-md p-8"
         onSubmit={handleSubmit(handleLogin)}
       >
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
               type="text"
               {...register("username")}
               aria-invalid={errors.username ? "true" : "false"}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.username && (
               <span className="text-red-500 text-sm">
@@ -106,7 +106,7 @@ const Login: React.FC = () => {
               type="password"
               {...register("password")}
               aria-invalid={errors.password ? "true" : "false"}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.password && (
               <span className="text-red-500 text-sm">
@@ -118,7 +118,7 @@ const Login: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-btn hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {loading ? "Logging in..." : "Let's Go"}
             </button>

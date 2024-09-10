@@ -10,12 +10,14 @@
     "preview": "vite preview",
     "format": "prettier --write ./src"
   },
+  "proxy": "http://3.101.134.237:8080",
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "@hookform/resolvers": "^3.9.0",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.5",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "frontend": "file:",
     "heroicons": "^2.1.5",
     "ldrs": "^1.0.2",

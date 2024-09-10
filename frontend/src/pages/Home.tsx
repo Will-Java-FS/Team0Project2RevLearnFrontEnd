@@ -20,17 +20,17 @@ const Home: React.FC = () => {
                 lg:bg-gradient-to-r lg:from-amber-200 lg:via-orange-400 lg:to-red-600
                 dark:lg:from-yellow-500 dark:lg:via-orange-500 dark:lg:to-red-500"
             >
-                <div className="hero-content text-center text-white">
+                <div className="hero-content text-center text-white dark:text-black">
                     <div className="max-w-md mx-auto">
-                        <h1 className="drop-shadow-xl text-6xl font-bold text-white">
+                        <h1 className="drop-shadow-xl text-6xl font-bold">
                             RevLearn
                         </h1>
-                        <h2 className="text-xl py-6">Pinnacle of learning.</h2>
+                        <h2 className="text-xl py-4">The pinnacle of learning.</h2>
                         <p className="text-md font-light py-5">
-                            Unlock your destined potential and buy now.
+                            Sign up for one of our many in-depth programs today!
                         </p>
                         <button
-                            className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]"
+                            className="btn dark:text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 shadow-md hover:translate-y-[-2px]"
                             onClick={handleNavigation}
                         >
                             Our Programs
