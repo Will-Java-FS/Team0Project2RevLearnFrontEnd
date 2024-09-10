@@ -62,7 +62,7 @@ class AxiosCourseService {
       const response = await axios.post("/courses", {
         courseName,
         description,
-        teacherId: AuthService.loggedInUserId(),
+        teacherId: AuthService.getLoggedInUserId(),
         programId,
       });
       if (response.status === 201) {
