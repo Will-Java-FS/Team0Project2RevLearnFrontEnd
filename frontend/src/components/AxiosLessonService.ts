@@ -37,7 +37,7 @@ class AxiosLessonService {
 
   getById(id: number) {
     axios
-      .get("/lessons/" + id)
+      .get("/lessons/{$id}")
       .then((response) => {
         console.log(response.data);
         if (response.status === 200) {
@@ -50,13 +50,11 @@ class AxiosLessonService {
     return null;
   }
 
-  create(lessonTitle: string, content: string, courseId: number) {
+  create(lessonTitle: string, content: string) {
     axios
       .post("/lessons", {
         lessonTitle: lessonTitle,
         content: content,
-        teacherId: AuthService.loggedInUserId(),
-        courseId: courseId,
       })
       .then((response) => {
         console.log(response.data);
