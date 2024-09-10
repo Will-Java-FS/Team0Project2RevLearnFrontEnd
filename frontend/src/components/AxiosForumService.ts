@@ -16,24 +16,56 @@ interface Forum {
   createdAt: string;
   updatedAt: string;
 }
+interface User {
+  userId: any;
+  email: string;
+  username: string;
+  passwordHash: string;
+  firstName: string;
+  lastName: string;
+  userCreatedAt: string;
+  role: string;
+  userUpdatedAt: string;
+  program: {
+    programId: number;
+    programName: string;
+  };
+}
+
+interface ForumPost {
+  forumpost_id: number;
+  post_text: string;
+  post_created_at: string;
+  post_updated_at: string;
+  Forum: Forum;
+  User: User;
+}
 
 // Define the structure of a post within a forum
-interface ForumPost {
-  forumId: number;
-  title: string;
-  forumCreatedAt: string;
-  forumUpdatedAt: string;
-  course: {
-    course_id: number;
-    courseName: string;
-    description: string;
-    teacherId: number;
-    course_created_at: string;
-    course_updated_at: string;
-  };
-  content: string; // additional fields that are part of the response
-  posterId: number; // any other fields
-}
+// interface ForumPost {
+//   length: number;
+//   postUpdatedAt: string;
+//   postCreatedAt: string;
+//   post_text: string;
+//   forum:
+//   {
+//     forumId: any;
+//     title: any;
+//     forumCreatedAt: any;
+//     forumUpdatedAt: any;
+//     course: any;
+//     id: number;
+//     forumTitle: string;
+//     content: string;
+//     posterId: number;
+//     courseId: number;
+//     createdAt: string;
+//     updatedAt: string;
+//   }
+//   forumpost_id: number;
+//   content: string; // additional fields that are part of the response
+//   posterId: number; // any other fields
+// }
 
 class AxiosForumService {
   async getAllForums(): Promise<Forum[] | null> {
@@ -72,9 +104,9 @@ class AxiosForumService {
     return null;
   }
 
-  async getPostById(id: number): Promise<ForumPost | null> {
+  async getPostsById(id: number): Promise<ForumPost[] | null> {
     try {
-      const response = await axios.get<ForumPost>(`/forumsposts/${id}`);
+      const response = await axios.get<ForumPost[]>(`/forumpost/forum/${id}`);
       if (response.status === 200) {
         return response.data;
       }
@@ -108,9 +140,10 @@ class AxiosForumService {
   async createPost(
     content: string,
     forumId: number,
+    userId:number
   ): Promise<ForumPost | null> {
     try {
-      const response = await axios.post<ForumPost>(`/forumpost/${forumId}`, {
+      const response = await axios.post<ForumPost>(`/forumpost/${userId}/${forumId}`, {
         content,
         posterId: AuthService.loggedInUserId(),
         forumId,

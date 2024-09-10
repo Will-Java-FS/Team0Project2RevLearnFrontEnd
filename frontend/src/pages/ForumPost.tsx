@@ -10,7 +10,7 @@ interface Course {
   course_updated_at: string;
 }
 
-interface ForumPostData {
+interface forum {
   forumId: number;
   title: string;
   forumCreatedAt: string;
@@ -18,59 +18,89 @@ interface ForumPostData {
   course: Course;
 }
 
-// Show the fourm info + all posts for the forum
-// Give the forums owner option to delete/edit the forum
-// Have a form to create a new forum post
-// Allow users to edit/delete posts they own
-// Give teachers the ability to delete the forum and any of the fourm posts
-// Use authService to get logged in user's info, use the axios services for http requests
+interface user {
+  userId: number;
+  email: string;
+  username: string;
+  passwordHash: string;
+  firstName: string;
+  lastName: string;
+  userCreatedAt: string;
+  role: string;
+  userUpdatedAt: string;
+  program: {
+    programId: number;
+    programName: string;
+  };
+}
+
+interface ForumPostData {
+  forumpost_id: number;
+  post_text: string;
+  post_created_at: string;
+  post_updated_at: string;
+  Forum: forum;
+  user: user;
+}
+
 export default function ForumPost() {
-  const [forumPost, setForumPost] = useState<ForumPostData | null>(null);
+  const [forumPosts, setForumPosts] = useState<ForumPostData[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const prevforumid = Number(localStorage.getItem('selectedForumId'));
 
   useEffect(() => {
-    async function fetchForumPost() {
+    async function fetchForumPosts() {
       try {
-        const data = await AxiosForumService.getPostById(1); // Replace `1` with the actual forum post ID
-        if (data) {
-          // Transform the data if needed to match the ForumPostData structure
-          const transformedData: ForumPostData = {
-            forumId: data.forumId,
-            title: data.title,
-            forumCreatedAt: data.forumCreatedAt,
-            forumUpdatedAt: data.forumUpdatedAt,
-            course: data.course, // assuming course structure matches
-          };
-          setForumPost(transformedData);
+        setLoading(true);
+        setError(null);
+        // Make sure AxiosForumService.getPostsById returns an array of ForumPostData
+        const data = await AxiosForumService.getPostsById(prevforumid);
+        if (Array.isArray(data)) {
+          setForumPosts(data);
         } else {
-          console.warn("No forum post data available.");
+          setError("Unexpected data format received.");
         }
       } catch (error) {
-        console.error("Error fetching forum post:", error);
+        setError("Error fetching forum post data.");
+        console.error("Error fetching forum posts:", error);
+      } finally {
+        setLoading(false);
       }
     }
 
-    void fetchForumPost();
-  }, []);
+    fetchForumPosts();
+  }, [prevforumid]);
 
-  if (!forumPost) {
+  if (loading) {
     return <p>Loading...</p>;
   }
 
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!forumPosts || forumPosts.length === 0) {
+    return <p>No data available.</p>;
+  }
+
   return (
-    <>
-      <h1>{forumPost.title}</h1>
-      <h3>Course: {forumPost.course.courseName}</h3>
-      <p>
-        <strong>Description:</strong> {forumPost.course.description}
-      </p>
-      <p>
-        <strong>Created At:</strong>{" "}
-        {new Date(forumPost.forumCreatedAt).toLocaleString()}
-      </p>
-      <p>
-        <strong>Last Updated:</strong>{" "}
-        {new Date(forumPost.forumUpdatedAt).toLocaleString()}
-      </p>
-    </>
+    <div>
+      {forumPosts.map(post => (
+        <div className="bg-white rounded-lg shadow-md p-6 mb-4 w-full" key={post.forumpost_id}>
+          
+          <p><strong>Post:</strong> {post.post_text}</p>
+          <p className="text-sm text-gray-500"><strong>Created At:</strong> {new Date(post.post_created_at).toLocaleString()}</p>
+          <p className="text-sm text-gray-500"><strong>Last Updated:</strong> {new Date(post.post_updated_at).toLocaleString()}</p>
+          {post.user ? (
+            <>
+              <p><strong>Posted By:</strong> {post.user.username} (Email: {post.user.email})</p>
+              <p><strong>User Role:</strong> {post.user.role}</p>
+            </>
+          ) : (
+            <p>User information not available.</p>)}
+        </div>
+      ))}
+    </div>
   );
 }
