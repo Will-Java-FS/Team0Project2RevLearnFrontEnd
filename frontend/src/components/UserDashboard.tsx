@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
-import axiosInstance from "./AxiosConfig"; // Import the configured Axios instance
+import axiosInstance from "./AxiosConfig";
 import Card from "./Card";
 
 // User interface definition
@@ -18,26 +18,38 @@ interface User {
   program: {
     programId: number;
     programName: string;
-  };
+  } | null;
+}
+
+// Course interface definition
+interface Course {
+  course_id: number;
+  courseName: string;
+  description: string;
+  teacherId: number;
+  course_created_at: string;
+  course_updated_at: string;
 }
 
 // UserCard Component
 const UserCard: React.FC<{ user: User }> = ({ user }) => {
   const title = `${user.firstName} ${user.lastName} (${user.role})`;
-  const description = `Username: ${user.username}\nEmail: ${user.email}\nProgram: ${user.program.programName}`;
+  const description = `Username: ${user.username}\nEmail: ${user.email}\nProgram: ${
+    user.program?.programName || "No program assigned"
+  }`;
   const link = `/users/${user.userId}`;
 
   return <Card title={title} description={description} link={link} />;
 };
 
 export default function UserDashboard() {
-  const [courses, setCourses] = useState<any[]>([]); // Initialize with empty array for actual courses
-  const [loading, setLoading] = useState<boolean>(false);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState<boolean>(true);
+  const [loadingUser, setLoadingUser] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Fetch user details using the stored user ID from AuthService
     const fetchUserDetails = async () => {
       const userId = AuthService.getLoggedInUserId();
       if (userId !== -1) {
@@ -47,7 +59,11 @@ export default function UserDashboard() {
         } catch (err) {
           console.error("Failed to fetch user details:", err);
           setError("Failed to fetch user details.");
+        } finally {
+          setLoadingUser(false);
         }
+      } else {
+        setLoadingUser(false);
       }
     };
 
@@ -55,25 +71,62 @@ export default function UserDashboard() {
   }, []);
 
   useEffect(() => {
-    // Fetch courses data using AxiosCourseService
     const fetchCourses = async () => {
-      setLoading(true);
+      setLoadingCourses(true);
       try {
-        const response = await AxiosCourseService.getAll(); // Replace with actual API call
-        setCourses(response.data); // Set fetched courses
+        const response = await AxiosCourseService.getAll();
+        setCourses(response.data);
       } catch (err) {
         setError("Failed to fetch courses.");
         console.error("Failed to fetch courses:", err);
       } finally {
-        setLoading(false);
+        setLoadingCourses(false);
       }
     };
     fetchCourses();
   }, []);
 
+  const renderCourseList = () => {
+    if (loadingCourses) return <p>Loading courses...</p>;
+    if (error) return <p className="text-red-500">{error}</p>;
+    if (!courses || courses.length === 0) return <p>No courses available.</p>;
+
+    return (
+      <div className="flex flex-col space-y-4">
+        {courses.map((course) => (
+          <div
+            key={course.course_id}
+            className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300"
+          >
+            <div className="card-body flex flex-row items-center justify-between">
+              <div className="flex flex-col justify-between">
+                <h2 className="card-title">{course.courseName}</h2>
+                <p>{course.description}</p>
+                <p>
+                  <strong>Teacher ID:</strong> {course.teacherId}
+                </p>
+                <p>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(course.course_created_at).toLocaleString()}
+                </p>
+                <p>
+                  <strong>Updated At:</strong>{" "}
+                  {new Date(course.course_updated_at).toLocaleString()}
+                </p>
+              </div>
+              <div className="card-actions">
+                <button className="btn btn-primary">Click here</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <>
-      <div className="text-center mb-6">
+      <div className="text-center my-10">
         <h1 className="text-3xl font-bold mb-2">
           {user ? `${user.firstName} ${user.lastName}` : "Guest"} Dashboard
         </h1>
@@ -81,49 +134,17 @@ export default function UserDashboard() {
       </div>
 
       {/* Loading and Error States */}
-      {loading && <p>Loading courses...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {loadingUser ? <p>Loading user data...</p> : null}
+      {!loadingUser && user && <UserCard user={user} />}
 
       {/* Displaying Course List */}
-      {!loading && !error && courses.length > 0 ? (
-        <div className="flex flex-col space-y-4">
-          {courses.map((course) => (
-            <div
-              key={course.course_id}
-              className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300"
-            >
-              <div className="card-body flex flex-row items-center justify-between">
-                <div className="flex flex-col justify-between">
-                  <h2 className="card-title">{course.courseName}</h2>
-                  <p>{course.description}</p>
-                  <p>
-                    <strong>Teacher ID:</strong> {course.teacherId}
-                  </p>
-                  <p>
-                    <strong>Created At:</strong>{" "}
-                    {new Date(course.course_created_at).toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Updated At:</strong>{" "}
-                    {new Date(course.course_updated_at).toLocaleString()}
-                  </p>
-                </div>
-                <div className="card-actions">
-                  <button className="btn btn-primary">Click here</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>No courses available.</p>
-      )}
+      <div className="text-center my-4 text-xl font-sans text-red-500">
+        {renderCourseList()}
+      </div>
 
       {/* Progress Tracker */}
       <div className="mt-8 text-center">
         <h2 className="text-2xl">Progress Tracker</h2>
-        {user && <UserCard user={user} />}
-
         <div className="mt-6 w-3/4 mx-auto">
           <h1 className="text-3xl text-primary mb-4">Course Progress</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

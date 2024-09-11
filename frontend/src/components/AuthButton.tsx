@@ -9,7 +9,7 @@ const AuthButton: React.FC = () => {
     if (AuthService.isLoggedIn()) {
       // If logged in, log out and redirect to the login page
       AuthService.logout();
-      navigate("/home");
+      navigate("/");
     } else {
       // If not logged in, simply redirect to the login page
       navigate("/login");
@@ -21,7 +21,7 @@ const AuthButton: React.FC = () => {
   return (
     <button
       onClick={handleButtonClick}
-      className={`btn glass btm-nav-sm ${
+      className={`btn mx-4 btm-sm ${
         isLoggedIn ? "btn-error text-white" : "btn-success"
       }`}
     >

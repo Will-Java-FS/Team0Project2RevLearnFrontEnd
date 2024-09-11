@@ -9,7 +9,7 @@ import Modal from "../utils/modal"; // Import the Modal component
 // Define Zod schema for form validation
 const loginSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  passwordHash: z.string().min(8, "Password must be at least 8 characters"), // Corrected to 'passwordHash'
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
     try {
       const { success, message } = await AxiosUserService.loginUser(
         data.username,
-        data.password,
+        data.passwordHash // Updated to use 'passwordHash'
       );
 
       if (success) {
@@ -97,20 +97,20 @@ const Login: React.FC = () => {
           <div className="relative mt-6">
             <label
               className="block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="password"
+              htmlFor="passwordHash" // Updated to match 'passwordHash'
             >
               Password
             </label>
             <input
-              id="password"
+              id="passwordHash" // Updated to match 'passwordHash'
               type="password"
-              {...register("password")}
-              aria-invalid={errors.password ? "true" : "false"}
+              {...register("passwordHash")} // Updated to use 'passwordHash'
+              aria-invalid={errors.passwordHash ? "true" : "false"}
               className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            {errors.password && (
+            {errors.passwordHash && ( // Updated to match 'passwordHash'
               <span className="text-red-500 text-sm">
-                {errors.password.message}
+                {errors.passwordHash.message}
               </span>
             )}
           </div>

@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
       {/* Footer and other components */}
       <Footer />
-      <ThemeToggle className="z-50" />
+      <ThemeToggle />
     </div>
   );
 };

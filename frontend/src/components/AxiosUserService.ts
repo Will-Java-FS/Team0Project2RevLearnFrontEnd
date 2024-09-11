@@ -12,6 +12,7 @@ interface LoginResult {
   success: boolean;
   message?: string;
   token?: string;
+  username?: string; // Updated to match the AuthResponse class
   userId?: number;
   role?: string;
   program?: {
@@ -23,11 +24,11 @@ interface LoginResult {
 
 class AxiosUserService {
   // Method for user login
-  async loginUser(username: string, password: string): Promise<LoginResult> {
+  async loginUser(username: string, passwordHash: string): Promise<LoginResult> {
     try {
       const response = await axiosInstance.post(
         "/user/login",
-        { username, passwordHash: password }, // Send 'passwordHash' instead of 'password'
+        { username, passwordHash }, // Using 'passwordHash' instead of 'password'
         { headers: { "Content-Type": "application/json" } }
       );
 
@@ -41,7 +42,7 @@ class AxiosUserService {
       // Use AuthService to store login details
       AuthService.login(userId, responseUsername, role, program.programId, token);
 
-      return { success: true, token };
+      return { success: true, token, username: responseUsername, userId, role, program };
     } catch (error: unknown) {
       return this.handleError(error, "Invalid credentials");
     }
@@ -50,7 +51,7 @@ class AxiosUserService {
   // Method for user registration
   async registerUser(
     username: string,
-    password: string,
+    passwordHash: string,
     email: string,
     role: string,
     last: string,
@@ -61,7 +62,7 @@ class AxiosUserService {
       const payload = {
         email,
         username,
-        passwordHash: password,
+        passwordHash, // Using 'passwordHash' instead of 'password'
         firstName: first,
         lastName: last,
         role,
