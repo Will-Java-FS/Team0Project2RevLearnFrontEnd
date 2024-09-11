@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AxiosCourseService from "./AxiosCourseService";
 import AxiosLessonService from "./AxiosLessonService";
 import AuthService from "./AuthService";
+import { useNavigate } from "react-router-dom";
 
 export interface Course {
     course_id: number;
@@ -47,8 +48,8 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     const handleLessonSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const newLesson: Lesson = await AxiosLessonService.create(lessonTitle, lessonContent, course.course_id);
-            if (newLesson) {
+            const newLesson: Lesson | null = await AxiosLessonService.create(lessonTitle, lessonContent, course.course_id);
+            if (newLesson !== null) {
                 // Update the course lessons state with the new lesson
                 course.lessons.push(newLesson);
                 setShowLessonForm(false);
@@ -60,6 +61,11 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
         }
     };
 
+    const navigate = useNavigate();
+
+    const handleLessonClick = (courseId: number, lessonPlanId: number) => {
+        navigate(`/course/${courseId}/lesson/${lessonPlanId}`);
+    };
 
     return (
         <div className="relative flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md overflow-hidden">
@@ -72,12 +78,13 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                     {course.lessons.length > 0 && (<h3 className="text-sm font-semibold text-gray-700 line-clamp-3">Lessons</h3>)}
                     <ul className="text-sm">
                         {(showAllLessons ? course.lessons : course.lessons.slice(0, 1)).map((lesson) => (
-                            <li 
-                                className="relative flex w-full p-3 mb-2 flex-col rounded bg-gray-100 bg-clip-border text-gray-700 shadow-sm overflow-hidden"
-                                key={lesson.lesson_plan_id}>
+                            <button 
+                                className="relative flex w-full p-3 mb-2 flex-col rounded bg-gray-100 bg-clip-border text-gray-700 shadow-sm overflow-hidden text-left hover:bg-gray-200"
+                                key={lesson.lesson_plan_id}
+                                onClick={() => handleLessonClick(course.course_id, lesson.lesson_plan_id)}>
                                 <h4>{lesson.title}</h4>
-                                <h5>{lesson.content}</h5>
-                            </li>
+                                <h4>{lesson.content}</h4>
+                            </button>
                         ))}
                     </ul>
                 </div>
