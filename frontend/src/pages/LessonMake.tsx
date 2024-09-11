@@ -6,11 +6,11 @@ export default function lessonMake()
 {
     const [title,setTitle] = useState<string>("Title here");
     const [content, setContent] = useState<string>("Content here")
-    // function buttonEffect(){
-    //     const tinp = document.getElementById("titleInp");
-    //     const cinp = document.getElementById("contentInp");
-    //     AxiosLessonService.create(tinp.value,cinp.value);
-    // }
+    function buttonEffect(){
+        const tinp = document.getElementById("titleInp") as HTMLInputElement;
+        const cinp = (document.getElementById("contentInp") as HTMLInputElement);
+        AxiosLessonService.create(tinp.value,cinp.value);
+    }
     return (<>
     <div>
         <h1>Create a Lesson</h1>
@@ -23,7 +23,7 @@ export default function lessonMake()
             type="text"
             placeholder="Title here"
             className="input input-bordered w-full max-w-xs"
-            onChange={setTitle("titleInp")}
+            //onChange={setTitle("titleInp")}
           />
         </label>
 
@@ -37,7 +37,7 @@ export default function lessonMake()
             type="text"
             placeholder="Content here"
             className="input input-bordered w-full max-w-xs"
-            onChange={setTitle("contentInp")}
+            //onChange={setContent("contentInp")}
           />
         </label>
 
