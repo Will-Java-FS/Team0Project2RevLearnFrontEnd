@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AxiosForumService from "../components/AxiosForumService"; // Adjust the import path as needed
+import AuthService from "../components/AuthService";
 
 interface Course {
   course_id: number;
@@ -10,7 +11,7 @@ interface Course {
   course_updated_at: string;
 }
 
-interface forum {
+interface Forum {
   forumId: number;
   title: string;
   forumCreatedAt: string;
@@ -18,7 +19,7 @@ interface forum {
   course: Course;
 }
 
-interface user {
+interface User {
   userId: number;
   email: string;
   username: string;
@@ -39,22 +40,97 @@ interface ForumPostData {
   post_text: string;
   post_created_at: string;
   post_updated_at: string;
-  Forum: forum;
-  user: user;
+  Forum: Forum;
+  user: User;
+}
+function CreatePostForm({
+  userId,
+  forumId,
+  onPostCreated
+}: {
+  userId: number;
+  forumId: number;
+  onPostCreated: () => void; 
+}) {
+  const [post_text, setPostText] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const handlePostTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPostText(event.target.value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    if (!post_text.trim()) {
+        setError("Post content cannot be empty.");
+        setLoading(false);
+        return;
+    }
+
+    try {
+      const result = await AxiosForumService.createPost(post_text, forumId, 1);
+      if (result) {
+        setSuccess("Post submitted successfully!");
+        setPostText(""); // Clear the input field
+        onPostCreated(); // Call the function passed as a prop
+      } else {
+        setError("Failed to create post. Please try again.");
+      }
+    } catch (error) {
+      setError("Error submitting the post. Please try again.");
+      console.error("Error submitting post:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="p-6 bg-gray-100 rounded-lg shadow-md">
+      <h2 className="text-lg font-semibold mb-4">Create a New Post</h2>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          value={post_text}
+          onChange={handlePostTextChange}
+          placeholder="Write your post here..."
+          rows={4}
+          className="w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+        <div className="mt-4 flex justify-between items-center">
+          <button
+            type="submit"
+            className={`px-4 py-2 text-white rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-500'}`}
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+          {error && <p className="text-red-500">{error}</p>}
+          {success && <p className="text-green-500">{success}</p>}
+        </div>
+      </form>
+    </div>
+  );
 }
 
 export default function ForumPost() {
   const [forumPosts, setForumPosts] = useState<ForumPostData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null); // Assuming you have a way to get the logged-in user
   const prevforumid = Number(localStorage.getItem('selectedForumId'));
+ console.log(prevforumid)
 
   useEffect(() => {
     async function fetchForumPosts() {
       try {
         setLoading(true);
         setError(null);
-        // Make sure AxiosForumService.getPostsById returns an array of ForumPostData
         const data = await AxiosForumService.getPostsById(prevforumid);
         if (Array.isArray(data)) {
           setForumPosts(data);
@@ -72,6 +148,28 @@ export default function ForumPost() {
     fetchForumPosts();
   }, [prevforumid]);
 
+  // Assuming you have a way to get the logged-in user ID
+  const loggedInUserId = AuthService.getLoggedInUserId() || 1;
+
+  // Function to refresh the forum posts
+  async function fetchForumPosts() {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await AxiosForumService.getPostsById(1);
+      if (Array.isArray(data)) {
+        setForumPosts(data);
+      } else {
+        setError("Unexpected data format received.");
+      }
+    } catch (error) {
+      setError("Error fetching forum post data.");
+      console.error("Error fetching forum posts:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -88,7 +186,6 @@ export default function ForumPost() {
     <div>
       {forumPosts.map(post => (
         <div className="bg-white rounded-lg shadow-md p-6 mb-4 w-full" key={post.forumpost_id}>
-          
           <p><strong>Post:</strong> {post.post_text}</p>
           <p className="text-sm text-gray-500"><strong>Created At:</strong> {new Date(post.post_created_at).toLocaleString()}</p>
           <p className="text-sm text-gray-500"><strong>Last Updated:</strong> {new Date(post.post_updated_at).toLocaleString()}</p>
@@ -98,9 +195,11 @@ export default function ForumPost() {
               <p><strong>User Role:</strong> {post.user.role}</p>
             </>
           ) : (
-            <p>User information not available.</p>)}
+            <p>User information not available.</p>
+          )}
         </div>
       ))}
+      <CreatePostForm userId={loggedInUserId} forumId={prevforumid} onPostCreated={fetchForumPosts} />
     </div>
   );
 }
