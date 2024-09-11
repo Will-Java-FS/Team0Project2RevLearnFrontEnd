@@ -56,6 +56,10 @@ export default function AllCourses() {
     fetchCourseData();
   }, []);
 
+  const handleRemoveCourse = (courseId: number) => {
+    setCourses(courses.filter(course => course.course_id !== courseId));
+  };
+
   // Get the card components for the current page
   const currentCards = courses.slice(
     (currentPage - 1) * itemsPerPage,
@@ -82,6 +86,7 @@ export default function AllCourses() {
           <CourseCard
             key={course.course_id}
             course={course}
+            onRemoveCourse={handleRemoveCourse}
           />
         ))}
       </div>

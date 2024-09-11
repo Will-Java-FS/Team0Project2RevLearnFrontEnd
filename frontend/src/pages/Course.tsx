@@ -14,7 +14,7 @@ export default function MyCourses() {
     const fetchCourseData = async () => {
       try {
         // const enrollmentsData = await AxiosEnrollmentService.getEnrollments(1);
-        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.loggedInUserId());
+        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
         const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
         const courseWithLessonsData = await Promise.all(
           courseData.map(async (course: Course) => {
@@ -39,6 +39,11 @@ export default function MyCourses() {
     // if (AuthService.isLoggedIn()) 
     fetchCourseData();
   }, []);
+
+  const handleRemoveCourse = (courseId: number) => {
+    setCourses(courses.filter(course => course.course_id !== courseId));
+  };
+
 
   if (!AuthService.isLoggedIn()) {
     return (
@@ -70,6 +75,7 @@ export default function MyCourses() {
           <CourseCard
             key={course.course_id}
             course={course}
+            onRemoveCourse={handleRemoveCourse}
           />
         ))}
       </div>
