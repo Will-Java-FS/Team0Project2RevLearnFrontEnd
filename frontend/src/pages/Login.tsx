@@ -35,11 +35,7 @@ const Login: React.FC = () => {
     try {
       const { success, message } = await AxiosUserService.loginUser(
         data.username,
-<<<<<<< HEAD
-        data.password
-=======
-        data.passwordHash // Updated to use 'passwordHash'
->>>>>>> Drew
+        data.passwordHash
       );
 
       if (success) {
@@ -111,15 +107,9 @@ const Login: React.FC = () => {
             <input
               id="passwordHash" // Updated to match 'passwordHash'
               type="password"
-<<<<<<< HEAD
-              {...register("password")}
-              aria-invalid={errors.password ? "true" : "false"}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
-=======
-              {...register("passwordHash")} // Updated to use 'passwordHash'
+              {...register("passwordHash")}
               aria-invalid={errors.passwordHash ? "true" : "false"}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
->>>>>>> Drew
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.passwordHash && ( // Updated to match 'passwordHash'
               <span className="text-red-500 text-sm">

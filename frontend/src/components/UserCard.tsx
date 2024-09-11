@@ -53,11 +53,7 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
       <div className="flex justify-center mt-4">
         <img
           className="h-24 w-24 rounded-full object-cover border-2 border-primary"
-<<<<<<< HEAD
           src={user.profilePicture || "https://via.placeholder.com/150"} // Fallback if profilePicture is undefined
-=======
-          src={user.profilePicture || 'https://avatar.iran.liara.run/public'}
->>>>>>> Drew
           alt="User Profile"
         />
       </div>
@@ -80,18 +76,12 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
       </div>
 
       {/* User Actions */}
-<<<<<<< HEAD
-      <div className="flex justify-around py-4 bg-gray-100">
-        <button className="btn btn-warning rounded-xl">Edit</button>
-        <button className="btn btn-error">Delete</button>
-=======
       <div className="flex justify-center gap-4 py-4 bg-gray-100">
         <button className="btn btn-warning rounded-xl" onClick={handleEditClick}>
           Edit
         </button>
 
         <button className="btn btn-error rounded-xl">Delete</button>
->>>>>>> Drew
       </div>
     </div>
   ) : (

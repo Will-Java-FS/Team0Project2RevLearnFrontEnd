@@ -5,7 +5,7 @@ import AuthService from "./AuthService";
 // Create an axios instance
 const axiosInstance = axios.create({
   // baseURL: import.meta.env.VITE_API_BASE_URL, // Access Vite environment variable
-baseURL: "http://localhost:8080",
+baseURL: "http://54.205.97.225:8080/",
  // Use a hardcoded URL for now
 });
 

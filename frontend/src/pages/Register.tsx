@@ -15,13 +15,8 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-<<<<<<< HEAD
   role: z.enum(["student", "teacher", "admin"]),
   programId: z.string().nullable().optional() // Allow programId to be optional and nullable
-=======
-  role: z.enum(["student", "teacher"]),
-  programId: z.string().nullable().optional(), // Allow programId to be optional and nullable
->>>>>>> Drew
 });
 
 type FormData = z.infer<typeof formSchema>;
