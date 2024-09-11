@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import User from "./pages/User";
 import UserEditForm from "./pages/user/UserEditForm";
 import AllPrograms from "./pages/AllPrograms";
+import AllCourses from "./pages/AllCourses";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
+          <Route path="/allcourses" element={<AllCourses />} />
           <Route path="/course" element={<Course />} />
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
