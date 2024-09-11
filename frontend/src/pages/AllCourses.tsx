@@ -84,26 +84,26 @@ export default function AllCourses() {
     }
   };
 
-  // if (!AuthService.isLoggedIn()) {
-  //   return (
-  //       <div className="flex flex-col items-center min-h-screen p-6">
-  //           <h5>Please log in to view your courses</h5>
-  //           <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</button>
-  //       </div>
-  //   );
-  // }
+  if (!AuthService.isLoggedIn()) {
+    return (
+        <div className="flex flex-col items-center min-h-screen p-6">
+            <h5>Please log in to view your courses</h5>
+            <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</button>
+        </div>
+    );
+  }
 
-  // if (courses.length === 0) {
-  //   return (
-  //       <div className="flex flex-col items-center min-h-screen p-6">
-  //           <h5>Unlock your potential today</h5>
-  //           <button onClick={() => window.location.href = "/allprograms"}
-  //             className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
-  //               Our Programs
-  //           </button>
-  //       </div>
-  //   );
-  // }
+  if (courses.length === 0) {
+    return (
+        <div className="flex flex-col items-center min-h-screen p-6">
+            <h5>Unlock your potential today</h5>
+            <button onClick={() => window.location.href = "/allprograms"}
+              className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
+                Our Programs
+            </button>
+        </div>
+    );
+  }
 
 
   return (
