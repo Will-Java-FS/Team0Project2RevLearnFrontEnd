@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AxiosForumService from "../components/AxiosForumService"; // Adjust the import path as needed
 import AuthService from "../components/AuthService";
 
@@ -91,7 +92,7 @@ function CreatePostForm({
   };
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-md">
+    <div className="p-6 bg-neutral text-white rounded-box shadow-md">
       <h2 className="text-lg font-semibold mb-4">Create a New Post</h2>
       <form onSubmit={handleSubmit}>
         <textarea
@@ -99,13 +100,13 @@ function CreatePostForm({
           onChange={handlePostTextChange}
           placeholder="Write your post here..."
           rows={4}
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className="w-full p-2 border border-gray-300 rounded-badge"
           required
         />
         <div className="mt-4 flex justify-between items-center">
           <button
             type="submit"
-            className={`px-4 py-2 text-white rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-500'}`}
+            className={`px-4 py-2 rounded-btn hover:bg-primary ${loading ? 'bg-gray-400' : 'bg-accent'}`}
             disabled={loading}
           >
             {loading ? "Submitting..." : "Submit"}
@@ -119,6 +120,7 @@ function CreatePostForm({
 }
 
 export default function ForumPost() {
+  const navigate = useNavigate();
   const [forumPosts, setForumPosts] = useState<ForumPostData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -183,12 +185,15 @@ export default function ForumPost() {
   }
 
   return (
-    <div>
+    <div className="p-10">
+      <button className="min-h-10 w-full bg-primary hover:bg-accent text-white rounded-btn btn-active" onClick={() => navigate(-1)}>Back To Fourms</button>
+      <br/>
+      <br/>
       {forumPosts.map(post => (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-4 w-full" key={post.forumpost_id}>
+        <div className="bg-neutral rounded-box text-white shadow-md p-5 mb-4 w-full" key={post.forumpost_id}>
           <p><strong>Post:</strong> {post.post_text}</p>
-          <p className="text-sm text-gray-500"><strong>Created At:</strong> {new Date(post.post_created_at).toLocaleString()}</p>
-          <p className="text-sm text-gray-500"><strong>Last Updated:</strong> {new Date(post.post_updated_at).toLocaleString()}</p>
+          <p className="text-sm"><strong>Created At:</strong> {new Date(post.post_created_at).toLocaleString()}</p>
+          <p className="text-sm"><strong>Last Updated:</strong> {new Date(post.post_updated_at).toLocaleString()}</p>
           {post.user ? (
             <>
               <p><strong>Posted By:</strong> {post.user.username} (Email: {post.user.email})</p>
@@ -199,6 +204,7 @@ export default function ForumPost() {
           )}
         </div>
       ))}
+      <br/>
       <CreatePostForm userId={loggedInUserId} forumId={prevforumid} onPostCreated={fetchForumPosts} />
     </div>
   );

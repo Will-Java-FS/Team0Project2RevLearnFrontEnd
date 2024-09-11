@@ -66,23 +66,22 @@ class AxiosLessonService {
     return null;
   }
 
-  create(lessonTitle: string, content: string, courseId: number) {
-    axios
-      .post("/lessons", {
-        lessonTitle: lessonTitle,
-        content: content,
-        teacherId: AuthService.getLoggedInUserId(),
-        courseId: courseId,
-      })
-      .then((response) => {
-        console.log(response.data);
-        if (response.status === 201) {
-          return response.data;
-        }
-      })
-      .catch((error) => {
-        console.error("Error on lesson creation attempt!", error);
+  async create(title: string, description: string, implementation: string, application: string, summary: string) {
+    try {
+      const response = await axios.post("/lessons", {
+        title: title,
+        description: description,
+        implementation: implementation,
+        realWorldApplication: application,
+        summary: summary
       });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error(`Error getting lesson creation!`, error);
+      throw error;
+    }
     return null;
   }
 

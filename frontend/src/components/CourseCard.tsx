@@ -26,7 +26,10 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     const [showAllLessons, setShowAllLessons] = useState(false);
     const [showLessonForm, setShowLessonForm] = useState(false);
     const [lessonTitle, setLessonTitle] = useState("");
-    const [lessonContent, setLessonContent] = useState("");
+    const [lessonDescription, setLessonDescription] = useState("");
+    const [lessonImplementation, setLessonImplementation] = useState("");
+    const [lessonApplication, setLessonApplication] = useState("");
+    const [lessonSummary, setLessonSummary] = useState("");
 
     const toggleShowAllLessons = () => {
         setShowAllLessons(!showAllLessons);
@@ -48,13 +51,16 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     const handleLessonSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const newLesson: Lesson | null = await AxiosLessonService.create(lessonTitle, lessonContent, course.course_id);
+            const newLesson: Lesson | null = await AxiosLessonService.create(lessonTitle, lessonDescription, lessonImplementation, lessonApplication, lessonSummary);
             if (newLesson !== null) {
                 // Update the course lessons state with the new lesson
                 course.lessons.push(newLesson);
                 setShowLessonForm(false);
                 setLessonTitle("");
-                setLessonContent("");
+                setLessonDescription("");
+                setLessonImplementation("");
+                setLessonApplication("");
+                setLessonSummary("");
             }
         } catch (error) {
             console.error("Error creating lesson:", error);
@@ -68,18 +74,18 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     };
 
     return (
-        <div className="relative flex w-80 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md overflow-hidden">
+        <div className="relative flex w-80 flex-col rounded-box bg-neutral bg-clip-border shadow-md overflow-hidden">
             <div className="p-4">
                 <h5 className="mb-2 text-1g font-semibold text-orange-500 line-clamp-2">
                   {course.courseName}
                 </h5>
-                <p className="text-sm text-gray-700 line-clamp-3">{course.description}</p>
+                <p className="text-sm line-clamp-3">{course.description}</p>
                 <div className="mt-5">
-                    {course.lessons.length > 0 && (<h3 className="text-sm font-semibold text-gray-700 line-clamp-3">Lessons</h3>)}
+                    {course.lessons.length > 0 && (<h3 className="text-sm font-semibold line-clamp-3">Lessons</h3>)}
                     <ul className="text-sm">
                         {(showAllLessons ? course.lessons : course.lessons.slice(0, 1)).map((lesson) => (
                             <button 
-                                className="relative flex w-full p-3 mb-2 flex-col rounded bg-gray-100 bg-clip-border text-gray-700 shadow-sm overflow-hidden text-left hover:bg-gray-200"
+                                className="relative flex w-full p-3 mb-2 flex-col rounded-badge bg-base-100 bg-clip-border shadow-sm overflow-hidden text-left hover:bg-base-300"
                                 key={lesson.lesson_plan_id}
                                 onClick={() => handleLessonClick(lesson.lesson_plan_id)}>
                                 <h4>{lesson.title}</h4>
@@ -93,7 +99,7 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                 <div className="flex">
                     {course.lessons.length > 1 && (
                         <button 
-                            className="block w-full text-center rounded-lg bg-orange-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md transition-all hover:shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
                             onClick={toggleShowAllLessons}>
                             {showAllLessons ? "Show Less" : "Show All"}
                         </button>
@@ -104,35 +110,53 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                     {AuthService.isLoggedInTeacher() && (
                         <>
                             <button 
-                            className="block w-full text-center rounded-lg bg-orange-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md transition-all hover:shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
                             onClick={toggleLessonForm}>
                                 {showLessonForm ? "Cancel" : "Create New Lesson"}
                             </button>
                             {showLessonForm && (
-                                <form onSubmit={handleLessonSubmit} className="mt-4">
+                                <form onSubmit={handleLessonSubmit} className="mt-4 text-black">
                                     <input 
                                         type="text" 
                                         placeholder="Lesson Title" 
                                         value={lessonTitle} 
                                         onChange={(e) => setLessonTitle(e.target.value)} 
-                                        className="block w-3/4 mb-2 p-2 border border-gray-300 rounded"
+                                        className="block w-3/4 mb-2 p-2 border border-gray-300 rounded-badge"
                                     />
                                     <textarea 
-                                        placeholder="Lesson Content" 
-                                        value={lessonContent} 
-                                        onChange={(e) => setLessonContent(e.target.value)} 
-                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded"
-                                    ></textarea>
+                                        placeholder="Description" 
+                                        value={lessonDescription} 
+                                        onChange={(e) => setLessonDescription(e.target.value)} 
+                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                    />
+                                     <textarea 
+                                        placeholder="Implementation" 
+                                        value={lessonImplementation} 
+                                        onChange={(e) => setLessonImplementation(e.target.value)} 
+                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                    />
+                                     <textarea 
+                                        placeholder="Real World Application" 
+                                        value={lessonApplication} 
+                                        onChange={(e) => setLessonApplication(e.target.value)} 
+                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                    />
+                                     <textarea 
+                                        placeholder="Summary" 
+                                        value={lessonSummary} 
+                                        onChange={(e) => setLessonSummary(e.target.value)} 
+                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                    />
                                     <button 
                                         type="submit" 
-                                        className="block w-3/4 text-center rounded-lg bg-blue-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md transition-all hover:shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="block w-3/4 text-center rounded-btn bg-accent py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-primary focus:outline-none focus:ring-2 focus:ring-accent"
                                     >
                                         Submit
                                     </button>
                                 </form>
                             )}
                             <button 
-                            className="block w-full text-center rounded-lg bg-orange-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md transition-all hover:shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
                             onClick={handleDeleteCourse}>Delete Course</button>
                         </>
                     )}

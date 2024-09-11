@@ -64,11 +64,11 @@ export default function Forum() {
       <h1 className="text-4xl font-bold mb-6">Forum</h1>
       <h3 className="text-2xl font-semibold mb-6">List of Forum Posts</h3>
       {forumPosts.length > 0 ? (
-        <div className="space-y-6 max-w-2xl w-full">
+        <div className="space-y-6 max-w-2xl w-full text-white">
           {forumPosts.map((post) => (
             <div
               key={post.forumId}
-              className="bg-white rounded-lg shadow-md p-6 mb-4 w-full"
+              className="bg-neutral rounded-box shadow-md p-6 mb-4 w-full"
             >
               <h4 className="text-xl font-semibold mb-2">{post.title}</h4>
               <p className="mb-1">
@@ -77,20 +77,18 @@ export default function Forum() {
               <p className="mb-1">
                 <strong>Description:</strong> {post.course.description}
               </p>
-              <p className="text-sm text-gray-500 mb-1">
+              <p className="text-sm mb-1">
                 <strong>Created At:</strong>{" "}
                 {new Date(post.forumCreatedAt).toLocaleString()}
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm">
                 <strong>Last Updated:</strong>{" "}
                 {new Date(post.forumUpdatedAt).toLocaleString()}
               </p>
-              <p  className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">
                   
-              <button onClick={() => handleViewDetails(post.forumId)}>
+              <button className="mt-4 w-full bg-primary text-white px-4 py-2 rounded-btn hover:bg-accent" onClick={() => handleViewDetails(post.forumId)}>
                   View Details
               </button>
-              </p>
             </div>
           ))}
         </div>

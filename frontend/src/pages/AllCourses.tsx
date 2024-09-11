@@ -13,8 +13,8 @@ export default function AllCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
+  const [totalCards, setTotalCards] = useState<number>(4);
   const itemsPerPage = 4; // Number of card components per page
-  const totalCards = 30; // Total number of card items
   const totalPages = Math.ceil(totalCards / itemsPerPage);
 
   // Dummy data for card components
@@ -34,9 +34,11 @@ export default function AllCourses() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        // const enrollmentsData = await AxiosEnrollmentService.getEnrollments(1);
         const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
-        const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
+        var courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
+        if (AuthService.isLoggedInTeacher()) {
+          courseData = await AxiosCourseService.getAll();
+        }
         const courseWithLessonsData = await Promise.all(
           courseData.map(async (course: Course) => {
             const lessonsData = await AxiosLessonService.getAllByCourse(course.course_id);
@@ -46,7 +48,7 @@ export default function AllCourses() {
             };
           })
         );
-        
+        setTotalCards(courseData.length);
         setCourses(courseWithLessonsData);
         // console.log(dummyLessons);
         // console.log(lessonsData);

@@ -1,6 +1,6 @@
 import AxiosLessonService from "../components/AxiosLessonService";
 import { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from "react-router-dom";
 
 // Updated interface with underscores to match backend model
 export interface LessonPlan {
@@ -15,6 +15,7 @@ export interface LessonPlan {
 }
 
 export default function Lesson() {
+  const navigate = useNavigate();
   const [lesson, setLesson] = useState<LessonPlan | null>(null);
   const { id } = useParams()
 
@@ -80,7 +81,7 @@ export default function Lesson() {
       </div>
 
       <div className="block p-5">
-        <button className="px-5 py-5 bg-primary rounded-btn btn-active">Complete Lesson</button>
+        <button className="px-5 py-5 bg-primary rounded-btn btn-active" onClick={() => navigate(-1)}>Complete Lesson</button>
       </div>
     </div>
   );
