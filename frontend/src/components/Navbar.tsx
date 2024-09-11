@@ -79,7 +79,7 @@ const Navbar = () => {
                 to="/allprograms"
                 className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
-                All Programs
+                Programs
               </Link>
             </li>
             <li>
@@ -92,18 +92,10 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/teacher"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
-              >
-                Teacher Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/allcourses"
                 className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
-                All Courses
+                Courses
               </Link>
             </li>
           </ul>
@@ -113,7 +105,7 @@ const Navbar = () => {
       {/* Navbar Center - Logo and Title */}
       <div className="navbar-center">
         <Link
-          className="drop-shadow-xl text-3xl font-suse font-bold text-primary"
+          className="drop-shadow-xl text-4xl font-suse font-bold text-primary"
           to={"/"}
         >
           <img
@@ -121,7 +113,7 @@ const Navbar = () => {
             alt="logo"
             className="h-12 w-auto inline-block mr-2"
           />
-          <p className="align-middle inline-block">RevLearn</p>
+          <p className="align-middle inline-block text-4xl">RevLearn</p>
         </Link>
       </div>
 

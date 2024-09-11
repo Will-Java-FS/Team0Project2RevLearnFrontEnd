@@ -7,26 +7,31 @@ class AxiosUserService {
   // Method for user login
   async loginUser(username: string, passwordHash: string): Promise<LoginResult> {
     try {
-     const response = await axiosInstance.post(
-       "/user/login",
-       { username, passwordHash }, // Ensure correct request payload
-       { headers: { "Content-Type": "application/json" } }
-     );
-    
-     const { token, username: responseUsername, userId, role, program } = response.data;
-    
-     if (!userId || !responseUsername || !role || !program || !token) {
-       throw new Error("Missing required fields in response");
-     }
-    
-     // Use AuthService to store login details
-     AuthService.login(userId, responseUsername, role, program.programId, token);
-    
-     return { success: true, token, username: responseUsername, userId, role, program };
+      const payload = {
+        username,
+        passwordHash
+      };
+
+      const response = await axiosInstance.post(
+        "/user/login",
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const { token, username: responseUsername, userId, role, program, refreshToken } = response.data;
+
+      if (!userId || !responseUsername || !role || !program || !token || !refreshToken) {
+        throw new Error("Missing required fields in response");
+      }
+
+      // Use AuthService to store login details
+      AuthService.login(userId, responseUsername, role, program.programId, token, refreshToken);
+
+      return { success: true, token, username: responseUsername, userId, role, program };
     } catch (error: unknown) {
-     return this.handleError(error, "Invalid credentials");
+      return this.handleError(error, "Invalid credentials");
     }
-    }
+  }
 
   // Method for user registration
   async registerUser(
@@ -46,10 +51,11 @@ class AxiosUserService {
         firstName: first,
         lastName: last,
         role,
-        program: programId ? { programId } : null,
+        program: programId ? { programId } : null
       };
 
       const response = await axiosInstance.post("/user/register", payload);
+
       return response.status === 201
         ? { success: true, message: "Registration successful!" }
         : { success: false, message: "Unexpected response status during registration." };
