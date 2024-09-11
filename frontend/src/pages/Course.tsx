@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import AxiosCourseService from "../components/AxiosCourseService"; // Adjust import path
-import CourseCard, { Lesson, Course } from "../components/CourseCard";
+import CourseCard, { Course } from "../components/CourseCard";
 import AxiosLessonService from "../components/AxiosLessonService";
 import AxiosEnrollmentService from "../components/AxiosEnrollmentService";
 import AuthService from "../components/AuthService";
@@ -14,7 +13,7 @@ export default function MyCourses() {
     const fetchCourseData = async () => {
       try {
         // const enrollmentsData = await AxiosEnrollmentService.getEnrollments(1);
-        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.loggedInUserId());
+        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
         const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
         const courseWithLessonsData = await Promise.all(
           courseData.map(async (course: Course) => {

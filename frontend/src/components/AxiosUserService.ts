@@ -7,25 +7,26 @@ class AxiosUserService {
   // Method for user login
   async loginUser(username: string, passwordHash: string): Promise<LoginResult> {
     try {
-      const response = await axiosInstance.post(
-        "/user/login",
-        { username, passwordHash },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      const { token, username: responseUsername, userId, role, program } = response.data;
-
-      if (!userId || !responseUsername || !role || !program || !token) {
-        throw new Error("Missing required fields in response");
-      }
-
-      AuthService.login(userId, responseUsername, role, program.programId, token);
-
-      return { success: true, token, username: responseUsername, userId, role, program };
+     const response = await axiosInstance.post(
+       "/user/login",
+       { username, passwordHash }, // Ensure correct request payload
+       { headers: { "Content-Type": "application/json" } }
+     );
+    
+     const { token, username: responseUsername, userId, role, program } = response.data;
+    
+     if (!userId || !responseUsername || !role || !program || !token) {
+       throw new Error("Missing required fields in response");
+     }
+    
+     // Use AuthService to store login details
+     AuthService.login(userId, responseUsername, role, program.programId, token);
+    
+     return { success: true, token, username: responseUsername, userId, role, program };
     } catch (error: unknown) {
-      return this.handleError(error, "Invalid credentials");
+     return this.handleError(error, "Invalid credentials");
     }
-  }
+    }
 
   // Method for user registration
   async registerUser(
@@ -74,9 +75,9 @@ class AxiosUserService {
       if (error.response) {
         const errorMessage: string = (error.response.data as { message?: string }).message || defaultMessage;
         console.error("Error response data:", error.response.data);
-        console.error("Error status:", error.response.status);
-        console.error("Error headers:", error.response.headers);
-        return { success: false, message: errorMessage };
+        console.error("Error status:", error.response.status); // Log status code
+        console.error("Error headers:", error.response.headers); // Log headers
+        return { success: false, message: errorMessage, error: error.response.data.error || '' };
       } else if (error.request) {
         console.error("No response received:", error.request);
         return { success: false, message: "No response from server. Please check your connection." };
@@ -86,7 +87,7 @@ class AxiosUserService {
       return { success: false, message: `An unexpected error occurred: ${error.message}` };
     }
     return { success: false, message: "An error occurred. Please try again later." };
-  }
+  }   
 }
 
 export default new AxiosUserService();
