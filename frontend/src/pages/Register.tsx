@@ -190,7 +190,7 @@ export default function Register() {
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
-              <option value="admin">Admin</option>
+
             </select>
             {errors.role && <span className="error text-red-500">{errors.role.message}</span>}
           </div>

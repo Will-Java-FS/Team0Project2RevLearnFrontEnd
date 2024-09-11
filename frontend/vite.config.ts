@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // Backend server URL
+        target: 'http://54.205.97.225:8080/', // Backend server URL
         changeOrigin: true,
         secure: false, // Set to true if using HTTPS
         rewrite: (path) => path.replace(/^\/api/, ''),

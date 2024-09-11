@@ -51,7 +51,7 @@ class AxiosProgramService {
     axios
       .post("/programs", {
         program_name: programName,
-        program_owner: AuthService.loggedInUserId(),
+        program_owner: AuthService.getLoggedInUserId(),
       })
       .then((response) => {
         console.log(response.data);
