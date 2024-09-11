@@ -2,7 +2,7 @@ import React from "react";
 
 const UserCard = ({ user }) => {
   return (
-    <div className="max-w-sm mx-auto bg-base-100 shadow-md rounded-lg overflow-hidden">
+    <div className="max-w-sm mx-auto bg-base-200 shadow-md rounded-lg overflow-hidden">
       {/* User Image */}
       <div className="flex justify-center mt-4">
         <img
@@ -32,7 +32,7 @@ const UserCard = ({ user }) => {
       </div>
 
       {/* User Actions */}
-      <div className="flex justify-around py-4 bg-gray-100">
+      <div className="flex justify-around py-4 bg-neutral">
         <button className="btn btn-warning rounded-xl">Edit</button>
         <button className="btn btn-error">Delete</button>
       </div>

@@ -7,7 +7,7 @@ const User = () => {
 
   useEffect(() => {
     // Get the logged-in user ID from AuthService
-    const userId = AuthService.loggedInUserId();
+    const userId = AuthService.getLoggedInUserId();
 
     if (userId !== -1) {
       // Fetch user data from the server using the user ID
@@ -27,7 +27,7 @@ const User = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-base-100">
       <UserCard user={user} />
     </div>
   );

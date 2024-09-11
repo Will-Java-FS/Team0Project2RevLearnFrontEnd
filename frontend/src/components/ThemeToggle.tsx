@@ -6,18 +6,18 @@ interface ThemeToggleProps {
 }
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
+  const savedTheme = localStorage.getItem("theme");
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const savedTheme = localStorage.getItem("theme");
     return savedTheme === "dark";
   });
 
   useEffect(() => {
+    // Update localStorage and apply the theme
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+
     themeChange(false);
 
     document.documentElement.classList.toggle("dark", isDarkMode);
-
-    // Update localStorage and apply the theme
-    localStorage.setItem("theme", isDarkMode ? "light" : "dark");
   }, [isDarkMode]);
 
   const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,8 +25,8 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   };
 
   useEffect(() => {
+    console.log(savedTheme)
     // Apply the saved theme on component mount
-    const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       setIsDarkMode(savedTheme === "dark");
     }
