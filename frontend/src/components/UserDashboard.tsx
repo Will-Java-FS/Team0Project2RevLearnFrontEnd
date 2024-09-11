@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
-import axiosInstance from "./AxiosConfig";
 import UserCard from './UserCard'; // Import the updated UserCard component
+import axios from "axios";
+import AuthService from "./AuthService";
 
 // User interface definition
 interface User {
@@ -39,11 +39,15 @@ export default function UserDashboard() {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const userId = AuthService.getLoggedInUserId();
+      const userId = AuthService.getLoggedInUserId(); // Get the logged-in user ID from AuthService
       if (userId !== -1) {
+        const userUrl = `http://localhost:8080/user/${userId}`;
+        console.log("Fetching user details from:", userUrl);
+
         try {
-          const response = await axiosInstance.get<User>(`/user/${userId}`);
+          const response = await axios.get(userUrl);
           setUser(response.data);
+          console.log("Fetched user data:", response.data);
         } catch (err) {
           console.error("Failed to fetch user details:", err);
           setError("Failed to fetch user details.");
