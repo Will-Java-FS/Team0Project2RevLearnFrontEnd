@@ -25,7 +25,6 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   };
 
   useEffect(() => {
-    console.log(savedTheme)
     // Apply the saved theme on component mount
     if (savedTheme) {
       setIsDarkMode(savedTheme === "dark");
