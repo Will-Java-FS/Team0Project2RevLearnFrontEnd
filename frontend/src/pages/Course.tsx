@@ -39,6 +39,11 @@ export default function MyCourses() {
     fetchCourseData();
   }, []);
 
+  const handleRemoveCourse = (courseId: number) => {
+    setCourses(courses.filter(course => course.course_id !== courseId));
+  };
+
+
   if (!AuthService.isLoggedIn()) {
     return (
         <div className="flex flex-col items-center min-h-screen p-6">
@@ -69,6 +74,7 @@ export default function MyCourses() {
           <CourseCard
             key={course.course_id}
             course={course}
+            onRemoveCourse={handleRemoveCourse}
           />
         ))}
       </div>

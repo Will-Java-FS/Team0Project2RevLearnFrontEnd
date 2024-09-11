@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AxiosCourseService from "./AxiosCourseService";
 import AxiosLessonService from "./AxiosLessonService";
+import AuthService from "./AuthService";
 
 export interface Course {
     course_id: number;
@@ -20,7 +21,7 @@ export interface Lesson {
     lp_updated_at: string;
 }
 
-const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
+const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) => void }> = ({ course, onRemoveCourse }) => {
     const [showAllLessons, setShowAllLessons] = useState(false);
     const [showLessonForm, setShowLessonForm] = useState(false);
     const [lessonTitle, setLessonTitle] = useState("");
@@ -34,9 +35,13 @@ const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
         setShowLessonForm(!showLessonForm);
     };
 
-    const handleDeleteCourse = () => {
-        AxiosCourseService.delete(course.course_id)
-        console.log("Delete course:", course.course_id);
+    const handleDeleteCourse = async () => {
+        try {
+            await AxiosCourseService.delete(course.course_id);
+            onRemoveCourse(course.course_id);
+        } catch (error) {
+            console.error("Error deleting course:", error);
+        }
     };
 
     const handleLessonSubmit = async (e: React.FormEvent) => {
@@ -71,7 +76,7 @@ const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
                                 className="relative flex w-full p-3 mb-2 flex-col rounded bg-gray-100 bg-clip-border text-gray-700 shadow-sm overflow-hidden"
                                 key={lesson.lesson_plan_id}>
                                 <h4>{lesson.title}</h4>
-                                <p>{lesson.content}</p>
+                                <h5>{lesson.content}</h5>
                             </li>
                         ))}
                     </ul>
@@ -88,8 +93,8 @@ const CourseCard: React.FC<{ course: Course; }> = ({ course }) => {
                     )}
                 </div>
                 <div className="flex space-x-4">
-                    {/* {AuthService.isLoggedInTeacher() && ( */}
-                    {true && (
+                    {/* {true && ( */}
+                    {AuthService.isLoggedInTeacher() && (
                         <>
                             <button 
                             className="block w-full text-center rounded-lg bg-orange-500 py-2 px-4 text-xs font-bold uppercase text-white shadow-md transition-all hover:shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500"

@@ -71,12 +71,20 @@ class AxiosLessonService {
       const response = await axios.post("/lessons", {
         title: lessonTitle,
         content: content,
-        teacherId: AuthService.loggedInUserId(),
+        teacherId: AuthService.getLoggedInUserId(),
         courseId: courseId,
       });
       console.log(response.data);
       if (response.status === 201) {
-        return response.data;
+        const lesson = response.data;
+        const addLessonResponse = await axios.post(`/course/${courseId}/add-lesson/${lesson.lesson_plan_id}`);
+
+        if (addLessonResponse.status === 202) {
+          return lesson;
+        } else {
+          console.error("Error adding lesson to course:", addLessonResponse.statusText);
+          throw new Error("Error adding lesson to course");
+        }
       }
     } catch (error) {
       console.error("Error on lesson creation attempt!", error);
