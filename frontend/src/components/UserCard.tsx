@@ -2,21 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from './AuthService';
 import axiosInstance from './AxiosConfig';
-
-interface User {
-  id: number;
-  profilePicture: string;
-  firstName: string;
-  lastName: string;
-  title: string;
-  role: string;
-  username: string;
-  email: string;
-  program: {
-    programName: string;
-  };
-  userCreatedAt: string;
-}
+import { User } from '../utils/types';
 
 interface UserCardProps {
   user?: User; // Make user prop optional since we're fetching it internally

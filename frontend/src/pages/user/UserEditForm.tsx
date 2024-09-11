@@ -1,25 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios'; // Assuming you use axios for HTTP requests
-
+import { User } from '../../utils/types';
 // Define a User type for form state
-interface Program {
-    programId: number;
-    programName: string;
-}
-
-interface User {
-    userId: number;
-    email: string;
-    username: string;
-    passwordHash: string;
-    firstName: string;
-    lastName: string;
-    userCreatedAt: string;
-    role: string;
-    userUpdatedAt: string;
-    program: Program;
-}
 
 const UserEditForm: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Get the user ID from the URL
