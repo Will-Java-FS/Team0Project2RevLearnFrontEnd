@@ -16,7 +16,7 @@ const formSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   role: z.enum(["student", "teacher", "admin"]),
-  programId: z.string().nullable().optional(), // Allow programId to be optional and nullable
+  programId: z.string().nullable().optional() // Allow programId to be optional and nullable
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -25,18 +25,13 @@ export default function Register() {
   const [message, setMessage] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const [programs, setPrograms] = useState<
-    { programId: number; programName: string }[]
-  >([]);
+  const [programs, setPrograms] = useState<{ programId: number; programName: string }[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPrograms = async () => {
       try {
-        const response =
-          await axios.get<{ programId: number; programName: string }[]>(
-            "/programs",
-          );
+        const response = await axios.get<{ programId: number; programName: string }[]>("/programs");
         setPrograms(response.data);
       } catch (error) {
         console.error("Error fetching programs:", error);
@@ -49,9 +44,9 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema)
   });
   const handleRegister: SubmitHandler<FormData> = async (data) => {
     try {
@@ -66,7 +61,7 @@ export default function Register() {
         firstName: data.firstName,
         lastName: data.lastName,
         role: data.role,
-        program: programId ? { programId } : null, // Use object for program
+        program: programId ? { programId } : null // Use object for program
       };
 
       console.log("Payload to be sent:", payload);
@@ -79,13 +74,11 @@ export default function Register() {
         data.role,
         data.lastName,
         data.firstName,
-        programId, // Pass the correctly converted programId
+        programId // Pass the correctly converted programId
       );
 
       if (result.success) {
-        setMessage(
-          result.message || "Registration successful! Redirecting to login...",
-        );
+        setMessage(result.message || "Registration successful! Redirecting to login...");
         setIsSuccess(true);
 
         // Redirect to login page after successful registration
@@ -101,7 +94,7 @@ export default function Register() {
       // Handle different types of errors more robustly
       if (error instanceof Error) {
         setMessage(error.message || "An error occurred. Please try again.");
-      } else if (typeof error === "string") {
+      } else if (typeof error === 'string') {
         setMessage(error);
       } else {
         setMessage("An unexpected error occurred. Please try again.");
@@ -112,9 +105,9 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen relative">
+    <div className="container flex items-center justify-center h-screen relative">
       <form
-        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-box overflow-hidden border-2 border-primary w-full max-w-md p-8"
+        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-2xl overflow-hidden border-4 border-accent dark:border-accent w-full max-w-md p-8"
         onSubmit={handleSubmit(handleRegister)}
       >
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
@@ -126,157 +119,107 @@ export default function Register() {
         <div className="mt-10">
           <div className="flex gap-4">
             <div className="relative flex-1">
-              <label
-                className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-                htmlFor="firstName"
-              >
+              <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="firstName">
                 First Name
               </label>
               <input
                 id="firstName"
                 type="text"
                 {...register("firstName")}
-                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
-              {errors.firstName && (
-                <span className="error text-red-500">
-                  {errors.firstName.message}
-                </span>
-              )}
+              {errors.firstName && <span className="error text-red-500">{errors.firstName.message}</span>}
             </div>
             <div className="relative flex-1">
-              <label
-                className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-                htmlFor="lastName"
-              >
+              <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="lastName">
                 Last Name
               </label>
               <input
                 id="lastName"
                 type="text"
                 {...register("lastName")}
-                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
-              {errors.lastName && (
-                <span className="error text-red-500">
-                  {errors.lastName.message}
-                </span>
-              )}
+              {errors.lastName && <span className="error text-red-500">{errors.lastName.message}</span>}
             </div>
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="email"
-            >
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="email">
               Email
             </label>
             <input
               id="email"
               type="email"
               {...register("email")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            {errors.email && (
-              <span className="error text-red-500">{errors.email.message}</span>
-            )}
+            {errors.email && <span className="error text-red-500">{errors.email.message}</span>}
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="username"
-            >
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="username">
               Username
             </label>
             <input
               id="username"
               type="text"
               {...register("username")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            {errors.username && (
-              <span className="error text-red-500">
-                {errors.username.message}
-              </span>
-            )}
+            {errors.username && <span className="error text-red-500">{errors.username.message}</span>}
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="password"
-            >
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="password">
               Password
             </label>
             <input
               id="password"
               type="password"
               {...register("password")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
-            {errors.password && (
-              <span className="error text-red-500">
-                {errors.password.message}
-              </span>
-            )}
+            {errors.password && <span className="error text-red-500">{errors.password.message}</span>}
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="role"
-            >
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="role">
               Role
             </label>
             <select
               id="role"
               {...register("role")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
+              <option value="admin">Admin</option>
             </select>
-            {errors.role && (
-              <span className="error text-red-500">{errors.role.message}</span>
-            )}
+            {errors.role && <span className="error text-red-500">{errors.role.message}</span>}
           </div>
           <div className="relative mt-6">
-            <label
-              className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
-              htmlFor="programId"
-            >
+            <label className="text-left block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200" htmlFor="programId">
               Program
             </label>
             <select
               id="programId"
               {...register("programId")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             >
               <option value="">Select a Program</option>
-                <option value="">I havent decided yet.</option>
               {programs.map((program) => (
-                <option
-                  key={program.programId}
-                  value={program.programId.toString()}
-                >
+                <option key={program.programId} value={program.programId.toString()}>
                   {program.programName}
                 </option>
               ))}
             </select>
-            {errors.programId && (
-              <span className="error text-red-500">
-                {errors.programId.message}
-              </span>
-            )}
+            {errors.programId && <span className="error text-red-500">{errors.programId.message}</span>}
           </div>
           {message && (
-            <p
-              className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"}`}
-            >
+            <p className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"}`}>
               {message}
             </p>
           )}
           <button
             type="submit"
-            className="w-full px-4 py-3 mt-8 font-medium text-white bg-blue-600 rounded-btn hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="w-full px-4 py-3 mt-8 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Register
           </button>
@@ -292,10 +235,7 @@ export default function Register() {
           </div>
         </div>
       </form>
-      <Modal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      >
+      <Modal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)}>
         <Login />
       </Modal>
     </div>

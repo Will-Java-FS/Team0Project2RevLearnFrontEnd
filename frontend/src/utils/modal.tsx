@@ -10,8 +10,14 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className=" p-6 rounded shadow-lg max-w-full max-h-full">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      onClick={onClose} // Close modal when clicking on the background
+    >
+      <div
+        className="relative p-6 rounded shadow-lg max-w-full max-h-full"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+      >
         {/* Content area adjusts based on children size */}
         <div className="mb-4">{children}</div>
         {/* Close button */}

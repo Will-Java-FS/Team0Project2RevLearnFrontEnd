@@ -12,3 +12,21 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Responsive Typography */
+h1 {
+  @apply text-5xl md:text-4xl lg:text-5xl font-bold;
+}
+
+h2 {
+  @apply text-2xl md:text-3xl lg:text-4xl font-semibold;
+}
+
+p {
+  @apply text-base md:text-lg lg:text-xl;
+}
+
+/* Responsive Container Widths */
+.container {
+  @apply w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl min-w-[300px] mx-auto;
+}

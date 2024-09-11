@@ -35,7 +35,7 @@ const Login: React.FC = () => {
     try {
       const { success, message } = await AxiosUserService.loginUser(
         data.username,
-        data.password,
+        data.password
       );
 
       if (success) {
@@ -62,9 +62,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex w-full items-center justify-center h-screen">
+      {/* Center the form both horizontally and vertically */}
       <form
-        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-box overflow-hidden border-2 border-primary w-full max-w-md p-8"
+        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-lg overflow-hidden border-2 border-primary w-full max-w-md p-8"
         onSubmit={handleSubmit(handleLogin)}
       >
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
@@ -74,6 +75,7 @@ const Login: React.FC = () => {
           Let&rsquo;s get to learning!
         </p>
         <div className="mt-10">
+          {/* Username Field */}
           <div className="relative">
             <label
               className="block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
@@ -94,6 +96,7 @@ const Login: React.FC = () => {
               </span>
             )}
           </div>
+          {/* Password Field */}
           <div className="relative mt-6">
             <label
               className="block mb-3 text-sm font-medium text-zinc-600 dark:text-zinc-200"
@@ -114,16 +117,20 @@ const Login: React.FC = () => {
               </span>
             )}
           </div>
+          {/* Submit Button */}
           <div className="mt-10">
             <button
               type="submit"
               disabled={loading}
-              className={`w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-btn hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-btn hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {loading ? "Logging in..." : "Let's Go"}
             </button>
           </div>
         </div>
+        {/* Sign Up Link */}
         <div className="px-8 py-2">
           <div className="text-sm text-blue-900 dark:text-blue-300 text-center">
             Need an account?
@@ -139,19 +146,24 @@ const Login: React.FC = () => {
             </button>
           </div>
         </div>
+        {/* Error/Success Message */}
         {message && (
           <p
-            className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"}`}
+            className={`text-center mt-4 ${
+              isSuccess ? "text-green-500" : "text-red-500"
+            }`}
           >
             {message}
           </p>
         )}
       </form>
 
-      {/* Use Modal for the success message */}
+      {/* Use Modal for the success/error message */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h3
-          className={`text-xl font-bold ${isSuccess ? "text-green-600" : "text-red-600"}`}
+          className={`text-xl font-bold ${
+            isSuccess ? "text-green-600" : "text-red-600"
+          }`}
         >
           {isSuccess ? "Login Successful" : "Login Failed"}
         </h3>

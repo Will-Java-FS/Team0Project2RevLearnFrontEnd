@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Icon256.png";
-import Logout from "./AuthButton";
 import AuthButton from "./AuthButton";
 
 const Navbar = () => {
@@ -127,7 +126,7 @@ const Navbar = () => {
       </div>
 
       {/* Navbar End - Actions */}
-      <div className="navbar-end">
+      <div className="navbar-end gap-2">
        
         <button className="btn btn-ghost btn-circle">
           <svg
