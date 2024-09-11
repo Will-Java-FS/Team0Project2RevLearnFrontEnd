@@ -107,7 +107,7 @@ export default function Register() {
   return (
     <div className="container flex items-center justify-center h-screen relative">
       <form
-        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-2xl overflow-hidden border-4 border-accent dark:border-accent w-full max-w-md p-8"
+        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-box overflow-hidden border-2 border-accent w-full max-w-md p-8"
         onSubmit={handleSubmit(handleRegister)}
       >
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
@@ -126,7 +126,7 @@ export default function Register() {
                 id="firstName"
                 type="text"
                 {...register("firstName")}
-                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
               {errors.firstName && <span className="error text-red-500">{errors.firstName.message}</span>}
             </div>
@@ -138,7 +138,7 @@ export default function Register() {
                 id="lastName"
                 type="text"
                 {...register("lastName")}
-                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+                className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
               />
               {errors.lastName && <span className="error text-red-500">{errors.lastName.message}</span>}
             </div>
@@ -151,7 +151,7 @@ export default function Register() {
               id="email"
               type="email"
               {...register("email")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.email && <span className="error text-red-500">{errors.email.message}</span>}
           </div>
@@ -163,7 +163,7 @@ export default function Register() {
               id="username"
               type="text"
               {...register("username")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.username && <span className="error text-red-500">{errors.username.message}</span>}
           </div>
@@ -175,7 +175,7 @@ export default function Register() {
               id="password"
               type="password"
               {...register("password")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.password && <span className="error text-red-500">{errors.password.message}</span>}
           </div>
@@ -186,7 +186,7 @@ export default function Register() {
             <select
               id="role"
               {...register("role")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
@@ -201,7 +201,7 @@ export default function Register() {
             <select
               id="programId"
               {...register("programId")}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             >
               <option value="">Select a Program</option>
               {programs.map((program) => (
@@ -219,7 +219,7 @@ export default function Register() {
           )}
           <button
             type="submit"
-            className="w-full px-4 py-3 mt-8 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="w-full px-4 py-3 mt-8 font-medium text-white bg-blue-600 rounded-btn hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Register
           </button>

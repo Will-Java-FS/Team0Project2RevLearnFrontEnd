@@ -65,7 +65,7 @@ const Login: React.FC = () => {
     <div className="flex w-full items-center justify-center h-screen">
       {/* Center the form both horizontally and vertically */}
       <form
-        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-lg overflow-hidden border-2 border-primary w-full max-w-md p-8"
+        className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-box overflow-hidden border-2 border-primary w-full max-w-md p-8"
         onSubmit={handleSubmit(handleLogin)}
       >
         <h2 className="text-4xl font-extrabold text-center text-zinc-800 dark:text-white">
@@ -88,7 +88,7 @@ const Login: React.FC = () => {
               type="text"
               {...register("username")}
               aria-invalid={errors.username ? "true" : "false"}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-btn dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.username && (
               <span className="text-red-500 text-sm">
@@ -109,7 +109,7 @@ const Login: React.FC = () => {
               type="password"
               {...register("passwordHash")} // Updated to use 'passwordHash'
               aria-invalid={errors.passwordHash ? "true" : "false"}
-              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
+              className="block w-full px-4 py-3 mt-2 text-zinc-800 bg-white border-2 rounded-badge dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-400"
             />
             {errors.passwordHash && ( // Updated to match 'passwordHash'
               <span className="text-red-500 text-sm">
