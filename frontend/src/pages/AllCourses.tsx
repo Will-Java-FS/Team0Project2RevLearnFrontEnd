@@ -3,6 +3,8 @@ import CourseCard, { Lesson, Course } from "../components/CourseCard"; // Adjust
 import AxiosCourseService from "../components/AxiosCourseService";
 import AxiosLessonService from "../components/AxiosLessonService";
 import axios from "axios";
+import AxiosEnrollmentService from "../components/AxiosEnrollmentService";
+import AuthService from "../components/AuthService";
 
 // Show all courses for the user's program and be able to select one and go it's page
 // If user is teacher show a form to create a new course
@@ -32,7 +34,9 @@ export default function AllCourses() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const courseData = await AxiosCourseService.getAll();
+        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(1);
+        // const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
+        const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
         const courseWithLessonsData = await Promise.all(
           courseData.map(async (course: Course) => {
             const lessonsData = await AxiosLessonService.getAllByCourse(course.course_id);
@@ -53,8 +57,10 @@ export default function AllCourses() {
       }
     };
 
+    // if (AuthService.isLoggedIn()) 
     fetchCourseData();
   }, []);
+
 
   const handleRemoveCourse = (courseId: number) => {
     setCourses(courses.filter(course => course.course_id !== courseId));
@@ -77,6 +83,28 @@ export default function AllCourses() {
       setCurrentPage(currentPage + 1);
     }
   };
+
+  // if (!AuthService.isLoggedIn()) {
+  //   return (
+  //       <div className="flex flex-col items-center min-h-screen p-6">
+  //           <h5>Please log in to view your courses</h5>
+  //           <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</button>
+  //       </div>
+  //   );
+  // }
+
+  // if (courses.length === 0) {
+  //   return (
+  //       <div className="flex flex-col items-center min-h-screen p-6">
+  //           <h5>Unlock your potential today</h5>
+  //           <button onClick={() => window.location.href = "/allprograms"}
+  //             className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
+  //               Our Programs
+  //           </button>
+  //       </div>
+  //   );
+  // }
+
 
   return (
     <div className="flex flex-col items-center min-h-screen p-6">
