@@ -1,47 +1,27 @@
 import axios from "axios";
 import AuthService from "./AuthService";
 import axiosInstance from "./AxiosConfig";
-
-// Define interfaces for login and registration
-interface RegisterResult {
-  success: boolean;
-  message?: string;
-}
-
-interface LoginResult {
-  success: boolean;
-  message?: string;
-  token?: string;
-  userId?: number;
-  role?: string;
-  program?: {
-    programId: number;
-    programName: string;
-  };
-  error?: string; // Optional: Include error messages if necessary
-}
+import { RegisterResult, LoginResult } from "../utils/types";
 
 class AxiosUserService {
   // Method for user login
-  async loginUser(username: string, password: string): Promise<LoginResult> {
+  async loginUser(username: string, passwordHash: string): Promise<LoginResult> {
     try {
       const response = await axiosInstance.post(
         "/user/login",
-        { username, passwordHash: password }, // Send 'passwordHash' instead of 'password'
+        { username, passwordHash },
         { headers: { "Content-Type": "application/json" } }
       );
 
       const { token, username: responseUsername, userId, role, program } = response.data;
 
-      // Check if the required data is defined before calling any method on them
       if (!userId || !responseUsername || !role || !program || !token) {
         throw new Error("Missing required fields in response");
       }
 
-      // Use AuthService to store login details
       AuthService.login(userId, responseUsername, role, program.programId, token);
 
-      return { success: true, token };
+      return { success: true, token, username: responseUsername, userId, role, program };
     } catch (error: unknown) {
       return this.handleError(error, "Invalid credentials");
     }
@@ -50,7 +30,7 @@ class AxiosUserService {
   // Method for user registration
   async registerUser(
     username: string,
-    password: string,
+    passwordHash: string,
     email: string,
     role: string,
     last: string,
@@ -61,7 +41,7 @@ class AxiosUserService {
       const payload = {
         email,
         username,
-        passwordHash: password,
+        passwordHash,
         firstName: first,
         lastName: last,
         role,
@@ -94,8 +74,8 @@ class AxiosUserService {
       if (error.response) {
         const errorMessage: string = (error.response.data as { message?: string }).message || defaultMessage;
         console.error("Error response data:", error.response.data);
-        console.error("Error status:", error.response.status); // Log status code
-        console.error("Error headers:", error.response.headers); // Log headers
+        console.error("Error status:", error.response.status);
+        console.error("Error headers:", error.response.headers);
         return { success: false, message: errorMessage };
       } else if (error.request) {
         console.error("No response received:", error.request);
