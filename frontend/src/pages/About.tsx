@@ -12,7 +12,7 @@ export default function About() {
             lg:bg-gradient-to-r lg:from-amber-200 lg:via-orange-400 lg:to-red-600
             dark:lg:from-yellow-500 dark:lg:via-orange-500 dark:lg:to-red-500"
         >
-            <div className="hero-content w-full text-white dark:text-black">
+            <div className="hero-content w-full text-base-100">
                 <div className="max-w-xl mx-auto">
                     <h1 className="drop-shadow-xl py-4 text-4xl font-bold">
                       Revature Training Capstone Project - RevLearn
@@ -39,8 +39,8 @@ export default function About() {
                     </div>
                     <h2 className="drop-shadow-xl text-3xl py-2 font-bold">About This Project:</h2>
                     <div className="drop-shadow-xl text-lg font-light">
-                      <p>This project was started on the 26th of August 2024.</p>
-                      <p>It was completed on the 10th of September 2024.</p>
+                      <p>This project was started on the 26th of August 2024</p>
+                      <p>and was completed on the 10th of September 2024.</p>
                       <p>
                           The project consists of a learning platform where students can
                           enroll in programs and complete courses in various subjects. It
