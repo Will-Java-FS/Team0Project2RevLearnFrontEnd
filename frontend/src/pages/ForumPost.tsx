@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AxiosForumService from "../components/AxiosForumService"; // Adjust the import path as needed
-import AuthService from "components/AuthService";
+import AuthService from "../components/AuthService";
 
 interface Course {
   course_id: number;
