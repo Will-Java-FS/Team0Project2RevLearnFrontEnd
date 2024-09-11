@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AxiosProgramService from "../components/AxiosProgramService";
+import axios from "axios";
 
 interface Program {
   programId: number;
@@ -12,12 +12,14 @@ export default function AllPrograms() {
   useEffect(() => {
     // Fetch all programs using AxiosProgramService
     const fetchPrograms = async () => {
-      const allPrograms = await AxiosProgramService.getAll();
-      if (allPrograms) {
-        setPrograms(allPrograms);
+      axios.get("http://localhost:8080/programs").then((response: { data: Program[] }) => {
+        setPrograms(response.data);
       }
-    };
+      ).catch((error: any) => {
+        console.error("Error fetching programs:", error);
+      });
 
+    };
     fetchPrograms();
   }, []);
 

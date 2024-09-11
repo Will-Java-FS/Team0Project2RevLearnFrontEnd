@@ -1,26 +1,22 @@
-import axios from "axios";
-
 class AuthService {
   // Retrieve the email of the logged-in user. Implementation required.
   getLoggedInUserEmail(): string {
     throw new Error('Method not implemented.');
   }
 
-  // Store user details, token, and refresh token in session and local storage
+  // Store user details and token in session and local storage
   login(
     id: number,
     username: string,
     role: string,
     programId: number,
-    token: string,
-    refreshToken: string // Added refresh token parameter
+    token: string
   ): void {
     sessionStorage.setItem('authenticatedUserId', id.toString());
     sessionStorage.setItem('authenticatedUser', username);
     sessionStorage.setItem('role', role);
     sessionStorage.setItem('programId', programId.toString());
     localStorage.setItem('token', `Bearer ${token}`);
-    localStorage.setItem('refreshToken', refreshToken); // Store refresh token
 
     console.log(
       `User ${username} logged in successfully with role ${role} and token ${token}`
@@ -76,37 +72,6 @@ class AuthService {
   // Retrieve the stored token
   getToken(): string | null {
     return localStorage.getItem('token');
-  }
-
-  // Retrieve the stored refresh token
-  getRefreshToken(): string | null {
-    return localStorage.getItem('refreshToken');
-  }
-
-  // Refresh the token by sending a request to the refresh endpoint
-  async refreshToken(): Promise<void> {
-    try {
-      const refreshToken = this.getRefreshToken();
-      if (!refreshToken) {
-        throw new Error('No refresh token available.');
-      }
-
-      const response = await axios.post('/auth/refresh', { refreshToken });
-
-      const { token, newRefreshToken } = response.data;
-      if (!token || !newRefreshToken) {
-        throw new Error('Invalid response from refresh token endpoint.');
-      }
-
-      // Store the new tokens
-      localStorage.setItem('token', `Bearer ${token}`);
-      localStorage.setItem('refreshToken', newRefreshToken);
-
-      console.log('Token refreshed successfully.');
-    } catch (error) {
-      console.error('Error refreshing token:', error);
-      this.logout(); // Optional: Log out if refresh fails
-    }
   }
 }
 

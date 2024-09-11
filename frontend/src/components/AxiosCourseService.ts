@@ -1,35 +1,39 @@
 import axios from "./AxiosConfig";
 import AuthService from "./AuthService";
+import { Course } from "./CourseCard";
 
-class AxiosCourseService {
-  async getAll() {
-    try {
-      const response = await axios.get("/courses");
-      if (response.status === 200) {
-        return response.data;
-      }
-    } catch (error) {
-      console.error("Error getting all courses!", error);
-      throw error; // Ensure errors are propagated
-    }
-    return null;
-  }
 
-  async getAllByProgram(programId: number) {
-    try {
-      const response = await axios.get(`/programs/${programId}/courses`);
-      if (response.status === 200) {
-        return response.data;
+  class AxiosCourseService {
+    async getAll(): Promise<Course[] | null> {
+      try {
+        const response = await axios.get("/courses");
+        if (response.status === 200) {
+          return response.data as Course[]; // Ensure it matches the Course interface
+        }
+      } catch (error) {
+        console.error("Error getting all courses!", error);
+        throw error; // Ensure errors are propagated
       }
-    } catch (error) {
-      console.error(
-        `Error getting all courses for program ${programId}!`,
-        error,
-      );
-      throw error;
+      return null;
     }
-    return null;
-  }
+  
+
+  
+  // async getAllByProgram(programId: number) {
+  //   try {
+  //     const response = await axios.get(`/programs/${programId}/courses`);
+  //     if (response.status === 200) {
+  //       return response.data;
+  //     }
+  //   } catch (error) {
+  //     console.error(
+  //       `Error getting all courses for program ${programId}!`,
+  //       error,
+  //     );
+  //     throw error;
+  //   }
+  //   return null;
+  // }
 
   async getById(id: number) {
     try {

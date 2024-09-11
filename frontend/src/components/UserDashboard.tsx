@@ -70,8 +70,12 @@ export default function UserDashboard() {
     const fetchCourses = async () => {
       setLoadingCourses(true);
       try {
-        const response = await AxiosCourseService.getAll();
-        setCourses(response.data);
+        const coursesData = await AxiosCourseService.getAll();
+        if (coursesData) {
+          setCourses(coursesData);
+        } else {
+          setError("No courses found.");
+        }
       } catch (err) {
         setError("Failed to fetch courses.");
         console.error("Failed to fetch courses:", err);
@@ -85,7 +89,7 @@ export default function UserDashboard() {
   const renderCourseList = () => {
     if (loadingCourses) return <p>Loading courses...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
-    if (!courses || courses.length === 0) return <p>No courses available.</p>;
+    if (courses.length === 0) return <p>No courses available.</p>;
 
     return (
       <div className="flex flex-col space-y-4">
