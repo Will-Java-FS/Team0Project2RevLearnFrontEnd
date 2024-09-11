@@ -34,8 +34,8 @@ export default function AllCourses() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(1);
-        // const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
+        // const enrollmentsData = await AxiosEnrollmentService.getEnrollments(1);
+        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
         const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
         const courseWithLessonsData = await Promise.all(
           courseData.map(async (course: Course) => {
