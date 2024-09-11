@@ -53,18 +53,16 @@ class AxiosLessonService {
   //   return null;
   // }
 
-  getById(id: number) {
-    axios
-      .get("/lessons/" + id)
-      .then((response) => {
-        console.log(response.data);
-        if (response.status === 200) {
-          return response.data;
-        }
-      })
-      .catch((error) => {
-        console.error("Error getting lesson " + id + "!", error);
-      });
+  async getById(id: number) {
+    try {
+      const response = await axios.get(`/lessons/${id}`);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error(`Error getting lesson ${id}!`, error);
+      throw error;
+    }
     return null;
   }
 

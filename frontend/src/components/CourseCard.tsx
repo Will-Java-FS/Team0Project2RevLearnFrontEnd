@@ -63,8 +63,8 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
 
     const navigate = useNavigate();
 
-    const handleLessonClick = (courseId: number, lessonPlanId: number) => {
-        navigate(`/course/${courseId}/lesson/${lessonPlanId}`);
+    const handleLessonClick = (lessonPlanId: number) => {
+        navigate(`/lesson/${lessonPlanId}`);
     };
 
     return (
@@ -81,7 +81,7 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                             <button 
                                 className="relative flex w-full p-3 mb-2 flex-col rounded bg-gray-100 bg-clip-border text-gray-700 shadow-sm overflow-hidden text-left hover:bg-gray-200"
                                 key={lesson.lesson_plan_id}
-                                onClick={() => handleLessonClick(course.course_id, lesson.lesson_plan_id)}>
+                                onClick={() => handleLessonClick(lesson.lesson_plan_id)}>
                                 <h4>{lesson.title}</h4>
                                 <h4>{lesson.content}</h4>
                             </button>

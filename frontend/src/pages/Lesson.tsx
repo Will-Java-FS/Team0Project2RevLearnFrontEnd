@@ -1,151 +1,87 @@
-import {
-  useEffect,
-  // useState
-} from "react";
+import AxiosLessonService from "../components/AxiosLessonService";
+import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom'
 
-// Show all parts of the lesson
-// Give students a way to complete the lesson
-// Give teachers a way to edit/delete the lesson
-// Use authService to get logged in user's info, use the axios services for http requests
+// Updated interface with underscores to match backend model
+export interface LessonPlan {
+  lesson_plan_id: number;
+  title: string;
+  description: string;
+  real_world_application: string;
+  implementation: string;
+  summary: string;
+  lp_created_at: Date;
+  lp_updated_at: Date;
+}
+
 export default function Lesson() {
-  // const [lesson, setLesson] = useState({});
-
-  const dummyLesson = {
-    lessonName: "Introduction to Object-Oriented Programming",
-    description:
-      "This lesson introduces the fundamental concepts of Object-Oriented Programming (OOP) in Java, including classes, objects, inheritance, polymorphism, and encapsulation.",
-    realWorldApplication:
-      "OOP principles are used in software development to create modular, reusable, and maintainable code. Examples include the development of enterprise applications, mobile apps, and games.",
-    implementation:
-      "You will implement a simple Java program that demonstrates the use of classes and objects. This program will model a real-world entity, such as a 'Car,' with properties like 'make,' 'model,' and 'year,' and methods like 'start' and 'stop.'",
-    summary:
-      "By the end of this lesson, you should have a solid understanding of OOP principles and how to apply them in Java programming. You will also have hands-on experience creating a basic Java program using these concepts.",
-  };
+  const [lesson, setLesson] = useState<LessonPlan | null>(null);
+  const { id } = useParams()
 
   useEffect(() => {
-    // setLesson(dummyLesson);
-  }, []);
+    const fetchLesson = async () => {
+      try {
+        const lessonData = await AxiosLessonService.getById(Number(id));
+        setLesson(lessonData);
+      } catch (error) {
+        console.error("Error fetching lesson data:", error);
+      }
+    };
+    fetchLesson();
+  }, []); // Added id to the dependency array to ensure it fetches when id changes
+
+  if (lesson == null) {
+    console.log(lesson)
+    return <div>Loading...</div>;
+  }
 
   return (
-    <>
-      <h1>{dummyLesson.lessonName || "Lesson Title"}</h1>
-
-      <div className="collapse collapse-arrow bg-base-200">
+    <div className="block p-10">
+      <div className="block p-5">
+        <h1>{lesson.title || "Lesson Title"}</h1>
+      </div>
+      <div className="px-5 py-5 collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" defaultChecked />
         <div className="collapse-title text-xl font-medium">Description</div>
         <div className="collapse-content">
-          <p>{dummyLesson.description || "No description available."}</p>
+          <p>{lesson.description || "No description available."}</p>
         </div>
       </div>
-      <div className="collapse collapse-arrow bg-base-200">
+      <br/>
+      <div className="px-5 py-5 collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">
           Real World Application
         </div>
         <div className="collapse-content">
           <p>
-            {dummyLesson.realWorldApplication ||
+            {lesson.real_world_application ||
               "No real-world application available."}
           </p>
         </div>
       </div>
-      <div className="collapse collapse-arrow bg-base-200">
+      <br/>
+      <div className="px-5 py-5 collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">Implementation</div>
         <div className="collapse-content">
           <p>
-            {dummyLesson.implementation ||
-              "No implementation details available."}
+            {lesson.implementation || "No implementation details available."}
           </p>
         </div>
       </div>
-      <div className="collapse collapse-arrow bg-base-200">
+      <br/>
+      <div className="px-5 py-5 collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">Summary</div>
         <div className="collapse-content">
-          <p>{dummyLesson.summary || "No summary available."}</p>
+          <p>{lesson.summary || "No summary available."}</p>
         </div>
       </div>
 
-      <div>
-        <button className="btn btn-active">Complete Lesson</button>
+      <div className="block p-5">
+        <button className="px-5 py-5 bg-primary rounded-btn btn-active">Complete Lesson</button>
       </div>
-
-      <div>
-        <h1>Create a Lesson</h1>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">What is the lesson title?</span>
-          </div>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
-          />
-        </label>
-
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">
-              What are the prerequisites and learning objectives?
-            </span>
-          </div>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
-          />
-        </label>
-
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">What is the description?</span>
-          </div>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
-          />
-        </label>
-
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">
-              What is the Real World Application?
-            </span>
-          </div>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
-          />
-        </label>
-
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">What is the Implementation?</span>
-          </div>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
-          />
-        </label>
-
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">What is the Summary?</span>
-          </div>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-bordered w-full max-w-xs"
-          />
-        </label>
-        <div>
-          <button className="btn btn-active">Create Lesson</button>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
