@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios'; // Assuming you use axios for HTTP requests
-import { User } from '../../utils/types';
-// Define a User type for form state
+import axios from 'axios';
+import { User, Program } from '../../utils/types'; // Assuming you have a Program type
 
 const UserEditForm: React.FC = () => {
-    const { id } = useParams<{ id: string }>(); // Get the user ID from the URL
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [formData, setFormData] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [programs, setPrograms] = useState<Program[]>([]);
+    const [loadingPrograms, setLoadingPrograms] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:8080/user/${id}`); // Fetch user data from your API
+                const response = await axios.get(`http://localhost:8080/user/${id}`);
                 setFormData(response.data);
             } catch (err) {
                 setError('Failed to fetch user data. Please try again.');
@@ -24,7 +25,21 @@ const UserEditForm: React.FC = () => {
             }
         };
 
-        if (id) fetchUser();
+        const fetchPrograms = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/programs');
+                setPrograms(response.data);
+            } catch (err) {
+                setError('Failed to fetch programs. Please try again.');
+            } finally {
+                setLoadingPrograms(false);
+            }
+        };
+
+        if (id) {
+            fetchUser();
+        }
+        fetchPrograms();
     }, [id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,10 +47,12 @@ const UserEditForm: React.FC = () => {
         setFormData((prevData) => (prevData ? { ...prevData, [name]: value } : null));
     };
 
-    const handleProgramChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) =>
-            prevData ? { ...prevData, program: { ...prevData.program, [name]: value } } : null
+    const handleProgramChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = e.target;
+        setFormData((prevData) => 
+            prevData 
+                ? { ...prevData, program: programs.find(program => program.programId === parseInt(value)) || prevData.program }
+                : null
         );
     };
 
@@ -43,21 +60,21 @@ const UserEditForm: React.FC = () => {
         e.preventDefault();
         if (formData) {
             try {
-                await axios.put(`http://localhost:8080/user/update/${formData.userId}`, formData); // Update user data using your API
+                await axios.put(`http://localhost:8080/user/update/${formData.userId}`, formData);
                 console.log('User saved:', formData);
-                navigate(-1); // Navigate back to the previous page after saving
+                navigate(-1);
             } catch (err) {
                 setError('Failed to save user data. Please try again.');
             }
         }
     };
 
-    if (loading) {
-        return <div>Loading...</div>; // Show a loading state while fetching data
+    if (loading || loadingPrograms) {
+        return <div>Loading...</div>;
     }
 
     if (error) {
-        return <div className="text-red-500">{error}</div>; // Show error message if fetching fails
+        return <div className="text-red-500">{error}</div>;
     }
 
     if (!formData) {
@@ -78,6 +95,7 @@ const UserEditForm: React.FC = () => {
                     value={formData.firstName}
                     onChange={handleChange}
                     className="input input-bordered w-full"
+                    disabled
                 />
             </div>
 
@@ -91,6 +109,7 @@ const UserEditForm: React.FC = () => {
                     value={formData.lastName}
                     onChange={handleChange}
                     className="input input-bordered w-full"
+                    disabled
                 />
             </div>
 
@@ -134,16 +153,22 @@ const UserEditForm: React.FC = () => {
             </div>
 
             <div className="mb-4">
-                <label htmlFor="programName" className="block text-gray-700 font-semibold mb-2">
-                    Program Name
+                <label htmlFor="program" className="block text-gray-700 font-semibold mb-2">
+                    Program
                 </label>
-                <input
-                    type="text"
-                    name="programName"
-                    value={formData.program.programName}
+                <select
+                    name="program"
+                    value={formData.program?.programId || ''}
                     onChange={handleProgramChange}
-                    className="input input-bordered w-full"
-                />
+                    className="select select-bordered w-full"
+                >
+                    <option value="">Select a program</option>
+                    {programs.map(program => (
+                        <option key={program.programId} value={program.programId}>
+                            {program.programName}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div className="flex justify-end">
