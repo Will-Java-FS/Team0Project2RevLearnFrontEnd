@@ -1,11 +1,6 @@
 import React from "react";
 
-interface CardProps {
-  title: string;
-  description: string;
-  link: string;
-}
-
+import { CardProps } from "../utils/types";
 const Card: React.FC<CardProps> = ({ title, description, link }) => {
   return (
     <div className="flex justify-center items-center min-h-40 ">

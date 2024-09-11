@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import AxiosCourseService from "../components/AxiosCourseService"; // Adjust import path
-import CourseCard, { Lesson, Course } from "../components/CourseCard";
+import CourseCard, { Course } from "../components/CourseCard";
 import AxiosLessonService from "../components/AxiosLessonService";
 import AxiosEnrollmentService from "../components/AxiosEnrollmentService";
 import AuthService from "../components/AuthService";

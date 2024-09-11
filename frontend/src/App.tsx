@@ -10,11 +10,10 @@ import AllPrograms from "./pages/Course";
 import AllCourses from "./pages/AllCourses";
 import Forum from "./pages/Forum";
 import ForumPost from "./pages/ForumPost";
-
-// import NoPage from './pages/NoPage'; // Keep this import if you want a 404 page
 import ErrorPage from "./pages/ErrorPage";
 import Dashboard from "./pages/Dashboard";
 import User from "./pages/User";
+import UserEditForm from "./pages/user/UserEditForm";
 
 const App = () => {
   return (
@@ -25,7 +24,6 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
           <Route path="/allcourses" element={<AllCourses />} />
@@ -33,9 +31,9 @@ const App = () => {
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
           <Route path="/user" element={<User />} />
+          <Route path="/user/edit/:id" element={<UserEditForm />} />
           <Route path="/forumpost" element={<ForumPost />} />
-          <Route path="/*" element={<ErrorPage />} />{" "}
-          {/* Handles undefined routes */}
+          <Route path="/*" element={<ErrorPage />} /> {/* Handles undefined routes */}
         </Routes>
       </Layout>
     </Router>
