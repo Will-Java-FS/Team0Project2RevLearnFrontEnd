@@ -98,6 +98,14 @@ const Navbar = () => {
                 Courses
               </Link>
             </li>
+            <li>
+              <Link
+                to="/forum"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                Forum
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

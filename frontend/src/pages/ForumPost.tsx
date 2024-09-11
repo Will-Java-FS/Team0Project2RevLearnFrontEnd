@@ -74,7 +74,7 @@ function CreatePostForm({
     }
 
     try {
-      const result = await AxiosForumService.createPost(post_text, forumId, 1);
+      const result = await AxiosForumService.createPost(post_text, forumId, userId);
       if (result) {
         setSuccess("Post submitted successfully!");
         setPostText(""); // Clear the input field
