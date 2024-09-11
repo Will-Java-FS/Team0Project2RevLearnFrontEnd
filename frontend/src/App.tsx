@@ -14,6 +14,7 @@ import User from "./pages/User";
 import UserEditForm from "./pages/user/UserEditForm";
 import AllPrograms from "./pages/AllPrograms";
 import AllCourses from "./pages/AllCourses";
+import MyCourses from "./pages/Course";
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/allprograms" element={<AllPrograms />} />
           <Route path="/allcourses" element={<AllCourses />} />
-          <Route path="/course" element={<Course />} />
+          <Route path="/course" element={<MyCourses />} />
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
           <Route path="/user" element={<User />} />
