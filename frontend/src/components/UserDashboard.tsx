@@ -2,23 +2,22 @@ import { useEffect, useState } from "react";
 import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
 import axiosInstance from "./AxiosConfig";
-import Card from "./Card";
+import UserCard from './UserCard'; // Import the updated UserCard component
 
 // User interface definition
 interface User {
-  userId: number;
+  id: number;
   email: string;
   username: string;
-  passwordHash: string;
+  profilePicture: string;
   firstName: string;
   lastName: string;
-  userCreatedAt: string;
+  title: string;
   role: string;
-  userUpdatedAt: string;
+  userCreatedAt: string;
   program: {
-    programId: number;
     programName: string;
-  } | null;
+  };
 }
 
 // Course interface definition
@@ -30,17 +29,6 @@ interface Course {
   course_created_at: string;
   course_updated_at: string;
 }
-
-// UserCard Component
-const UserCard: React.FC<{ user: User }> = ({ user }) => {
-  const title = `${user.firstName} ${user.lastName} (${user.role})`;
-  const description = `Username: ${user.username}\nEmail: ${user.email}\nProgram: ${
-    user.program?.programName || "No program assigned"
-  }`;
-  const link = `/users/${user.userId}`;
-
-  return <Card title={title} description={description} link={link} />;
-};
 
 export default function UserDashboard() {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -135,7 +123,7 @@ export default function UserDashboard() {
 
       {/* Loading and Error States */}
       {loadingUser ? <p>Loading user data...</p> : null}
-      {!loadingUser && user && <UserCard user={user} />}
+      {!loadingUser && user && <UserCard user={user} />} {/* Use the updated UserCard component */}
 
       {/* Displaying Course List */}
       <div className="text-center my-4 text-xl font-sans text-red-500">

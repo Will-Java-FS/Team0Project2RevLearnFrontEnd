@@ -15,7 +15,7 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  role: z.enum(["student", "teacher", "admin"]),
+  role: z.enum(["student", "teacher"]),
   programId: z.string().nullable().optional(), // Allow programId to be optional and nullable
 });
 
@@ -233,7 +233,7 @@ export default function Register() {
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
-              <option value="admin">Admin</option>
+
             </select>
             {errors.role && (
               <span className="error text-red-500">{errors.role.message}</span>
