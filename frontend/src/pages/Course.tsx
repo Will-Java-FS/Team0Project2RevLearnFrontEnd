@@ -12,7 +12,6 @@ export default function MyCourses() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        // const enrollmentsData = await AxiosEnrollmentService.getEnrollments(1);
         const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
         const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
         const courseWithLessonsData = await Promise.all(
@@ -26,42 +25,53 @@ export default function MyCourses() {
         );
         
         setCourses(courseWithLessonsData);
-        // console.log(dummyLessons);
-        // console.log(lessonsData);
         
       } catch (error) {
         console.error("Error fetching course data:", error);
-        setError((error as Error).message)
+        setError((error as Error).message);
       }
     };
 
-    // if (AuthService.isLoggedIn()) 
-    fetchCourseData();
+    if (AuthService.isLoggedIn()) {
+      fetchCourseData();
+    }
   }, []);
 
   const handleRemoveCourse = (courseId: number) => {
     setCourses(courses.filter(course => course.course_id !== courseId));
   };
 
-
   if (!AuthService.isLoggedIn()) {
     return (
-        <div className="flex flex-col items-center min-h-screen p-6">
-            <h1>Please log in to view your courses</h1>
-            <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</button>
-        </div>
+      <div className="flex flex-col items-center min-h-screen p-6">
+        <h1>Please log in to view your courses</h1>
+        <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">
+          Login
+        </button>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center min-h-screen p-6">
+        <h1>Error</h1>
+        <p>{error}</p>
+        <button onClick={() => window.location.href = "/"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">
+          Go Back
+        </button>
+      </div>
     );
   }
 
   if (courses.length === 0) {
     return (
-        <div className="flex flex-col items-center min-h-screen p-6">
-            <h1>Unlock your potential today</h1>
-            <button onClick={() => window.location.href = "/allprograms"}
-              className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
-                Our Programs
-            </button>
-        </div>
+      <div className="flex flex-col items-center min-h-screen p-6">
+        <h1>You are not enrolled in any courses</h1>
+        <button onClick={() => window.location.href = "/allprograms"} className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
+          Explore Our Programs
+        </button>
+      </div>
     );
   }
 
@@ -69,7 +79,6 @@ export default function MyCourses() {
     <div className="flex flex-col items-center min-h-screen p-6">
       <h1>List of your courses</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
-        {error && <p>Error: {error}</p>}
         {courses.map((course) => (
           <CourseCard
             key={course.course_id}

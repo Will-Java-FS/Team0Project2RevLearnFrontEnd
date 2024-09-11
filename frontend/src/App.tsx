@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Layout from "./pages/Layout";
 import Register from "./pages/Register";
-import Course from "./pages/Course";
 import Lesson from "./pages/Lesson";
 import Login from "./pages/Login";
 import Forum from "./pages/Forum";
