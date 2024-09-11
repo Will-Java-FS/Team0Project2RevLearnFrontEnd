@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AuthService from "./AuthService";
 import AxiosCourseService from "./AxiosCourseService";
 import AxiosLessonService from "./AxiosLessonService";
 
