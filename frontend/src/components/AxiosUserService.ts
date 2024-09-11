@@ -18,14 +18,14 @@ class AxiosUserService {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      const { token, username: responseUsername, userId, role, program, refreshToken } = response.data;
+      const { token, username: responseUsername, userId, role, program } = response.data;
 
-      if (!userId || !responseUsername || !role || !program || !token || !refreshToken) {
+      if (!userId || !responseUsername || !role || !program || !token) {
         throw new Error("Missing required fields in response");
       }
 
       // Use AuthService to store login details
-      AuthService.login(userId, responseUsername, role, program.programId, token, refreshToken);
+      AuthService.login(userId, responseUsername, role, program.programId, token);
 
       return { success: true, token, username: responseUsername, userId, role, program };
     } catch (error: unknown) {

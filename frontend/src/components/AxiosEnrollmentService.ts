@@ -34,7 +34,7 @@ class AxiosEnrollmentService {
   // }
 
   enrollInCourse(
-    studentId = AuthService.loggedInUserId(),
+    studentId = AuthService.getLoggedInUserId(),
     courseId: number,
   ): boolean {
     axios
@@ -55,7 +55,7 @@ class AxiosEnrollmentService {
   }
 
   payForCourse(
-    studentId = AuthService.loggedInUserId(),
+    studentId = AuthService.getLoggedInUserId(),
     courseId: number,
   ): boolean {
     axios
