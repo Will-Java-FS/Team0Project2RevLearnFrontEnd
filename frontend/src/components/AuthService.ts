@@ -26,7 +26,7 @@ class AuthService {
   // Clear all session and local storage data and optionally reload the page
   logout(): void {
     sessionStorage.clear();
-    localStorage.clear();
+    localStorage.setItem('token', "");
     window.location.reload(); // Optional: reload the page to clear any cached state
 
     console.log('User logged out successfully');

@@ -10,7 +10,7 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <div className="navbar sticky top-0 bg-base-300/90 dark:bg-content-100 backdrop-blur-md shadow-md py-5 z-50">
+    <div className="navbar sticky top-0 bg-base-300/90 backdrop-blur-md shadow-md py-5 z-50">
       {/* Navbar Start - Logo and Menu Toggle */}
       <div className="navbar-start">
         <div className="dropdown">
@@ -37,7 +37,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className={`menu menu-sm dropdown-content font-poppins font-light bg-base-200 rounded-box z-[1] mt-3 w-48 p-2 shadow ${
+            className={`menu menu-sm dropdown-content font-poppins font-light border-2 border-primary bg-base-200 rounded-box z-[1] mt-3 w-48 p-2 shadow ${
               isMenuOpen ? "block" : "hidden"
             }`}
           >
@@ -45,7 +45,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Home
               </Link>
@@ -53,7 +53,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/about"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 About
               </Link>
@@ -61,7 +61,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/login"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Login
               </Link>
@@ -69,7 +69,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/register"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Register
               </Link>
@@ -77,7 +77,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/allprograms"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Programs
               </Link>
@@ -85,7 +85,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/dashboard"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Dashboard
               </Link>
@@ -93,7 +93,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/allcourses"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Courses
               </Link>
@@ -101,7 +101,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/forum"
-                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Forum
               </Link>
