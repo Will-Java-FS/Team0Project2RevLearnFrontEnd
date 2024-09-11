@@ -1,40 +1,49 @@
+import AxiosLessonService from "../components/AxiosLessonService";
 import {
   useEffect,
-  // useState
+  useState
 } from "react";
 
-// Show all parts of the lesson
-// Give students a way to complete the lesson
-// Give teachers a way to edit/delete the lesson
-// Use authService to get logged in user's info, use the axios services for http requests
-export default function Lesson() {
-  // const [lesson, setLesson] = useState({});
+// Updated interface with underscores to match backend model
+export interface LessonPlan {
+  lesson_plan_id: number;
+  title: string;
+  description: string;
+  real_world_application: string;
+  implementation: string;
+  summary: string;
+  lp_created_at: Date;
+  lp_updated_at: Date;
+}
 
-  const dummyLesson = {
-    lessonName: "Introduction to Object-Oriented Programming",
-    description:
-      "This lesson introduces the fundamental concepts of Object-Oriented Programming (OOP) in Java, including classes, objects, inheritance, polymorphism, and encapsulation.",
-    realWorldApplication:
-      "OOP principles are used in software development to create modular, reusable, and maintainable code. Examples include the development of enterprise applications, mobile apps, and games.",
-    implementation:
-      "You will implement a simple Java program that demonstrates the use of classes and objects. This program will model a real-world entity, such as a 'Car,' with properties like 'make,' 'model,' and 'year,' and methods like 'start' and 'stop.'",
-    summary:
-      "By the end of this lesson, you should have a solid understanding of OOP principles and how to apply them in Java programming. You will also have hands-on experience creating a basic Java program using these concepts.",
-  };
+export default function Lesson({ id }: { id: number }) {
+  const [lesson, setLesson] = useState<LessonPlan | null>(null);
 
   useEffect(() => {
-    // setLesson(dummyLesson);
-  }, []);
+    const fetchLesson = async () => {
+      try {
+        const lessonData = await AxiosLessonService.getById(id);
+        setLesson(lessonData);
+      } catch (error) {
+        console.error("Error fetching lesson data:", error);
+      }
+    };
+    fetchLesson();
+  }, [id]); // Added id to the dependency array to ensure it fetches when id changes
+
+  if (!lesson) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
-      <h1>{dummyLesson.lessonName || "Lesson Title"}</h1>
+      <h1>{lesson.title || "Lesson Title"}</h1>
 
       <div className="collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" defaultChecked />
         <div className="collapse-title text-xl font-medium">Description</div>
         <div className="collapse-content">
-          <p>{dummyLesson.description || "No description available."}</p>
+          <p>{lesson.description || "No description available."}</p>
         </div>
       </div>
       <div className="collapse collapse-arrow bg-base-200">
@@ -44,7 +53,7 @@ export default function Lesson() {
         </div>
         <div className="collapse-content">
           <p>
-            {dummyLesson.realWorldApplication ||
+            {lesson.real_world_application ||
               "No real-world application available."}
           </p>
         </div>
@@ -54,8 +63,7 @@ export default function Lesson() {
         <div className="collapse-title text-xl font-medium">Implementation</div>
         <div className="collapse-content">
           <p>
-            {dummyLesson.implementation ||
-              "No implementation details available."}
+            {lesson.implementation || "No implementation details available."}
           </p>
         </div>
       </div>
@@ -63,7 +71,7 @@ export default function Lesson() {
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">Summary</div>
         <div className="collapse-content">
-          <p>{dummyLesson.summary || "No summary available."}</p>
+          <p>{lesson.summary || "No summary available."}</p>
         </div>
       </div>
 
@@ -71,6 +79,7 @@ export default function Lesson() {
         <button className="btn btn-active">Complete Lesson</button>
       </div>
 
+      {/* Form for creating a lesson - uncomment if needed
       <div>
         <h1>Create a Lesson</h1>
         <label className="form-control w-full max-w-xs">
@@ -145,7 +154,7 @@ export default function Lesson() {
         <div>
           <button className="btn btn-active">Create Lesson</button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
