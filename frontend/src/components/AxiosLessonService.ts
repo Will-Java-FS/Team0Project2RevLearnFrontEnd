@@ -1,5 +1,4 @@
 import axios from "./AxiosConfig";
-import AuthService from "./AuthService";
 
 class AxiosLessonService {
   getAll() {
@@ -68,11 +67,11 @@ class AxiosLessonService {
 
   async create(title: string, description: string, implementation: string, application: string, summary: string) {
     try {
-      const response = await axios.post("/lessons", {
+      const response = await axios.post(`/lessons`, {
         title: title,
         description: description,
         implementation: implementation,
-        real_world_application: application,
+        realWorldApplication: application,
         summary: summary
       });
       if (response.status === 200) {
