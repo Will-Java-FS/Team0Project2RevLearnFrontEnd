@@ -27,24 +27,23 @@ export default function TeacherDashboard() {
       {/* Enrollment and Program Form Container */}
       <div className="w-full max-w-5xl flex flex-row justify-between space-x-4 mb-8">
         {/* Assign Program Form */}
-        <div className="flex-1 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+        <div className="flex-1 bg-base-200 dark:bg-gray-800 p-4 rounded-lg shadow-md">
           <AssignProgram />
         </div>
 
         {/* Add Program Form */}
-        <div className="flex-1 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+        <div className="flex-1 bg-base-200 dark:bg-gray-800 p-4 rounded-lg shadow-md">
           <AddProgram />
         </div>
       </div>
+      <div className="w-full max-w-5xl flex flex-row justify-between space-x-4 mb-8">
 
-      {/* Program List */}
-      <ProgramList />
+        {/* Program List */}
+        <ProgramList />
+      </div>
 
-      {/* Subheading */}
-      <h2 className="text-xl font-semibold text-left mb-4">Find Student</h2>
-
-      {/* Centered Users Table */}
-      <div className="w-full max-w-5xl m-10 bg-inherit dark:bg-inherit p-4 rounded-lg shadow-md overflow-x-auto">
+      <div className="w-full max-w-5xl m-10 bg-inherit dark:bg-inherit rounded-lg shadow-md overflow-x-auto">
+        <h1 className="text-3xl text-secondary font-semibold font-suse text-left mb-4">Student & Staff </h1>
         <UsersTable />
       </div>
     </div>

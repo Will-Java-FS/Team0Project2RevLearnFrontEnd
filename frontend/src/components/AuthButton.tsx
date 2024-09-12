@@ -21,11 +21,10 @@ const AuthButton: React.FC = () => {
   return (
     <button
       onClick={handleButtonClick}
-      className={`btn btm-sm ${
-        isLoggedIn
-          ? "btn-error text-white"
-          : "btn-success btn btn-sm text-white"
-      }`}
+      className={`btn btn-sm ghost text-white transition duration-300 ${isLoggedIn
+        ? "hover:bg-red-500 hover:animate-bounce ghost"
+        : "hover:bg-emerald-500 hover:translate-y-[-2px]"
+        }`}
     >
       {isLoggedIn ? "Logout" : "Login"}
     </button>

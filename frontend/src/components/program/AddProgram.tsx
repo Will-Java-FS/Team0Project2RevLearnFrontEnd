@@ -1,20 +1,17 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import AxiosProgramService from "../AxiosProgramService"; // Import the AxiosProgramService
 
 const AddProgram: React.FC = () => {
   const [programName, setProgramName] = useState<string>("");
   const [programDescription, setProgramDescription] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleCreateProgram = async () => {
-    // Reset the messages
-    setError(null);
-    setSuccessMessage(null);
-
+    // Reset notifications
     if (!programName.trim() || !programDescription.trim()) {
-      setError("Program name and description cannot be empty.");
+      toast.error("Program name and description cannot be empty.");
       return;
     }
 
@@ -22,18 +19,18 @@ const AddProgram: React.FC = () => {
     try {
       const response = await AxiosProgramService.create(
         programName,
-        programDescription,
+        programDescription
       ); // Pass both name and description
 
       if (response) {
-        setSuccessMessage("Program created successfully!");
+        toast.success("Program created successfully!");
         setProgramName("");
         setProgramDescription("");
       } else {
-        setError("Failed to create program.");
+        toast.error("Failed to create program.");
       }
     } catch (error) {
-      setError("Error creating program. Please try again.");
+      toast.error("Error creating program. Please try again.");
       console.error("Error creating program:", error);
     } finally {
       setLoading(false);
@@ -43,11 +40,6 @@ const AddProgram: React.FC = () => {
   return (
     <div className="flex flex-col items-center min-content p-6">
       <h2 className="text-2xl font-bold mb-4">Create New Program</h2>
-
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      {successMessage && (
-        <p className="text-green-500 mb-4">{successMessage}</p>
-      )}
 
       <input
         type="text"
@@ -67,12 +59,14 @@ const AddProgram: React.FC = () => {
       <button
         onClick={handleCreateProgram}
         disabled={loading}
-        className={`btn bg-primary text-white py-2 px-4 rounded ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
+        className={`btn mt-4 bg-primary text-white py-2 px-4 rounded ${loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
       >
         {loading ? "Creating..." : "Create Program"}
       </button>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

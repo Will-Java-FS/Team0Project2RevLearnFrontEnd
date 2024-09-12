@@ -95,12 +95,12 @@ export default function UsersTable({ users = [] }: Props) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search..."
-          className="p-2 border rounded"
+          className="p-2 dark:border-slate-300 border bg-inherit rounded"
         />
         <select
           value={selectedRole}
           onChange={handleRoleChange}
-          className="p-2 border rounded"
+          className="p-2 border bg-inherit rounded"
         >
           <option value="all">All Roles</option>
           <option value="student">Student</option>
@@ -109,11 +109,11 @@ export default function UsersTable({ users = [] }: Props) {
           {/* Add more roles as needed */}
         </select>
       </div>
-      <table className="min-w-full bg-white border border-gray-200">
+      <table className="w-full responsive bg-base-200 dark:bg-neutral dark:text-slate-50 border dark:border-slate-300 border-stone-100">
         <thead>
           <tr>
             <th
-              className="p-2 border-b cursor-pointer"
+              className="p-2 text-md text-accent border-b cursor-pointer"
               onClick={() => setSortField("firstName")}
             >
               First Name{" "}
@@ -124,7 +124,7 @@ export default function UsersTable({ users = [] }: Props) {
                 : ""}
             </th>
             <th
-              className="p-2 border-b cursor-pointer"
+              className="p-2 text-accent border-b cursor-pointer"
               onClick={() => setSortField("lastName")}
             >
               Last Name{" "}
@@ -134,11 +134,11 @@ export default function UsersTable({ users = [] }: Props) {
                   : "↓"
                 : ""}
             </th>
-            <th className="p-2 border-b">Email</th>
-            <th className="p-2 border-b">Username</th>
-            <th className="p-2 border-b">Role</th>
-            <th className="p-2 border-b">Program</th>
-            <th className="p-2 border-b">Created At</th>
+            <th className="p-2 text-accent border-b">Email</th>
+            <th className="p-2 text-accent border-b">Username</th>
+            <th className="p-2 text-accent border-b">Role</th>
+            <th className="p-2 text-accent border-b">Program</th>
+            <th className="p-2 text-accent border-b">Created At</th>
           </tr>
         </thead>
         <tbody>
@@ -161,7 +161,7 @@ export default function UsersTable({ users = [] }: Props) {
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+          className="px-4 py-2 bg-primary text-white rounded disabled:bg-amber-500"
         >
           Previous
         </button>
@@ -173,7 +173,7 @@ export default function UsersTable({ users = [] }: Props) {
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+          className="px-4 py-2 bg-primary text-white rounded disabled:bg-amber-600"
         >
           Next
         </button>

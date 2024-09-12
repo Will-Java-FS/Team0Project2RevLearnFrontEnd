@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import AxiosProgramService from "../AxiosProgramService";
 import AxiosUserService from "../AxiosUserService";
 import { Program, User } from "../../utils/types"; // Ensure Program type is correctly defined
@@ -6,13 +8,11 @@ import { Program, User } from "../../utils/types"; // Ensure Program type is cor
 const AssignProgram: React.FC = () => {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(
-    null,
+    null
   );
   const [selectedProgramId, setSelectedProgramId] = useState<number | null>(
-    null,
+    null
   );
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState<User | null>(null); // New state to store user details
 
   useEffect(() => {
@@ -22,10 +22,10 @@ const AssignProgram: React.FC = () => {
         if (programsData) {
           setPrograms(programsData);
         } else {
-          setError("Error fetching programs.");
+          toast.error("Error fetching programs."); // Use toast for error
         }
       } catch (error) {
-        setError("Error fetching programs.");
+        toast.error("Error fetching programs.");
         console.error(error);
       }
     };
@@ -35,14 +35,14 @@ const AssignProgram: React.FC = () => {
 
   const handleAssignProgram = async () => {
     if (!selectedStudentId || !selectedProgramId) {
-      setError("Please enter a student ID and select a program.");
+      toast.error("Please enter a student ID and select a program.");
       return;
     }
 
     try {
       const response = await AxiosProgramService.enrollUserInProgram(
         selectedStudentId,
-        selectedProgramId,
+        selectedProgramId
       );
 
       if (response) {
@@ -50,18 +50,16 @@ const AssignProgram: React.FC = () => {
         const userDetails =
           await AxiosUserService.fetchUserDetails(selectedStudentId);
         setUserDetails(userDetails); // Store user details
-        setSuccessMessage(
-          `Program assigned successfully to ${userDetails.firstName} ${userDetails.lastName}!`,
+
+        toast.success(
+          `Program assigned successfully to ${userDetails.firstName} ${userDetails.lastName}!`
         );
-        setError(null); // Clear any previous error messages
       } else {
-        setError("Failed to assign program.");
-        setSuccessMessage(null); // Clear any previous success messages
+        toast.error("Failed to assign program.");
       }
     } catch (error) {
-      setError("Error assigning program. Please try again.");
+      toast.error("Error assigning program. Please try again.");
       console.error("Error assigning program:", error);
-      setSuccessMessage(null); // Clear any previous success messages
     }
   };
 
@@ -69,8 +67,6 @@ const AssignProgram: React.FC = () => {
     <div className="flex flex-col items-center min-h-content p-6">
       <h2 className="text-2xl font-bold mb-4">Assign Program to Student</h2>
 
-      {error && <p className="text-red-500">{error}</p>}
-      {successMessage && <p className="text-green-500">{successMessage}</p>}
       {userDetails && (
         <div className="mb-4">
           <p>User Details:</p>
@@ -115,6 +111,9 @@ const AssignProgram: React.FC = () => {
       >
         Assign Program
       </button>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

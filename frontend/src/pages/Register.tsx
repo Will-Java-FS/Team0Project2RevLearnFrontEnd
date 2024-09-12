@@ -7,6 +7,8 @@ import AxiosUserService from "../components/AxiosUserService";
 import Modal from "../utils/modal";
 import Login from "./Login";
 import axios from "../components/AxiosConfig";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 // Define Zod schema for form validation
 const formSchema = z.object({
@@ -53,6 +55,7 @@ export default function Register() {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+
   const handleRegister: SubmitHandler<FormData> = async (data) => {
     try {
       // Convert programId to number or null
@@ -83,9 +86,15 @@ export default function Register() {
       );
 
       if (result.success) {
-        setMessage(
-          result.message || "Registration successful! Redirecting to login...",
-        );
+        toast.success("Registration successful! Redirecting to login...", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         setIsSuccess(true);
 
         // Redirect to login page after successful registration
@@ -101,10 +110,13 @@ export default function Register() {
       // Handle different types of errors more robustly
       if (error instanceof Error) {
         setMessage(error.message || "An error occurred. Please try again.");
+        toast.error(error.message || "An error occurred. Please try again.");
       } else if (typeof error === "string") {
         setMessage(error);
+        toast.error(error);
       } else {
         setMessage("An unexpected error occurred. Please try again.");
+        toast.error("An unexpected error occurred. Please try again.");
       }
 
       setIsSuccess(false);
@@ -112,7 +124,7 @@ export default function Register() {
   };
 
   return (
-    <div className="container flex items-center justify-center h-screen relative">
+    <div className="container flex items-center justify-center min-h-100 relative">
       <form
         className="bg-neutral-content dark:bg-neutral shadow-2xl rounded-box overflow-hidden border-2 border-accent w-full max-w-md p-8"
         onSubmit={handleSubmit(handleRegister)}
@@ -268,7 +280,8 @@ export default function Register() {
           </div>
           {message && (
             <p
-              className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"}`}
+              className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"
+                }`}
             >
               {message}
             </p>
@@ -297,6 +310,7 @@ export default function Register() {
       >
         <Login />
       </Modal>
+      <ToastContainer />
     </div>
   );
 }
