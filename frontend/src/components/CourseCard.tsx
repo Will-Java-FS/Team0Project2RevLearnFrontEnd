@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AxiosCourseService from "./AxiosCourseService";
 import AxiosLessonService from "./AxiosLessonService";
 import AuthService from "./AuthService";
-import { useNavigate } from "react-router-dom";
 
 export interface Course {
     course_id: number;
@@ -17,7 +17,10 @@ export interface Course {
 export interface Lesson {
     lesson_plan_id: number;
     title: string;
-    content: string;
+    description: string;
+    real_world_application: string;
+    implementation: string;
+    summary: string;
     lp_created_at: string;
     lp_updated_at: string;
 }
@@ -51,7 +54,14 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     const handleLessonSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const newLesson: Lesson | null = await AxiosLessonService.create(lessonTitle, lessonDescription, lessonImplementation, lessonApplication, lessonSummary);
+            const newLesson: Lesson | null = await AxiosLessonService.create(
+                lessonTitle,
+                lessonDescription,
+                lessonImplementation,
+                lessonApplication,
+                lessonSummary
+            );
+            console.log(newLesson);
             if (newLesson !== null) {
                 // Update the course lessons state with the new lesson
                 course.lessons.push(newLesson);
@@ -89,7 +99,6 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                                 key={lesson.lesson_plan_id}
                                 onClick={() => handleLessonClick(lesson.lesson_plan_id)}>
                                 <h4>{lesson.title}</h4>
-                                <h4>{lesson.content}</h4>
                             </button>
                         ))}
                     </ul>

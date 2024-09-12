@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import CourseCard, { Lesson, Course } from "../components/CourseCard"; // Adjust the path to where the Card component is located
+import CourseCard, { Course } from "../components/CourseCard"; // Adjust the path to where the Card component is located
 import AxiosCourseService from "../components/AxiosCourseService";
 import AxiosLessonService from "../components/AxiosLessonService";
-import axios from "axios";
 import AxiosEnrollmentService from "../components/AxiosEnrollmentService";
 import AuthService from "../components/AuthService";
 
@@ -25,11 +24,11 @@ export default function AllCourses() {
   //   link: "https://example.com",
   // }));
 
-  const dummyLessons: Lesson[] = [
-    { lesson_plan_id: 1, title: "Lesson 1", content: "Content 1", lp_created_at: "2021-09-01", lp_updated_at: "2021-09-01" },
-    { lesson_plan_id: 2, title: "Lesson 2", content: "Content 2", lp_created_at: "2021-09-02", lp_updated_at: "2021-09-02" },
-    { lesson_plan_id: 3, title: "Lesson 3", content: "Content 3", lp_created_at: "2021-09-03", lp_updated_at: "2021-09-03" }
-  ];
+  // const dummyLessons: Lesson[] = [
+  //   { lesson_plan_id: 1, title: "Lesson 1", content: "Content 1", lp_created_at: "2021-09-01", lp_updated_at: "2021-09-01" },
+  //   { lesson_plan_id: 2, title: "Lesson 2", content: "Content 2", lp_created_at: "2021-09-02", lp_updated_at: "2021-09-02" },
+  //   { lesson_plan_id: 3, title: "Lesson 3", content: "Content 3", lp_created_at: "2021-09-03", lp_updated_at: "2021-09-03" }
+  // ];
 
   useEffect(() => {
     const fetchCourseData = async () => {
