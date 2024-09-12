@@ -15,7 +15,7 @@ export default function Footer() {
                 RevLearn
               </span>
               <br />
-                Providing Cutting-Edge Learning Solutions Since {" "}
+              Providing Cutting-Edge Learning Solutions Since{" "}
               <span className="font-bold">2024</span>
             </p>
           </div>

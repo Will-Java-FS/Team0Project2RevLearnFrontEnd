@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { User, Program } from '../../utils/types';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { User, Program } from "../../utils/types";
 
 const UserEditForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +19,7 @@ const UserEditForm: React.FC = () => {
         const response = await axios.get(`http://localhost:8080/user/${id}`);
         setFormData(response.data);
       } catch (err) {
-        setError('Failed to fetch user data. Please try again.');
+        setError("Failed to fetch user data. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -27,10 +27,10 @@ const UserEditForm: React.FC = () => {
 
     const fetchPrograms = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/programs');
+        const response = await axios.get("http://localhost:8080/programs");
         setPrograms(response.data);
       } catch (err) {
-        setError('Failed to fetch programs. Please try again.');
+        setError("Failed to fetch programs. Please try again.");
       } finally {
         setLoadingPrograms(false);
       }
@@ -45,7 +45,7 @@ const UserEditForm: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) =>
-      prevData ? { ...prevData, [name]: value } : null
+      prevData ? { ...prevData, [name]: value } : null,
     );
   };
 
@@ -55,11 +55,12 @@ const UserEditForm: React.FC = () => {
       prevData
         ? {
             ...prevData,
-            program: programs.find(
-              (program) => program.programId === parseInt(value)
-            ) || null, // Ensure we handle the case when no program is selected
+            program:
+              programs.find(
+                (program) => program.programId === parseInt(value),
+              ) || null, // Ensure we handle the case when no program is selected
           }
-        : null
+        : null,
     );
   };
 
@@ -69,12 +70,12 @@ const UserEditForm: React.FC = () => {
       try {
         await axios.put(
           `http://localhost:8080/user/update/${formData.userId}`,
-          formData
+          formData,
         );
-        console.log('User saved:', formData);
+        console.log("User saved:", formData);
         navigate(-1); // Redirect back after saving
       } catch (err) {
-        setError('Failed to save user data. Please try again.');
+        setError("Failed to save user data. Please try again.");
       }
     }
   };
@@ -191,7 +192,7 @@ const UserEditForm: React.FC = () => {
         </label>
         <select
           name="program"
-          value={formData.program?.programId || ''}
+          value={formData.program?.programId || ""}
           onChange={handleProgramChange}
           className="select select-bordered w-full"
         >

@@ -127,7 +127,6 @@ const Navbar = () => {
 
       {/* Navbar End - Actions */}
       <div className="navbar-end gap-2">
-       
         <button className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -164,7 +163,7 @@ const Navbar = () => {
           </div>
         </button>
       </div>
-      <AuthButton/>
+      <AuthButton />
     </div>
   );
 };

@@ -140,14 +140,17 @@ class AxiosForumService {
   async createPost(
     post_text: string,
     forumId: number,
-    userId:number
+    userId: number,
   ): Promise<ForumPost | null> {
     try {
-      const response = await axios.post<ForumPost>(`/forumpost/${userId}/${forumId}`, {
-        post_text,
-        userId: AuthService.getLoggedInUserId(),
-        forumId,
-      });
+      const response = await axios.post<ForumPost>(
+        `/forumpost/${userId}/${forumId}`,
+        {
+          post_text,
+          userId: AuthService.getLoggedInUserId(),
+          forumId,
+        },
+      );
       if (response.status === 201) {
         return response.data;
       }

@@ -49,16 +49,17 @@ export default function UsersTable({ users = [] }: Props) {
 
   const filteredAndSortedUsers = generatedUsers
     .filter((user) => {
-      return Object.entries(filters).every(([key, value]) => 
+      return Object.entries(filters).every(([key, value]) =>
         user[key as keyof User]
           ?.toString()
           .toLowerCase()
-          .includes(value.toLowerCase())
+          .includes(value.toLowerCase()),
       );
     })
-    .filter((user) =>
-      user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(
+      (user) =>
+        user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(searchTerm.toLowerCase()),
     )
     .sort((a, b) => {
       const fieldA = a[sortField]?.toString().toLowerCase() ?? "";
@@ -72,7 +73,7 @@ export default function UsersTable({ users = [] }: Props) {
   const totalPages = Math.ceil(filteredAndSortedUsers.length / usersPerPage);
   const currentUsers = filteredAndSortedUsers.slice(
     (currentPage - 1) * usersPerPage,
-    currentPage * usersPerPage
+    currentPage * usersPerPage,
   );
 
   useEffect(() => {
@@ -103,11 +104,27 @@ export default function UsersTable({ users = [] }: Props) {
       <table className="min-w-full bg-white border border-gray-200">
         <thead>
           <tr>
-            <th className="p-2 border-b cursor-pointer" onClick={() => setSortField("firstName")}>
-              First Name {sortField === "firstName" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+            <th
+              className="p-2 border-b cursor-pointer"
+              onClick={() => setSortField("firstName")}
+            >
+              First Name{" "}
+              {sortField === "firstName"
+                ? sortOrder === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
             </th>
-            <th className="p-2 border-b cursor-pointer" onClick={() => setSortField("lastName")}>
-              Last Name {sortField === "lastName" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+            <th
+              className="p-2 border-b cursor-pointer"
+              onClick={() => setSortField("lastName")}
+            >
+              Last Name{" "}
+              {sortField === "lastName"
+                ? sortOrder === "asc"
+                  ? "↑"
+                  : "↓"
+                : ""}
             </th>
             <th className="p-2 border-b">Email</th>
             <th className="p-2 border-b">Username</th>
@@ -144,7 +161,9 @@ export default function UsersTable({ users = [] }: Props) {
           Page {currentPage} of {totalPages}
         </span>
         <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
           className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
         >

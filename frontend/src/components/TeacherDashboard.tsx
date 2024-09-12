@@ -7,7 +7,6 @@ export default function TeacherDashboard() {
   const username = AuthService.getLoggedInUsername();
   const role = AuthService.getLoggedInUserRole();
 
-
   return (
     <div className="p-6 w-full mx-auto flex flex-col items-center">
       {/* Welcome Back Message */}
@@ -16,9 +15,7 @@ export default function TeacherDashboard() {
       </h1>
 
       {/* Dashboard Title */}
-      <h1 className="text-3xl font-bold text-center my-8">
-        {role} Dashboard
-      </h1>
+      <h1 className="text-3xl font-bold text-center my-8">{role} Dashboard</h1>
 
       {/* Enrollment Form */}
       <EnrollUserForm />

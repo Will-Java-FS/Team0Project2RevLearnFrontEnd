@@ -23,7 +23,7 @@ h2 {
 }
 
 p {
-  @apply  text-base text-lg md:text-lg lg:text-xl;
+  @apply text-base text-lg md:text-lg lg:text-xl;
 }
 
 /* Responsive Container Widths */

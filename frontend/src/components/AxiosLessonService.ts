@@ -33,7 +33,7 @@ class AxiosLessonService {
     }
     return null;
   }
-  
+
   // getAllByCourse(courseId: number) {
   //   axios
   //     .get("/course/" + courseId + "/lessons")
@@ -65,14 +65,20 @@ class AxiosLessonService {
     return null;
   }
 
-  async create(title: string, description: string, implementation: string, application: string, summary: string) {
+  async create(
+    title: string,
+    description: string,
+    implementation: string,
+    application: string,
+    summary: string,
+  ) {
     try {
       const response = await axios.post(`/lessons`, {
         title: title,
         description: description,
         implementation: implementation,
         realWorldApplication: application,
-        summary: summary
+        summary: summary,
       });
       if (response.status === 200) {
         return response.data;

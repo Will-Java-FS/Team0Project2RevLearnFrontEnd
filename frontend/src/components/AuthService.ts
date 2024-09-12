@@ -14,7 +14,7 @@ class AuthService {
     username: string,
     role: string,
     program: number | null,
-    token: string
+    token: string,
   ): void {
     sessionStorage.setItem("authenticatedUserId", userId.toString());
     sessionStorage.setItem("authenticatedUser", username);
@@ -31,7 +31,7 @@ class AuthService {
     localStorage.setItem("token", `Bearer ${token}`);
 
     console.log(
-      `User ${username} logged in successfully with role ${role} and token ${token}`
+      `User ${username} logged in successfully with role ${role} and token ${token}`,
     );
   }
 

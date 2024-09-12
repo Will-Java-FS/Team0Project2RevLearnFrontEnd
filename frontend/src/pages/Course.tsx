@@ -13,18 +13,24 @@ export default function MyCourses() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
-        const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
-        
+        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(
+          AuthService.getLoggedInUserId(),
+        );
+        const courseData = enrollmentsData.map(
+          (enrollment: { course: Course }) => enrollment.course,
+        );
+
         // Fetch lessons for each course
         const courseWithLessonsData = await Promise.all(
           courseData.map(async (course: Course) => {
-            const lessonsData = await AxiosLessonService.getAllByCourse(course.course_id);
+            const lessonsData = await AxiosLessonService.getAllByCourse(
+              course.course_id,
+            );
             return {
               ...course,
               lessons: lessonsData || [],
             };
-          })
+          }),
         );
         setCourses(courseWithLessonsData);
       } catch (error) {
@@ -41,14 +47,17 @@ export default function MyCourses() {
   }, []);
 
   const handleRemoveCourse = (courseId: number) => {
-    setCourses(courses.filter(course => course.course_id !== courseId));
+    setCourses(courses.filter((course) => course.course_id !== courseId));
   };
 
   if (!AuthService.isLoggedIn()) {
     return (
       <div className="flex flex-col items-center min-h-screen p-6">
         <h1>Please log in to view your courses</h1>
-        <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">
+        <button
+          onClick={() => (window.location.href = "/login")}
+          className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+        >
           Login
         </button>
       </div>
@@ -56,7 +65,11 @@ export default function MyCourses() {
   }
 
   if (loading) {
-    return <div className="flex flex-col items-center min-h-screen p-6">Loading your courses...</div>;
+    return (
+      <div className="flex flex-col items-center min-h-screen p-6">
+        Loading your courses...
+      </div>
+    );
   }
 
   if (error) {
@@ -64,7 +77,10 @@ export default function MyCourses() {
       <div className="flex flex-col items-center min-h-screen p-6">
         <h1>Error</h1>
         <p>{error}</p>
-        <button onClick={() => window.location.href = "/"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">
+        <button
+          onClick={() => (window.location.href = "/")}
+          className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+        >
           Go Back
         </button>
       </div>
@@ -75,7 +91,10 @@ export default function MyCourses() {
     return (
       <div className="flex flex-col items-center min-h-screen p-6">
         <h1>You are not enrolled in any courses</h1>
-        <button onClick={() => window.location.href = "/allprograms"} className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
+        <button
+          onClick={() => (window.location.href = "/allprograms")}
+          className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]"
+        >
           Explore Our Programs
         </button>
       </div>
@@ -108,7 +127,12 @@ export default function MyCourses() {
                 </p>
               </div>
               <div className="card-actions">
-                <button className="btn btn-primary" onClick={() => console.log(`Course ID: ${course.course_id}`)}>Click here</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => console.log(`Course ID: ${course.course_id}`)}
+                >
+                  Click here
+                </button>
               </div>
             </div>
           </div>

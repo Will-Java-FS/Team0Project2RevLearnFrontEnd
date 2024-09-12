@@ -129,7 +129,6 @@ export interface LoginResult {
   error?: string; // Optional: Include error messages if necessary
 }
 export interface Lesson {
-
   lesson_id: number;
 
   lessonName: string;
@@ -141,5 +140,4 @@ export interface Lesson {
   implementation: string;
 
   summary: string;
-
 }

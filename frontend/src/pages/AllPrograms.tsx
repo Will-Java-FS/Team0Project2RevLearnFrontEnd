@@ -13,39 +13,46 @@ export default function AllPrograms() {
   useEffect(() => {
     // Fetch all programs using AxiosProgramService
     const fetchPrograms = async () => {
-      axios.get("http://localhost:8080/programs").then((response: { data: Program[] }) => {
-        setPrograms(response.data);
-      }
-      ).catch((error: any) => {
-        console.error("Error fetching programs:", error);
-      });
-
+      axios
+        .get("http://localhost:8080/programs")
+        .then((response: { data: Program[] }) => {
+          setPrograms(response.data);
+        })
+        .catch((error: any) => {
+          console.error("Error fetching programs:", error);
+        });
     };
     fetchPrograms();
   }, []);
 
-  function Item({ programId, programName }: { programId:number, programName:string }) {
+  function Item({
+    programId,
+    programName,
+  }: {
+    programId: number;
+    programName: string;
+  }) {
     if (programId == AuthService.getLoggedInUserProgramId()) {
       return (
         <div
-            key={programId}
-            className="card bg-base-200 shadow-xl border-2 border-primary"
-          >
-            <div className="card-body">
-              <h2 className="card-title">{programName} - Your program</h2>
-            </div>
+          key={programId}
+          className="card bg-base-200 shadow-xl border-2 border-primary"
+        >
+          <div className="card-body">
+            <h2 className="card-title">{programName} - Your program</h2>
           </div>
+        </div>
       );
     }
     return (
       <div
-            key={programId}
-            className="card bg-base-100 shadow-xl border-2 border-accent"
-          >
-            <div className="card-body">
-              <h2 className="card-title">{programName}</h2>
-            </div>
-          </div>
+        key={programId}
+        className="card bg-base-100 shadow-xl border-2 border-accent"
+      >
+        <div className="card-body">
+          <h2 className="card-title">{programName}</h2>
+        </div>
+      </div>
     );
   }
 

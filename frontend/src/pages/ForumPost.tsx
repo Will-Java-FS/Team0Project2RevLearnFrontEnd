@@ -47,18 +47,20 @@ interface ForumPostData {
 function CreatePostForm({
   userId,
   forumId,
-  onPostCreated
+  onPostCreated,
 }: {
   userId: number;
   forumId: number;
-  onPostCreated: () => void; 
+  onPostCreated: () => void;
 }) {
   const [post_text, setPostText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handlePostTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handlePostTextChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     setPostText(event.target.value);
   };
 
@@ -69,13 +71,17 @@ function CreatePostForm({
     setSuccess(null);
 
     if (!post_text.trim()) {
-        setError("Post content cannot be empty.");
-        setLoading(false);
-        return;
+      setError("Post content cannot be empty.");
+      setLoading(false);
+      return;
     }
 
     try {
-      const result = await AxiosForumService.createPost(post_text, forumId, userId);
+      const result = await AxiosForumService.createPost(
+        post_text,
+        forumId,
+        userId,
+      );
       if (result) {
         setSuccess("Post submitted successfully!");
         setPostText(""); // Clear the input field
@@ -106,7 +112,7 @@ function CreatePostForm({
         <div className="mt-4 flex justify-between items-center">
           <button
             type="submit"
-            className={`px-4 py-2 rounded-btn hover:bg-primary ${loading ? 'bg-gray-400' : 'bg-accent'}`}
+            className={`px-4 py-2 rounded-btn hover:bg-primary ${loading ? "bg-gray-400" : "bg-accent"}`}
             disabled={loading}
           >
             {loading ? "Submitting..." : "Submit"}
@@ -125,8 +131,8 @@ export default function ForumPost() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null); // Assuming you have a way to get the logged-in user
-  const prevforumid = Number(localStorage.getItem('selectedForumId'));
- console.log(prevforumid)
+  const prevforumid = Number(localStorage.getItem("selectedForumId"));
+  console.log(prevforumid);
 
   useEffect(() => {
     async function fetchForumPosts() {
@@ -186,26 +192,51 @@ export default function ForumPost() {
 
   return (
     <div className="p-10">
-      <button className="min-h-10 w-full bg-primary hover:bg-accent text-white rounded-btn btn-active" onClick={() => navigate(-1)}>Back To Fourms</button>
-      <br/>
-      <br/>
-      {forumPosts.map(post => (
-        <div className="bg-neutral rounded-box text-white shadow-md p-5 mb-4 w-full" key={post.forumpost_id}>
-          <p><strong>Post:</strong> {post.post_text}</p>
-          <p className="text-sm"><strong>Created At:</strong> {new Date(post.post_created_at).toLocaleString()}</p>
-          <p className="text-sm"><strong>Last Updated:</strong> {new Date(post.post_updated_at).toLocaleString()}</p>
+      <button
+        className="min-h-10 w-full bg-primary hover:bg-accent text-white rounded-btn btn-active"
+        onClick={() => navigate(-1)}
+      >
+        Back To Fourms
+      </button>
+      <br />
+      <br />
+      {forumPosts.map((post) => (
+        <div
+          className="bg-neutral rounded-box text-white shadow-md p-5 mb-4 w-full"
+          key={post.forumpost_id}
+        >
+          <p>
+            <strong>Post:</strong> {post.post_text}
+          </p>
+          <p className="text-sm">
+            <strong>Created At:</strong>{" "}
+            {new Date(post.post_created_at).toLocaleString()}
+          </p>
+          <p className="text-sm">
+            <strong>Last Updated:</strong>{" "}
+            {new Date(post.post_updated_at).toLocaleString()}
+          </p>
           {post.user ? (
             <>
-              <p><strong>Posted By:</strong> {post.user.username} (Email: {post.user.email})</p>
-              <p><strong>User Role:</strong> {post.user.role}</p>
+              <p>
+                <strong>Posted By:</strong> {post.user.username} (Email:{" "}
+                {post.user.email})
+              </p>
+              <p>
+                <strong>User Role:</strong> {post.user.role}
+              </p>
             </>
           ) : (
             <p>User information not available.</p>
           )}
         </div>
       ))}
-      <br/>
-      <CreatePostForm userId={loggedInUserId} forumId={prevforumid} onPostCreated={fetchForumPosts} />
+      <br />
+      <CreatePostForm
+        userId={loggedInUserId}
+        forumId={prevforumid}
+        onPostCreated={fetchForumPosts}
+      />
     </div>
   );
 }

@@ -45,7 +45,9 @@ const AddProgram: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4">Create New Program</h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
-      {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
+      {successMessage && (
+        <p className="text-green-500 mb-4">{successMessage}</p>
+      )}
 
       <input
         type="text"

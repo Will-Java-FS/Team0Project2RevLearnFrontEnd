@@ -35,7 +35,7 @@ const Login: React.FC = () => {
     try {
       const { success, message } = await AxiosUserService.loginUser(
         data.username,
-        data.passwordHash // Updated to use 'passwordHash'
+        data.passwordHash, // Updated to use 'passwordHash'
       );
 
       if (success) {

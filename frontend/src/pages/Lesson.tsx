@@ -17,7 +17,7 @@ export interface LessonPlan {
 export default function Lesson() {
   const navigate = useNavigate();
   const [lesson, setLesson] = useState<LessonPlan | null>(null);
-  const { id } = useParams()
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchLesson = async () => {
@@ -32,7 +32,7 @@ export default function Lesson() {
   }, []); // Added id to the dependency array to ensure it fetches when id changes
 
   if (lesson == null) {
-    console.log(lesson)
+    console.log(lesson);
     return <div>Loading...</div>;
   }
 
@@ -48,7 +48,7 @@ export default function Lesson() {
           <p>{lesson.description || "No description available."}</p>
         </div>
       </div>
-      <br/>
+      <br />
       <div className="px-5 py-5 collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">
@@ -61,7 +61,7 @@ export default function Lesson() {
           </p>
         </div>
       </div>
-      <br/>
+      <br />
       <div className="px-5 py-5 collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">Implementation</div>
@@ -71,7 +71,7 @@ export default function Lesson() {
           </p>
         </div>
       </div>
-      <br/>
+      <br />
       <div className="px-5 py-5 collapse collapse-arrow bg-base-200">
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">Summary</div>
@@ -81,7 +81,12 @@ export default function Lesson() {
       </div>
 
       <div className="block p-5">
-        <button className="px-5 py-5 bg-primary rounded-btn btn-active" onClick={() => navigate(-1)}>Complete Lesson</button>
+        <button
+          className="px-5 py-5 bg-primary rounded-btn btn-active"
+          onClick={() => navigate(-1)}
+        >
+          Complete Lesson
+        </button>
       </div>
     </div>
   );

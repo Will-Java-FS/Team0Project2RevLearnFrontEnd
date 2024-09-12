@@ -32,10 +32,11 @@ const App = () => {
           <Route path="/lesson/:id" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
           <Route path="/user" element={<User />} />
-          <Route path="/test" element={<ProgramList/>} />
+          <Route path="/test" element={<ProgramList />} />
           <Route path="/user/edit/:id" element={<UserEditForm />} />
           <Route path="/forumpost" element={<ForumPost />} />
-          <Route path="/*" element={<ErrorPage />} /> {/* Handles undefined routes */}
+          <Route path="/*" element={<ErrorPage />} />{" "}
+          {/* Handles undefined routes */}
         </Routes>
       </Layout>
     </Router>

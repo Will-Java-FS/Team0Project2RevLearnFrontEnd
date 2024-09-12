@@ -12,7 +12,8 @@ const AllCourses: React.FC = () => {
     const fetchAvailableCourses = async () => {
       try {
         // Fetch all available courses for enrollment
-        const availableCoursesData = await AxiosEnrollmentService.getAllAvailableCourses();
+        const availableCoursesData =
+          await AxiosEnrollmentService.getAllAvailableCourses();
         setAvailableCourses(availableCoursesData);
       } catch (error) {
         console.error("Error fetching available courses:", error);
@@ -33,7 +34,9 @@ const AllCourses: React.FC = () => {
         return;
       }
 
-      const course = availableCourses.find(course => course.course_id === courseId);
+      const course = availableCourses.find(
+        (course) => course.course_id === courseId,
+      );
 
       if (!course) {
         alert("Selected course not found.");
@@ -48,12 +51,17 @@ const AllCourses: React.FC = () => {
         payment_status: "Pending",
       };
 
-      const result = await AxiosEnrollmentService.enrollInCourseWithDetails(enrollmentPayload);
+      const result =
+        await AxiosEnrollmentService.enrollInCourseWithDetails(
+          enrollmentPayload,
+        );
 
       if (result) {
         alert("Enrollment successful!");
         // Remove the enrolled course from the available courses list
-        setAvailableCourses(availableCourses.filter(c => c.course_id !== courseId));
+        setAvailableCourses(
+          availableCourses.filter((c) => c.course_id !== courseId),
+        );
       } else {
         alert("Enrollment failed.");
       }
@@ -70,7 +78,9 @@ const AllCourses: React.FC = () => {
       {/* Display available courses */}
       {availableCourses.length > 0 ? (
         <div className="w-full max-w-4xl">
-          <h2 className="text-2xl font-bold mb-4">Available Courses for Enrollment</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            Available Courses for Enrollment
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
             {availableCourses.map((course) => (
               <CourseCard

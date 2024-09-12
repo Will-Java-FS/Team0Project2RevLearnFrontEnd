@@ -61,9 +61,9 @@ export default function UserDashboard() {
           {user ? `${user.firstName} ${user.lastName}` : "Guest"} Dashboard
         </h1>
       </div>
-
       {loadingUser && <p>Loading user data...</p>} {/* Display loading state */}
-      {!loadingUser && user && <UserCard user={user} />} {/* Display user card */}
+      {!loadingUser && user && <UserCard user={user} />}{" "}
+      {/* Display user card */}
       <div className="mt-8 text-center">
         <h2 className="text-2xl">Progress Tracker</h2>
         <div className="mt-6 w-3/4 mx-auto">
@@ -91,7 +91,6 @@ export default function UserDashboard() {
       </div>
       {/* Render MyCourses component */}
       <MyCourses />
-
       {/* Progress Tracker Section */}
     </div>
   );

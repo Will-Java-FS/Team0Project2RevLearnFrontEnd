@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthService from './AuthService';
-import axiosInstance from './AxiosConfig';
-import { User } from '../utils/types';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthService from "./AuthService";
+import axiosInstance from "./AxiosConfig";
+import { User } from "../utils/types";
 
 interface UserCardProps {
   user?: User; // Make user prop optional since we're fetching it internally
@@ -22,8 +22,8 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
         const response = await axiosInstance.get<User>(`/user/${userId}`);
         setUser(response.data);
       } catch (err) {
-        console.error('Failed to fetch user details:', err);
-        setError('Failed to fetch user details.');
+        console.error("Failed to fetch user details:", err);
+        setError("Failed to fetch user details.");
       } finally {
         setLoadingUser(false);
       }
@@ -58,7 +58,11 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
       <div className="flex justify-center mt-4">
         <img
           className="h-24 w-24 rounded-full object-cover border-2 border-primary"
-          src={user.firstName && user.lastName ? generateAvatarUrl(user.firstName, user.lastName) : "https://avatar.iran.liara.run/public"} // Use dynamic avatar URL
+          src={
+            user.firstName && user.lastName
+              ? generateAvatarUrl(user.firstName, user.lastName)
+              : "https://avatar.iran.liara.run/public"
+          } // Use dynamic avatar URL
           alt="User Profile"
         />
       </div>
@@ -77,7 +81,8 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
         </p>
         {/* Conditionally render the program name if program is not null */}
         <p className="text-light text-sm m-1">
-          <span className="font-semibold">Program:</span> {user.program ? user.program.programName : "No Program Assigned"}
+          <span className="font-semibold">Program:</span>{" "}
+          {user.program ? user.program.programName : "No Program Assigned"}
         </p>
         <p className="text-gray-400 text-sm mt-1">
           Joined on: {new Date(user.userCreatedAt).toLocaleDateString()}
@@ -86,7 +91,10 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
 
       {/* User Actions */}
       <div className="flex justify-center gap-4 py-4 bg-gray-100">
-        <button className="btn btn-warning rounded-xl" onClick={handleEditClick}>
+        <button
+          className="btn btn-warning rounded-xl"
+          onClick={handleEditClick}
+        >
           Edit
         </button>
 

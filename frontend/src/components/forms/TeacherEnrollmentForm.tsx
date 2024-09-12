@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import AxiosCourseService from '../AxiosCourseService';
-import { Course } from '../../utils/types'; // Ensure Course interface is correctly imported
-import AxiosEnrollmentService from '../AxiosEnrollmentService';
-import AuthService from '../AuthService';
-import { Course } from '../../utils/types'; // Ensure Course interface is correctly imported
+import React, { useState, useEffect } from "react";
+import AxiosCourseService from "../AxiosCourseService";
+import { Course } from "../../utils/types"; // Ensure Course interface is correctly imported
+import AxiosEnrollmentService from "../AxiosEnrollmentService";
+import AuthService from "../AuthService";
+import { Course } from "../../utils/types"; // Ensure Course interface is correctly imported
 
 const TeacherEnrollmentForm: React.FC = () => {
-  const [teacherId, setTeacherId] = useState<number>(AuthService.getLoggedInUserId()); // Ensure teacher ID is retrieved from AuthService
+  const [teacherId, setTeacherId] = useState<number>(
+    AuthService.getLoggedInUserId(),
+  ); // Ensure teacher ID is retrieved from AuthService
   const [studentId, setStudentId] = useState<number>(0); // Input for student ID
   const [courseId, setCourseId] = useState<number>(0);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [enrollmentStatus, setEnrollmentStatus] = useState<string>('');
-  const [paymentStatus, setPaymentStatus] = useState<string>('');
+  const [enrollmentStatus, setEnrollmentStatus] = useState<string>("");
+  const [paymentStatus, setPaymentStatus] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   // Define options for dropdowns
-  const enrollmentStatusOptions = ['Enrolled', 'Completed', 'Pending'];
-  const paymentStatusOptions = ['Paid', 'Pending', 'Overdue'];
+  const enrollmentStatusOptions = ["Enrolled", "Completed", "Pending"];
+  const paymentStatusOptions = ["Paid", "Pending", "Overdue"];
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -39,9 +41,15 @@ const TeacherEnrollmentForm: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const result = await AxiosEnrollmentService.enrollWithCourse(studentId, courseId, enrollmentStatus, paymentStatus);
+      const result = await AxiosEnrollmentService.enrollWithCourse(
+        studentId,
+        courseId,
+        enrollmentStatus,
+        paymentStatus,
+      );
 
-      if (result.success) { // Assuming the result has a 'success' property
+      if (result.success) {
+        // Assuming the result has a 'success' property
         alert("Enrollment successful!");
       } else {
         alert("Enrollment failed.");
@@ -55,7 +63,7 @@ const TeacherEnrollmentForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h1>Enroll a Student in a Course</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
         <label htmlFor="studentId">Student ID:</label>
         <input

@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import AxiosCourseService from './AxiosCourseService';
-import AxiosEnrollmentService from './AxiosEnrollmentService';
-import AuthService from './AuthService';
-import { Course, User, EnrollmentPayload } from '../utils/types';
+import React, { useState, useEffect } from "react";
+import AxiosCourseService from "./AxiosCourseService";
+import AxiosEnrollmentService from "./AxiosEnrollmentService";
+import AuthService from "./AuthService";
+import { Course, User, EnrollmentPayload } from "../utils/types";
 
 const EnrollUserForm: React.FC = () => {
   const [userId] = useState<number>(AuthService.getLoggedInUserId());
   const [courseId, setCourseId] = useState<number>(0);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [enrollmentStatus, setEnrollmentStatus] = useState<string>('');
-  const [paymentStatus, setPaymentStatus] = useState<string>('');
+  const [enrollmentStatus, setEnrollmentStatus] = useState<string>("");
+  const [paymentStatus, setPaymentStatus] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const [courseDetails, setCourseDetails] = useState<Course | null>(null);
 
   // Define options for dropdowns
-  const enrollmentStatusOptions = ['Enrolled', 'Completed', 'Pending'];
-  const paymentStatusOptions = ['Paid', 'Pending', 'Overdue'];
+  const enrollmentStatusOptions = ["Enrolled", "Completed", "Pending"];
+  const paymentStatusOptions = ["Paid", "Pending", "Overdue"];
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -40,7 +40,8 @@ const EnrollUserForm: React.FC = () => {
     const fetchUser = async () => {
       if (userId > 0) {
         try {
-          const data: User | null = await AxiosEnrollmentService.getUserById(userId);
+          const data: User | null =
+            await AxiosEnrollmentService.getUserById(userId);
           if (data !== null) {
             setUserDetails(data);
           } else {
@@ -92,22 +93,23 @@ const EnrollUserForm: React.FC = () => {
           ...userDetails,
           program: {
             programId: userDetails.program ? userDetails.program.programId : 0,
-            programName: userDetails.program?.programName ?? ''
-          }
+            programName: userDetails.program?.programName ?? "",
+          },
         },
         course: {
           ...courseDetails,
           program: {
             programId: courseDetails.program.programId,
-            programName: courseDetails.program.programName
-          }
+            programName: courseDetails.program.programName,
+          },
         },
         enrollment_status: enrollmentStatus,
-        payment_status: paymentStatus
+        payment_status: paymentStatus,
       };
 
       // Send request
-      const result = await AxiosEnrollmentService.enrollInCourseWithDetails(payload);
+      const result =
+        await AxiosEnrollmentService.enrollInCourseWithDetails(payload);
 
       if (result) {
         alert("Enrollment successful!");
@@ -124,7 +126,7 @@ const EnrollUserForm: React.FC = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h1>Enroll in a Course</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
         <label htmlFor="course">Course:</label>
         <select

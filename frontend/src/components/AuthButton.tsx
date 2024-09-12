@@ -22,7 +22,9 @@ const AuthButton: React.FC = () => {
     <button
       onClick={handleButtonClick}
       className={`btn btm-sm ${
-        isLoggedIn ? "btn-error text-white" : "btn-success btn btn-sm text-white"
+        isLoggedIn
+          ? "btn-error text-white"
+          : "btn-success btn btn-sm text-white"
       }`}
     >
       {isLoggedIn ? "Logout" : "Login"}

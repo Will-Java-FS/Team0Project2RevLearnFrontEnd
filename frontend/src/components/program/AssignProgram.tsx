@@ -5,8 +5,12 @@ import { User, Program } from "../../utils/types"; // Ensure User and Program ty
 const AssignProgram: React.FC = () => {
   const [students, setStudents] = useState<User[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
-  const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
-  const [selectedProgramId, setSelectedProgramId] = useState<number | null>(null);
+  const [selectedStudentId, setSelectedStudentId] = useState<number | null>(
+    null,
+  );
+  const [selectedProgramId, setSelectedProgramId] = useState<number | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -38,7 +42,7 @@ const AssignProgram: React.FC = () => {
     try {
       const response = await axios.put(
         `http://localhost:8080/users/${selectedStudentId}/assign-program`,
-        { programId: selectedProgramId }
+        { programId: selectedProgramId },
       );
 
       if (response.status === 200) {

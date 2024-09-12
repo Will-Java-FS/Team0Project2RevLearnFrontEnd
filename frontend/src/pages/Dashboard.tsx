@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
         const timer = setTimeout(() => {
           setLoading(false);
         }, 5000);
-        
+
         // Cleanup timer on component unmount
         return () => clearTimeout(timer);
       }
