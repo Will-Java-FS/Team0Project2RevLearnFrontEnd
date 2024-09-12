@@ -1,23 +1,6 @@
-import { ReactNode } from "react";
+// utils/types.ts
 
-// Result types for registration and login
-export interface RegisterResult {
-  success: boolean;
-  message?: string;
-}
-
-export interface LoginResult {
-  success: boolean;
-  message?: string;
-  token?: string;
-  username?: string;
-  userId?: number;
-  role?: string;
-  program?: Program;
-  error?: string; // Optional: Include error messages if necessary
-}
-
-// Basic Program interface
+// Program interface
 export interface Program {
   programId: number;
   programName: string;
@@ -28,15 +11,17 @@ export interface User {
   userId: number;
   email: string;
   username: string;
-  passwordHash: string;
+  passwordHash?: string; // Optional since it should not be sent in requests
   firstName: string;
   lastName: string;
   userCreatedAt: string;
-  role: string;
   userUpdatedAt: string;
-  program: Program | null;}
+  role: string;
+  program: Program | null;
+}
 
-export interface FetchUsrs{
+// Fetch Users interface for list fetching
+export interface FetchUsers {
   id: number;
   username: string;
   email: string;
@@ -45,6 +30,7 @@ export interface FetchUsrs{
   createdAt: string;
   updatedAt: string;
 }
+
 // Auth response interface
 export interface AuthResponse {
   token: string;
@@ -74,9 +60,6 @@ export interface UserEditForm {
   program: Program;
 }
 
-type Props = {
-  users?: User[];
-};
 // User card props
 export interface UserCardProps {
   user: User;
@@ -94,16 +77,16 @@ export interface CardProps {
   link: string;
 }
 
-// Course interface
+// Central definition for Course type
 export interface Course {
-  program: any;
   course_id: number;
   courseName: string;
   description: string;
   teacherId: number;
+  program: Program; // Ensure 'program' is included
   course_created_at: string;
   course_updated_at: string;
-  lessons: Lesson[];
+  lessons?: Lesson[]; // Optional lessons field
 }
 
 // Lesson interface
@@ -117,9 +100,31 @@ export interface Lesson {
 
 // Enrollment payload interface
 export interface EnrollmentPayload {
-  enroll_id: number; // Optional or could be null if not needed
-  user: User; // Ensure User includes profilePicture and title
+  enroll_id?: number; // Optional or could be null if not needed
+  user: User;
   course: Course;
   enrollment_status: string;
   payment_status: string;
+}
+
+// Component props for displaying multiple users
+export type Props = {
+  users?: User[];
+};
+
+// Result types for registration and login
+export interface RegisterResult {
+  success: boolean;
+  message?: string;
+}
+
+export interface LoginResult {
+  success: boolean;
+  message?: string;
+  token?: string;
+  username?: string;
+  userId?: number;
+  role?: string;
+  program?: Program;
+  error?: string; // Optional: Include error messages if necessary
 }

@@ -53,7 +53,7 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
       <div className="flex justify-center mt-4">
         <img
           className="h-24 w-24 rounded-full object-cover border-2 border-primary"
-          src={user.profilePicture || "https://via.placeholder.com/150"} // Fallback if profilePicture is undefined
+          src={"https://avatar.iran.liara.run/public"} // Fallback if profilePicture is undefined
           alt="User Profile"
         />
       </div>
@@ -63,13 +63,17 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
         <h2 className="text-2xl font-bold text-primary">
           {user.firstName} {user.lastName}
         </h2>
-        <p className="text-gray-500">{user.title || "Title not available"}</p>
-        <p className="text-gray-500 mt-1">
+        <p className="text-light text-sm mt-1">
           <span className="font-semibold">Role:</span> {user.role}
         </p>
-        <p className="text-gray-500 mt-1">Username: {user.username}</p>
-        <p className="text-gray-500 mt-1">Email: {user.email}</p>
-        <p className="text-gray-500 mt-1">Program: {user.program.programName}</p>
+        <p className="text-light text-sm mt-1">
+        <span className="font-semibold">Username: </span>
+        {user.username}</p>
+        {/* <p className="text-gray-500 mt-1">Email: {user.email}</p> */}
+        {/* Conditionally render the program name if program is not null */}
+        <p className="text-light text-sm m-1">
+        <span className="font-semibold">Program:</span> {user.program ? user.program.programName : "No Program Assigned"}
+        </p>
         <p className="text-gray-400 text-sm mt-1">
           Joined on: {new Date(user.userCreatedAt).toLocaleDateString()}
         </p>

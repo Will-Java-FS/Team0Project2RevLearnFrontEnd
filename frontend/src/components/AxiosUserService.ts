@@ -11,27 +11,30 @@ class AxiosUserService {
         username,
         passwordHash
       };
-
+  
       const response = await axiosInstance.post(
         "/user/login",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
-
+  
       const { token, username: responseUsername, userId, role, program } = response.data;
-
-      if (!userId || !responseUsername || !role || !program || !token) {
+  
+      // Check for required fields, except 'program' which can be null
+      if (!userId || !responseUsername || !role || !token) {
+        console.error("Missing fields in response:", response.data); // Log missing fields
         throw new Error("Missing required fields in response");
       }
-
+  
       // Use AuthService to store login details
-      AuthService.login(userId, responseUsername, role, program.programId, token);
-
+      AuthService.login(userId, responseUsername, role, program ? program.programId : null, token);
+  
       return { success: true, token, username: responseUsername, userId, role, program };
     } catch (error: unknown) {
       return this.handleError(error, "Invalid credentials");
     }
   }
+  
 
   // Method for user registration
   async registerUser(

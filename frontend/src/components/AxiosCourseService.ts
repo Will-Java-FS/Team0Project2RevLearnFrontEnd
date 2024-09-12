@@ -1,39 +1,20 @@
 import axios from "./AxiosConfig";
 import AuthService from "./AuthService";
-import { Course } from "./CourseCard";
+import { Course } from "../utils/types";
 
-
-  class AxiosCourseService {
-    async getAll(): Promise<Course[] | null> {
-      try {
-        const response = await axios.get("/courses");
-        if (response.status === 200) {
-          return response.data as Course[]; // Ensure it matches the Course interface
-        }
-      } catch (error) {
-        console.error("Error getting all courses!", error);
-        throw error; // Ensure errors are propagated
+class AxiosCourseService {
+  async getAll(): Promise<Course[] | null> {
+    try {
+      const response = await axios.get("/courses");
+      if (response.status === 200) {
+        return response.data as Course[]; // Ensure it matches the Course interface
       }
-      return null;
+    } catch (error) {
+      console.error("Error getting all courses!", error);
+      throw error; // Ensure errors are propagated
     }
-  
-
-  
-  // async getAllByProgram(programId: number) {
-  //   try {
-  //     const response = await axios.get(`/programs/${programId}/courses`);
-  //     if (response.status === 200) {
-  //       return response.data;
-  //     }
-  //   } catch (error) {
-  //     console.error(
-  //       `Error getting all courses for program ${programId}!`,
-  //       error,
-  //     );
-  //     throw error;
-  //   }
-  //   return null;
-  // }
+    return null;
+  }
 
   async getById(id: number) {
     try {
@@ -74,6 +55,24 @@ import { Course } from "./CourseCard";
       }
     } catch (error) {
       console.error("Error on course creation attempt!", error);
+      throw error;
+    }
+    return null;
+  }
+
+  // New method to add a course for the logged-in student
+  async addCourseForLoggedInStudent(courseName: string, description: string) {
+    try {
+      const userId = AuthService.getLoggedInUserId(); // Get the logged-in user ID
+      const response = await axios.post(`/courses/add/${userId}`, {
+        courseName,
+        description,
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error adding course for the logged-in student!", error);
       throw error;
     }
     return null;
