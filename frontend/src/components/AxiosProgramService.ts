@@ -36,29 +36,33 @@ class AxiosProgramService {
     }
   }
 
-  // Function to get students in a program
-  async getStudents(id: number): Promise<any | null> {
+  // Function to get all courses associated with a program
+  async getCoursesByProgramId(programId: number): Promise<any | null> {
     try {
-      const response = await axios.get(`/programs/${id}/students`);
+      const response = await axios.get(`/programs/${programId}/courses`);
       if (response.status === 200) {
-        console.log("Fetched students:", response.data);
+        console.log("Fetched courses for program:", response.data);
         return response.data;
       } else {
         console.warn(`Unexpected status code: ${response.status}`);
         return null;
       }
     } catch (error) {
-      console.error(`Error getting students for program ${id}!`, error);
+      console.error(`Error getting courses for program ${programId}!`, error);
       return null;
     }
   }
 
   // Function to create a new program
-  async create(programName: string): Promise<any | null> {
+  async create(
+    programName: string,
+    programDescription: string,
+  ): Promise<any | null> {
     try {
       const response = await axios.post("/programs", {
-        program_name: programName,
-        program_owner: AuthService.getLoggedInUserId(),
+        programName,
+        description: programDescription,
+        programOwner: AuthService.getLoggedInUserId(), // Assuming the logged-in user is the owner
       });
       if (response.status === 201) {
         console.log("Created program:", response.data);
@@ -73,20 +77,62 @@ class AxiosProgramService {
     }
   }
 
-  // Function to delete a program by ID
-  async delete(id: number): Promise<boolean> {
+  // Function to update a program by ID
+  async update(programId: number, programData: any): Promise<any | null> {
     try {
-      const response = await axios.delete(`/programs/${id}`);
+      const response = await axios.put(`/programs/${programId}`, programData);
+      if (response.status === 200) {
+        console.log("Updated program:", response.data);
+        return response.data;
+      } else {
+        console.warn(`Unexpected status code: ${response.status}`);
+        return null;
+      }
+    } catch (error) {
+      console.error(`Error updating program ${programId}!`, error);
+      return null;
+    }
+  }
+
+  // Function to delete a program by ID
+  async delete(programId: number): Promise<boolean> {
+    try {
+      const response = await axios.delete(`/programs/${programId}`);
       if (response.status === 204) {
-        console.log(`Program ${id} deleted successfully.`);
+        console.log(`Program ${programId} deleted successfully.`);
         return true;
       } else {
         console.warn(`Unexpected status code: ${response.status}`);
         return false;
       }
     } catch (error) {
-      console.error(`Error deleting program ${id}!`, error);
+      console.error(`Error deleting program ${programId}!`, error);
       return false;
+    }
+  }
+
+  // Function to enroll a user in a program
+  async enrollUserInProgram(
+    userId: number,
+    programId: number,
+  ): Promise<any | null> {
+    try {
+      const response = await axios.put(`/user/${userId}/enroll/${programId}`);
+      if (response.status === 200) {
+        console.log(
+          `User ${userId} enrolled in program ${programId} successfully.`,
+        );
+        return response.data;
+      } else {
+        console.warn(`Unexpected status code: ${response.status}`);
+        return null;
+      }
+    } catch (error) {
+      console.error(
+        `Error enrolling user ${userId} in program ${programId}!`,
+        error,
+      );
+      return null;
     }
   }
 }

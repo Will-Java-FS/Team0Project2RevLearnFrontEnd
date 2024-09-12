@@ -47,7 +47,9 @@ const Dashboard: React.FC = () => {
     // Fallback for unexpected roles
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-center text-red-500">Unauthorized or unknown role</p>
+        <h1 className="text-center text-red-500">
+          Unauthorized or unknown role
+        </h1>
       </div>
     );
   }

@@ -39,16 +39,29 @@ const ProgramList: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>Programs</h1>
-      {programs.map((program) => (
-        <div key={program.programId}>
-          <p>{program.programName}</p>
-          <button onClick={() => handleDeleteProgram(program.programId)}>
-            Delete
-          </button>
-        </div>
-      ))}
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Programs</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {programs.map((program) => (
+          <div
+            key={program.programId}
+            className="bg-white shadow-md rounded-lg p-4 border border-gray-200"
+          >
+            <h2 className="text-xl font-semibold mb-2">
+              {program.programName}
+            </h2>
+            <p className="text-gray-700 mb-4">
+              Description or details about the program can go here.
+            </p>
+            <button
+              onClick={() => handleDeleteProgram(program.programId)}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

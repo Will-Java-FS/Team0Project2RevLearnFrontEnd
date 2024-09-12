@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import AxiosProgramService from "../AxiosProgramService"; // Import the AxiosProgramService
 
 const AddProgram: React.FC = () => {
   const [programName, setProgramName] = useState<string>("");
@@ -20,12 +20,12 @@ const AddProgram: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:8080/programs", {
+      const response = await AxiosProgramService.create(
         programName,
-        description: programDescription,
-      });
+        programDescription,
+      ); // Pass both name and description
 
-      if (response.status === 201) {
+      if (response) {
         setSuccessMessage("Program created successfully!");
         setProgramName("");
         setProgramDescription("");
@@ -41,7 +41,7 @@ const AddProgram: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-6">
+    <div className="flex flex-col items-center min-content p-6">
       <h2 className="text-2xl font-bold mb-4">Create New Program</h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}

@@ -25,6 +25,8 @@ class AxiosUserService {
         userId,
         role,
         program,
+        firstName, // Correctly extract firstName
+        lastName, // Correctly extract lastName
       } = response.data;
 
       // Check for required fields, except 'program' which can be null
@@ -37,6 +39,8 @@ class AxiosUserService {
       AuthService.login(
         userId,
         responseUsername,
+        firstName, // Use correctly extracted firstName
+        lastName, // Use correctly extracted lastName
         role,
         program ? program.programId : null,
         token,
@@ -97,6 +101,54 @@ class AxiosUserService {
     } catch (error) {
       console.error("Error fetching user details:", error);
       throw error; // Re-throw the error for further handling
+    }
+  }
+
+  // Method to get all users
+  async getAllUsers() {
+    try {
+      const response = await axiosInstance.get("/user");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching all users:", error);
+      throw error; // Re-throw the error for further handling
+    }
+  }
+
+  // Method to fetch users by role
+  async fetchUsersByRole(role: string) {
+    try {
+      const response = await axiosInstance.get(`/user/role/${role}`);
+      return response.data; // Assuming the server returns a list of users
+    } catch (error) {
+      console.error(`Error fetching users with role ${role}:`, error);
+      throw error; // Re-throw the error for further handling
+    }
+  }
+
+  // New Method to enroll a user in a program
+  async enrollUserInProgram(userId: number, programId: number) {
+    try {
+      const response = await axiosInstance.put(
+        `/user/${userId}/enroll/${programId}`,
+      );
+
+      if (response.status === 200) {
+        const updatedUser = response.data;
+        return {
+          success: true,
+          message: `User ${updatedUser.username} enrolled in program ${updatedUser.program.programName} successfully!`,
+          user: updatedUser,
+        };
+      } else {
+        return {
+          success: false,
+          message: "Failed to enroll user in the program.",
+        };
+      }
+    } catch (error) {
+      console.error("Error enrolling user in program:", error);
+      return this.handleError(error, "Error enrolling user in program.");
     }
   }
 

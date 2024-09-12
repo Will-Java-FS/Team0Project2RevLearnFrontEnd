@@ -1,8 +1,6 @@
 import { User } from "../utils/types";
 
 class AuthService {
-  // Existing methods...
-
   // Function to retrieve the email of the logged-in user (future implementation placeholder)
   getLoggedInUserEmail(): string {
     throw new Error("Method not implemented.");
@@ -12,13 +10,31 @@ class AuthService {
   login(
     userId: number,
     username: string,
+    firstName: string,
+    lastName: string,
     role: string,
     program: number | null,
     token: string,
   ): void {
     sessionStorage.setItem("authenticatedUserId", userId.toString());
     sessionStorage.setItem("authenticatedUser", username);
+    sessionStorage.setItem("firstName", firstName); // Store the first name
+    sessionStorage.setItem("lastName", lastName); // Store the last name
     sessionStorage.setItem("role", role);
+
+    // Store program ID only if it exists
+    if (program !== null) {
+      sessionStorage.setItem("programId", program.toString());
+    } else {
+      sessionStorage.removeItem("programId");
+    }
+
+    // Store the token in local storage
+    localStorage.setItem("token", `Bearer ${token}`);
+
+    console.log(
+      `User ${username} logged in successfully with role ${role} and token ${token}`,
+    );
 
     // Store program ID only if it exists
     if (program !== null) {
@@ -48,6 +64,16 @@ class AuthService {
     return sessionStorage.getItem("authenticatedUser") || "NO LOGGED IN USER";
   }
 
+  // Retrieve the first name of the logged-in user
+  getLoggedInFirstName(): string {
+    return sessionStorage.getItem("firstName") || "Guest";
+  }
+
+  // Retrieve the last name of the logged-in user
+  getLoggedInLastName(): string {
+    return sessionStorage.getItem("lastName") || "Guest";
+  }
+
   // Retrieve the user ID of the logged-in user
   getLoggedInUserId(): number {
     const id = sessionStorage.getItem("authenticatedUserId");
@@ -67,7 +93,6 @@ class AuthService {
 
   // Check if a user is logged in
   isLoggedIn(): boolean {
-    console.log(!!sessionStorage.getItem("role"));
     return !!sessionStorage.getItem("role");
   }
 
@@ -91,6 +116,8 @@ class AuthService {
   getLoggedInUserDetails(): User | null {
     const userId = this.getLoggedInUserId();
     const username = this.getLoggedInUsername();
+    const firstName = this.getLoggedInFirstName();
+    const lastName = this.getLoggedInLastName();
     const role = this.getLoggedInUserRole();
     const programId = this.getLoggedInUserProgramId();
     const program = programId ? { programId, programName: "" } : null; // Assuming the program name is empty or will be fetched separately
@@ -103,8 +130,8 @@ class AuthService {
       userId,
       email: "", // This will need to be fetched if not stored in session
       username,
-      firstName: "", // Placeholder or fetch if necessary
-      lastName: "", // Placeholder or fetch if necessary
+      firstName,
+      lastName,
       role,
       userCreatedAt: "", // Placeholder or fetch if necessary
       userUpdatedAt: "", // Placeholder or fetch if necessary

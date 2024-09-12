@@ -7,17 +7,20 @@ import { Course, EnrollmentPayload } from "../utils/types";
 const AllCourses: React.FC = () => {
   const [availableCourses, setAvailableCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); // Add loading state
 
   useEffect(() => {
     const fetchAvailableCourses = async () => {
       try {
-        // Fetch all available courses for enrollment
+        setLoading(true); // Set loading to true while fetching
         const availableCoursesData =
           await AxiosEnrollmentService.getAllAvailableCourses();
         setAvailableCourses(availableCoursesData);
       } catch (error) {
         console.error("Error fetching available courses:", error);
         setError((error as Error).message);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
@@ -58,16 +61,17 @@ const AllCourses: React.FC = () => {
 
       if (result) {
         alert("Enrollment successful!");
+
         // Remove the enrolled course from the available courses list
-        setAvailableCourses(
-          availableCourses.filter((c) => c.course_id !== courseId),
+        setAvailableCourses((prevCourses) =>
+          prevCourses.filter((c) => c.course_id !== courseId),
         );
       } else {
         alert("Enrollment failed.");
       }
     } catch (error) {
       setError("Failed to enroll in course");
-      console.error(error);
+      console.error("Enrollment error:", error);
     }
   };
 
@@ -75,25 +79,31 @@ const AllCourses: React.FC = () => {
     <div className="flex flex-col items-center min-h-screen p-6">
       {error && <p className="text-red-500 mb-4">Error: {error}</p>}
 
-      {/* Display available courses */}
-      {availableCourses.length > 0 ? (
-        <div className="w-full max-w-4xl">
-          <h2 className="text-2xl font-bold mb-4">
-            Available Courses for Enrollment
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
-            {availableCourses.map((course) => (
-              <CourseCard
-                key={course.course_id}
-                course={{ ...course, lessons: course.lessons ?? [] }}
-                onRemoveCourse={() => {}}
-                onEnrollCourse={() => handleEnrollCourse(course.course_id)} // Add onEnrollCourse handler
-              />
-            ))}
-          </div>
-        </div>
+      {loading ? (
+        <p>Loading available courses...</p> // Show loading message
       ) : (
-        <p className="text-lg mb-4">No available courses for enrollment.</p>
+        <>
+          {/* Display available courses */}
+          {availableCourses.length > 0 ? (
+            <div className="w-full gap-5">
+              <h2 className="text-2xl font-bold mb-4">
+                Available Courses for Enrollment
+              </h2>
+              <div className="grid min-w-min grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-6">
+                {availableCourses.map((course) => (
+                  <CourseCard
+                    key={course.course_id}
+                    course={{ ...course, lessons: course.lessons ?? [] }}
+                    onRemoveCourse={() => {}} // No action needed for removing manually here
+                    onEnrollCourse={() => handleEnrollCourse(course.course_id)} // Use the enroll handler
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-lg mb-4">No available courses for enrollment.</p>
+          )}
+        </>
       )}
     </div>
   );

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { User, Program } from "../../utils/types"; // Ensure User and Program types are correctly defined
+import AxiosProgramService from "../AxiosProgramService";
+import AxiosUserService from "../AxiosUserService";
+import { Program, User } from "../../utils/types"; // Ensure Program type is correctly defined
 
 const AssignProgram: React.FC = () => {
-  const [students, setStudents] = useState<User[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(
     null,
@@ -13,40 +13,46 @@ const AssignProgram: React.FC = () => {
   );
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [userDetails, setUserDetails] = useState<User | null>(null); // New state to store user details
 
   useEffect(() => {
-    const fetchStudentsAndPrograms = async () => {
+    const fetchPrograms = async () => {
       try {
-        const [studentsResponse, programsResponse] = await Promise.all([
-          axios.get("http://localhost:8080/users/students"), // Adjust endpoint for fetching students
-          axios.get("http://localhost:8080/programs"),
-        ]);
-
-        setStudents(studentsResponse.data);
-        setPrograms(programsResponse.data);
+        const programsData = await AxiosProgramService.getAll();
+        if (programsData) {
+          setPrograms(programsData);
+        } else {
+          setError("Error fetching programs.");
+        }
       } catch (error) {
-        setError("Error fetching students or programs.");
+        setError("Error fetching programs.");
         console.error(error);
       }
     };
 
-    fetchStudentsAndPrograms();
+    fetchPrograms();
   }, []);
 
   const handleAssignProgram = async () => {
     if (!selectedStudentId || !selectedProgramId) {
-      setError("Please select a student and a program.");
+      setError("Please enter a student ID and select a program.");
       return;
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:8080/users/${selectedStudentId}/assign-program`,
-        { programId: selectedProgramId },
+      const response = await AxiosProgramService.enrollUserInProgram(
+        selectedStudentId,
+        selectedProgramId,
       );
 
-      if (response.status === 200) {
-        setSuccessMessage("Program assigned successfully!");
+      if (response) {
+        // Fetch user details after assigning program
+        const userDetails =
+          await AxiosUserService.fetchUserDetails(selectedStudentId);
+        setUserDetails(userDetails); // Store user details
+        setSuccessMessage(
+          `Program assigned successfully to ${userDetails.firstName} ${userDetails.lastName}!`,
+        );
         setError(null); // Clear any previous error messages
       } else {
         setError("Failed to assign program.");
@@ -60,26 +66,33 @@ const AssignProgram: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-6">
+    <div className="flex flex-col items-center min-h-content p-6">
       <h2 className="text-2xl font-bold mb-4">Assign Program to Student</h2>
 
       {error && <p className="text-red-500">{error}</p>}
       {successMessage && <p className="text-green-500">{successMessage}</p>}
+      {userDetails && (
+        <div className="mb-4">
+          <p>User Details:</p>
+          <p>ID: {userDetails.userId}</p>
+          <p>
+            Name: {userDetails.firstName} {userDetails.lastName}
+          </p>
+          <p>Email: {userDetails.email}</p>
+          <p>
+            Current Program:{" "}
+            {userDetails.program ? userDetails.program.programName : "None"}
+          </p>
+        </div>
+      )}
 
-      <select
+      <input
+        type="number"
         className="w-full p-2 border border-gray-300 rounded mb-4"
+        placeholder="Enter Student ID"
         onChange={(e) => setSelectedStudentId(Number(e.target.value))}
         value={selectedStudentId ?? ""}
-      >
-        <option value="" disabled>
-          Select Student
-        </option>
-        {students.map((student) => (
-          <option key={student.userId} value={student.userId}>
-            {student.firstName} {student.lastName}
-          </option>
-        ))}
-      </select>
+      />
 
       <select
         className="w-full p-2 border border-gray-300 rounded mb-4"

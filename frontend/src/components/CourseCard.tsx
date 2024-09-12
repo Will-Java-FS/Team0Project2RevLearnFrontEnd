@@ -28,10 +28,8 @@ export interface Lesson {
 
 interface CourseCardProps {
   course: Course;
-
   onRemoveCourse: (courseId: number) => void;
-
-  onEnrollCourse: () => void; // Add onEnrollCourse prop
+  onEnrollCourse: () => void;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({
@@ -48,7 +46,6 @@ const CourseCard: React.FC<CourseCardProps> = ({
   const [lessonSummary, setLessonSummary] = useState("");
 
   const toggleShowAllLessons = () => setShowAllLessons(!showAllLessons);
-
   const toggleLessonForm = () => setShowLessonForm(!showLessonForm);
 
   const handleDeleteCourse = async () => {
@@ -70,18 +67,22 @@ const CourseCard: React.FC<CourseCardProps> = ({
         lessonApplication,
         lessonSummary,
       );
-      if (newLesson !== null) {
+      if (newLesson) {
         course.lessons.push(newLesson);
         setShowLessonForm(false);
-        setLessonTitle("");
-        setLessonDescription("");
-        setLessonImplementation("");
-        setLessonApplication("");
-        setLessonSummary("");
+        resetLessonForm();
       }
     } catch (error) {
       console.error("Error creating lesson:", error);
     }
+  };
+
+  const resetLessonForm = () => {
+    setLessonTitle("");
+    setLessonDescription("");
+    setLessonImplementation("");
+    setLessonApplication("");
+    setLessonSummary("");
   };
 
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
     <div className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300 mb-4 md:mb-6 flex flex-col md:flex-row">
       <div className="card-body flex flex-col md:flex-row md:items-start md:justify-between w-full">
         <div className="flex-1 mb-4 md:mb-0">
-          <h2 className="card-title text-lg md:text-xl font-semibold">
+          <h2 className="card-title text-primary text-lg md:text-xl font-semibold">
             {course.courseName}
           </h2>
           <p className="text-sm md:text-base">{course.description}</p>
@@ -136,12 +137,21 @@ const CourseCard: React.FC<CourseCardProps> = ({
         <div className="card-actions flex flex-col space-y-2 w-full md:w-auto">
           {course.lessons.length > 1 && (
             <button
-              className="w-full text-center rounded-btn bg-primary py-2 px-4 text-x text-white font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full text-center rounded-btn bg-primary py-2 px-4 text-xs text-white font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
               onClick={toggleShowAllLessons}
             >
               {showAllLessons ? "Show Less" : "Show All"}
             </button>
           )}
+
+          <div className="w-full mt-2">
+            <button
+              className="w-full text-center rounded-btn bg-primary py-2 px-4 text-xs text-white font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
+              onClick={onEnrollCourse}
+            >
+              Enroll
+            </button>
+          </div>
 
           {AuthService.isLoggedInTeacher() && (
             <>

@@ -1,21 +1,6 @@
 import { useState, useTransition, useEffect } from "react";
-import axios from "axios";
-
-type Program = {
-  programId: number;
-  programName: string;
-};
-
-type User = {
-  userId: number;
-  email: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  userCreatedAt: string;
-  role: string;
-  program: Program | null;
-};
+import AxiosUserService from "./AxiosUserService"; // Import the AxiosUserService
+import { User } from "../utils/types"; // Assuming you have defined User type in a types file
 
 type Props = {
   users?: User[];
@@ -30,20 +15,30 @@ export default function UsersTable({ users = [] }: Props) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
   const [fetchedUsers, setFetchedUsers] = useState<User[]>([]);
+  const [selectedRole, setSelectedRole] = useState<string>("student"); // Default to "student" role
   const usersPerPage = 10;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<User[]>("http://localhost:8080/user");
-        setFetchedUsers(response.data);
+        let users;
+        if (selectedRole === "all") {
+          users = await AxiosUserService.getAllUsers(); // Fetch all users if "all" is selected
+        } else {
+          users = await AxiosUserService.fetchUsersByRole(selectedRole); // Fetch users by selected role
+        }
+        setFetchedUsers(users);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [selectedRole]); // Re-fetch when selectedRole changes
+
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value);
+  };
 
   const generatedUsers = users.length > 0 ? users : fetchedUsers;
 
@@ -94,13 +89,26 @@ export default function UsersTable({ users = [] }: Props) {
   return (
     <div className="p-4">
       {showLoader && <div className="loader">Loading...</div>}
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search..."
-        className="mb-4 p-2 border rounded"
-      />
+      <div className="flex justify-between mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search..."
+          className="p-2 border rounded"
+        />
+        <select
+          value={selectedRole}
+          onChange={handleRoleChange}
+          className="p-2 border rounded"
+        >
+          <option value="all">All Roles</option>
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="admin">Admin</option>
+          {/* Add more roles as needed */}
+        </select>
+      </div>
       <table className="min-w-full bg-white border border-gray-200">
         <thead>
           <tr>
