@@ -280,8 +280,9 @@ export default function Register() {
           </div>
           {message && (
             <p
-              className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"
-                }`}
+              className={`text-center mt-4 ${
+                isSuccess ? "text-green-500" : "text-red-500"
+              }`}
             >
               {message}
             </p>

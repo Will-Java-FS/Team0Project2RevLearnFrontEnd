@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import AxiosProgramService from "../AxiosProgramService";
 import AxiosUserService from "../AxiosUserService";
 import { Program, User } from "../../utils/types"; // Ensure Program type is correctly defined
@@ -8,10 +8,10 @@ import { Program, User } from "../../utils/types"; // Ensure Program type is cor
 const AssignProgram: React.FC = () => {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(
-    null
+    null,
   );
   const [selectedProgramId, setSelectedProgramId] = useState<number | null>(
-    null
+    null,
   );
   const [userDetails, setUserDetails] = useState<User | null>(null); // New state to store user details
 
@@ -42,7 +42,7 @@ const AssignProgram: React.FC = () => {
     try {
       const response = await AxiosProgramService.enrollUserInProgram(
         selectedStudentId,
-        selectedProgramId
+        selectedProgramId,
       );
 
       if (response) {
@@ -52,7 +52,7 @@ const AssignProgram: React.FC = () => {
         setUserDetails(userDetails); // Store user details
 
         toast.success(
-          `Program assigned successfully to ${userDetails.firstName} ${userDetails.lastName}!`
+          `Program assigned successfully to ${userDetails.firstName} ${userDetails.lastName}!`,
         );
       } else {
         toast.error("Failed to assign program.");

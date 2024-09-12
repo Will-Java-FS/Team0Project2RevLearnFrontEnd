@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import AxiosProgramService from "../AxiosProgramService"; // Import the AxiosProgramService
 
 const AddProgram: React.FC = () => {
@@ -19,7 +19,7 @@ const AddProgram: React.FC = () => {
     try {
       const response = await AxiosProgramService.create(
         programName,
-        programDescription
+        programDescription,
       ); // Pass both name and description
 
       if (response) {
@@ -59,8 +59,9 @@ const AddProgram: React.FC = () => {
       <button
         onClick={handleCreateProgram}
         disabled={loading}
-        className={`btn mt-4 bg-primary text-white py-2 px-4 rounded ${loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+        className={`btn mt-4 bg-primary text-white py-2 px-4 rounded ${
+          loading ? "opacity-50 cursor-not-allowed" : ""
+        }`}
       >
         {loading ? "Creating..." : "Create Program"}
       </button>

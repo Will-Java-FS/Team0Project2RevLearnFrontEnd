@@ -37,7 +37,7 @@ const Login: React.FC = () => {
     try {
       const { success, message } = await AxiosUserService.loginUser(
         data.username,
-        data.passwordHash
+        data.passwordHash,
       );
 
       if (success) {
@@ -133,8 +133,9 @@ const Login: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-btn hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800 ${loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gradient-to-r from-blue-600 to-cyan-600 rounded-btn hover:from-blue-700 hover:to-cyan-700 focus:outline-none focus:ring-4 focus:ring-blue-400 dark:focus:ring-blue-800 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {loading ? "Logging in..." : "Let's Go"}
             </button>
@@ -159,8 +160,9 @@ const Login: React.FC = () => {
         {/* Error/Success Message */}
         {message && (
           <p
-            className={`text-center mt-4 ${isSuccess ? "text-green-500" : "text-red-500"
-              }`}
+            className={`text-center mt-4 ${
+              isSuccess ? "text-green-500" : "text-red-500"
+            }`}
           >
             {message}
           </p>
@@ -173,8 +175,9 @@ const Login: React.FC = () => {
       {/* Use Modal for the success/error message */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h3
-          className={`text-xl font-bold ${isSuccess ? "text-green-600" : "text-red-600"
-            }`}
+          className={`text-xl font-bold ${
+            isSuccess ? "text-green-600" : "text-red-600"
+          }`}
         >
           {isSuccess ? "Login Successful" : "Login Failed"}
         </h3>

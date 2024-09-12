@@ -37,13 +37,14 @@ export default function TeacherDashboard() {
         </div>
       </div>
       <div className="w-full max-w-5xl flex flex-row justify-between space-x-4 mb-8">
-
         {/* Program List */}
         <ProgramList />
       </div>
 
       <div className="w-full max-w-5xl m-10 bg-inherit dark:bg-inherit rounded-lg shadow-md overflow-x-auto">
-        <h1 className="text-3xl text-secondary font-semibold font-suse text-left mb-4">Student & Staff </h1>
+        <h1 className="text-3xl text-secondary font-semibold font-suse text-left mb-4">
+          Student & Staff{" "}
+        </h1>
         <UsersTable />
       </div>
     </div>
