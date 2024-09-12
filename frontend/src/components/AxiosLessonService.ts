@@ -72,7 +72,7 @@ class AxiosLessonService {
         title: title,
         description: description,
         implementation: implementation,
-        realWorldApplication: application,
+        real_world_application: application,
         summary: summary
       });
       if (response.status === 200) {

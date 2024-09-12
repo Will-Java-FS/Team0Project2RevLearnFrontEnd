@@ -7,7 +7,7 @@ export interface LessonPlan {
   lesson_plan_id: number;
   title: string;
   description: string;
-  real_world_application: string;
+  realWorldApplication: string;
   implementation: string;
   summary: string;
   lp_created_at: Date;
@@ -56,7 +56,7 @@ export default function Lesson() {
         </div>
         <div className="collapse-content">
           <p>
-            {lesson.real_world_application ||
+            {lesson.realWorldApplication ||
               "No real-world application available."}
           </p>
         </div>
