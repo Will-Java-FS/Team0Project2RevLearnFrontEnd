@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Icon256.png";
 import AuthButton from "./AuthButton";
+import Hamburger from "hamburger-react"; // Import Hamburger component from the library
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,6 +10,7 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   return (
     <div className="navbar sticky top-0 bg-base-300/90 backdrop-blur-md shadow-md py-5 z-50">
       {/* Navbar Start - Logo and Menu Toggle */}
@@ -17,23 +19,11 @@ const Navbar = () => {
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle"
+            className="text-accent"
             onClick={toggleMenu}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-xl text-primary"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h7"
-              />
-            </svg>
+            {/* Use the HamburgerReact component */}
+            <Hamburger toggled={isMenuOpen} toggle={setIsMenuOpen} />
           </div>
           <ul
             tabIndex={0}
