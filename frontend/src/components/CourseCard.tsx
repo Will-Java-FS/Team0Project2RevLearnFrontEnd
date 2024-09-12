@@ -73,7 +73,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
     };
 
     return (
-        <div className="relative flex w-80 flex-col rounded-box bg-neutral bg-clip-border shadow-md overflow-hidden">
+        <div className="relative flex flex-col w-full md:w-80 rounded-box bg-neutral bg-clip-border shadow-md overflow-hidden mb-6">
             <div className="p-4">
                 <h5 className="mb-2 text-lg font-semibold text-orange-500 line-clamp-2">
                     {course.courseName}
@@ -96,7 +96,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
                 </div>
             </div>
             <div className="p-4 pt-0 space-y-4">
-                <div className="flex">
+                <div className="flex justify-center">
                     {lessons.length > 1 && (
                         <button 
                             className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
@@ -106,7 +106,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
                         </button>
                     )}
                 </div>
-                <div className="flex space-x-4">
+                <div className="flex flex-col space-y-4">
                     {AuthService.isLoggedInTeacher() && (
                         <>
                             <button 
@@ -122,35 +122,35 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
                                         placeholder="Lesson Title" 
                                         value={lessonTitle} 
                                         onChange={(e) => setLessonTitle(e.target.value)} 
-                                        className="block w-3/4 mb-2 p-2 border border-gray-300 rounded-badge"
+                                        className="block w-full mb-2 p-2 border border-gray-300 rounded-badge"
                                     />
                                     <textarea 
                                         placeholder="Description" 
                                         value={lessonDescription} 
                                         onChange={(e) => setLessonDescription(e.target.value)} 
-                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 w-full border border-gray-300 rounded-badge"
                                     />
                                     <textarea 
                                         placeholder="Implementation" 
                                         value={lessonImplementation} 
                                         onChange={(e) => setLessonImplementation(e.target.value)} 
-                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 w-full border border-gray-300 rounded-badge"
                                     />
                                     <textarea 
                                         placeholder="Real World Application" 
                                         value={lessonApplication} 
                                         onChange={(e) => setLessonApplication(e.target.value)} 
-                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 w-full border border-gray-300 rounded-badge"
                                     />
                                     <textarea 
                                         placeholder="Summary" 
                                         value={lessonSummary} 
                                         onChange={(e) => setLessonSummary(e.target.value)} 
-                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 w-full border border-gray-300 rounded-badge"
                                     />
                                     <button 
                                         type="submit" 
-                                        className="block w-3/4 text-center rounded-btn bg-accent py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-primary focus:outline-none focus:ring-2 focus:ring-accent"
+                                        className="block w-full text-center rounded-btn bg-accent py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-primary focus:outline-none focus:ring-2 focus:ring-accent"
                                     >
                                         Submit
                                     </button>

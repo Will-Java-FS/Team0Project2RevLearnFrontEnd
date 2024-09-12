@@ -7,7 +7,6 @@ import AxiosLessonService from "../components/AxiosLessonService";
 
 export default function MyCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
-  // Removed unused state variables
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,9 +23,7 @@ export default function MyCourses() {
             };
           })
         );
-        
         setCourses(courseWithLessonsData);
-        
       } catch (error) {
         console.error("Error fetching course data:", error);
         setError((error as Error).message);
@@ -78,15 +75,34 @@ export default function MyCourses() {
 
   return (
     <div className="flex flex-col items-center min-h-screen p-6">
-      <h1>List of your courses</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+      <h1 className="text-2xl font-bold mb-4">List of Your Courses</h1>
+      <div className="flex flex-col space-y-4 w-full max-w-4xl">
         {courses.map((course) => (
-          <CourseCard
+          <div
             key={course.course_id}
-            course={course}
-            onRemoveCourse={handleRemoveCourse} onSelectCourse={function (): void {
-              throw new Error("Function not implemented.");
-            } }          />
+            className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300"
+          >
+            <div className="card-body flex flex-row items-center justify-between">
+              <div className="flex flex-col justify-between">
+                <h2 className="card-title">{course.courseName}</h2>
+                <p>{course.description}</p>
+                <p>
+                  <strong>Teacher ID:</strong> {course.teacherId}
+                </p>
+                <p>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(course.course_created_at).toLocaleString()}
+                </p>
+                <p>
+                  <strong>Updated At:</strong>{" "}
+                  {new Date(course.course_updated_at).toLocaleString()}
+                </p>
+              </div>
+              <div className="card-actions">
+                <button className="btn btn-primary" onClick={() => console.log(`Course ID: ${course.course_id}`)}>Click here</button>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </div>
