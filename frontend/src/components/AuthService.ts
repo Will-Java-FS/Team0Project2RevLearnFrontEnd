@@ -1,21 +1,30 @@
 class AuthService {
-  // Retrieve the email of the logged-in user. Implementation required.
+  // Retrieve the email of the logged-in user (implement this in the future)
   getLoggedInUserEmail(): string {
+    // Placeholder for future implementation
     throw new Error('Method not implemented.');
   }
 
   // Store user details and token in session and local storage
   login(
-    id: number,
+    userId: number,
     username: string,
     role: string,
-    programId: number,
+    program: number | null,
     token: string
   ): void {
-    sessionStorage.setItem('authenticatedUserId', id.toString());
+    sessionStorage.setItem('authenticatedUserId', userId.toString());
     sessionStorage.setItem('authenticatedUser', username);
     sessionStorage.setItem('role', role);
-    sessionStorage.setItem('programId', programId.toString());
+
+    // Store program ID only if it exists
+    if (program !== null) {
+      sessionStorage.setItem('programId', program.toString());
+    } else {
+      sessionStorage.removeItem('programId');
+    }
+
+    // Store the token in local storage
     localStorage.setItem('token', `Bearer ${token}`);
 
     console.log(
@@ -26,7 +35,7 @@ class AuthService {
   // Clear all session and local storage data and optionally reload the page
   logout(): void {
     sessionStorage.clear();
-    localStorage.setItem('token', "");
+    localStorage.removeItem('token'); // Explicitly remove token
     window.location.reload(); // Optional: reload the page to clear any cached state
 
     console.log('User logged out successfully');
@@ -44,9 +53,9 @@ class AuthService {
   }
 
   // Retrieve the program ID of the logged-in user
-  getLoggedInUserProgramId(): number {
+  getLoggedInUserProgramId(): number | null {
     const id = sessionStorage.getItem('programId');
-    return id ? Number(id) : -1;
+    return id ? Number(id) : null;
   }
 
   // Retrieve the role of the logged-in user
@@ -56,7 +65,9 @@ class AuthService {
 
   // Check if a user is logged in
   isLoggedIn(): boolean {
+    console.log(!!sessionStorage.getItem('role'));
     return !!sessionStorage.getItem('role');
+    
   }
 
   // Check if the logged-in user is a student
@@ -71,8 +82,10 @@ class AuthService {
 
   // Retrieve the stored token
   getToken(): string | null {
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    return token ? token.replace('Bearer ', '').trim() : null; // Remove 'Bearer' and any extra spaces
   }
+  
 }
 
 export default new AuthService();

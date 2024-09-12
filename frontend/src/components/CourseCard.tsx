@@ -3,17 +3,10 @@ import AxiosCourseService from "./AxiosCourseService";
 import AxiosLessonService from "./AxiosLessonService";
 import AuthService from "./AuthService";
 import { useNavigate } from "react-router-dom";
+import { Course } from '../utils/types';
 
-export interface Course {
-    course_id: number;
-    courseName: string;
-    description: string;
-    teacherId: number;
-    course_created_at: string;
-    course_updated_at: string;
-    lessons: Lesson[];
-}
-  
+
+
 export interface Lesson {
     lesson_plan_id: number;
     title: string;
@@ -22,7 +15,13 @@ export interface Lesson {
     lp_updated_at: string;
 }
 
-const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) => void }> = ({ course, onRemoveCourse }) => {
+interface CourseCardProps {
+    course: Course;
+    onRemoveCourse: (courseId: number) => void;
+    onSelectCourse: () => void;
+}
+
+const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelectCourse }) => {
     const [showAllLessons, setShowAllLessons] = useState(false);
     const [showLessonForm, setShowLessonForm] = useState(false);
     const [lessonTitle, setLessonTitle] = useState("");
@@ -30,14 +29,10 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     const [lessonImplementation, setLessonImplementation] = useState("");
     const [lessonApplication, setLessonApplication] = useState("");
     const [lessonSummary, setLessonSummary] = useState("");
+    const navigate = useNavigate();
 
-    const toggleShowAllLessons = () => {
-        setShowAllLessons(!showAllLessons);
-    };
-
-    const toggleLessonForm = () => {
-        setShowLessonForm(!showLessonForm);
-    };
+    const toggleShowAllLessons = () => setShowAllLessons(!showAllLessons);
+    const toggleLessonForm = () => setShowLessonForm(!showLessonForm);
 
     const handleDeleteCourse = async () => {
         try {
@@ -51,9 +46,14 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     const handleLessonSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const newLesson: Lesson | null = await AxiosLessonService.create(lessonTitle, lessonDescription, lessonImplementation, lessonApplication, lessonSummary);
-            if (newLesson !== null) {
-                // Update the course lessons state with the new lesson
+            const newLesson: Lesson | null = await AxiosLessonService.create(
+                lessonTitle,
+                lessonDescription,
+                lessonImplementation,
+                lessonApplication,
+                lessonSummary
+            );
+            if (newLesson) {
                 course.lessons.push(newLesson);
                 setShowLessonForm(false);
                 setLessonTitle("");
@@ -67,8 +67,6 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
         }
     };
 
-    const navigate = useNavigate();
-
     const handleLessonClick = (lessonPlanId: number) => {
         navigate(`/lesson/${lessonPlanId}`);
     };
@@ -76,20 +74,21 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
     return (
         <div className="relative flex w-80 flex-col rounded-box bg-neutral bg-clip-border shadow-md overflow-hidden">
             <div className="p-4">
-                <h5 className="mb-2 text-1g font-semibold text-orange-500 line-clamp-2">
-                  {course.courseName}
+                <h5 className="mb-2 text-lg font-semibold text-orange-500 line-clamp-2">
+                    {course.courseName}
                 </h5>
                 <p className="text-sm line-clamp-3">{course.description}</p>
                 <div className="mt-5">
-                    {course.lessons.length > 0 && (<h3 className="text-sm font-semibold line-clamp-3">Lessons</h3>)}
+                    {course.lessons.length > 0 && <h3 className="text-sm font-semibold line-clamp-3">Lessons</h3>}
                     <ul className="text-sm">
                         {(showAllLessons ? course.lessons : course.lessons.slice(0, 1)).map((lesson) => (
                             <button 
-                                className="relative flex w-full p-3 mb-2 flex-col rounded-badge bg-base-100 bg-clip-border shadow-sm overflow-hidden text-left hover:bg-base-300"
                                 key={lesson.lesson_plan_id}
-                                onClick={() => handleLessonClick(lesson.lesson_plan_id)}>
+                                className="relative flex w-full p-3 mb-2 flex-col rounded-badge bg-base-100 bg-clip-border shadow-sm overflow-hidden text-left hover:bg-base-300"
+                                onClick={() => handleLessonClick(lesson.lesson_plan_id)}
+                            >
                                 <h4>{lesson.title}</h4>
-                                <h4>{lesson.content}</h4>
+                                <p>{lesson.content}</p>
                             </button>
                         ))}
                     </ul>
@@ -100,18 +99,19 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                     {course.lessons.length > 1 && (
                         <button 
                             className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
-                            onClick={toggleShowAllLessons}>
+                            onClick={toggleShowAllLessons}
+                        >
                             {showAllLessons ? "Show Less" : "Show All"}
                         </button>
                     )}
                 </div>
                 <div className="flex space-x-4">
-                    {/* {true && ( */}
                     {AuthService.isLoggedInTeacher() && (
                         <>
                             <button 
-                            className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
-                            onClick={toggleLessonForm}>
+                                className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                onClick={toggleLessonForm}
+                            >
                                 {showLessonForm ? "Cancel" : "Create New Lesson"}
                             </button>
                             {showLessonForm && (
@@ -127,25 +127,25 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                                         placeholder="Description" 
                                         value={lessonDescription} 
                                         onChange={(e) => setLessonDescription(e.target.value)} 
-                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
                                     />
-                                     <textarea 
+                                    <textarea 
                                         placeholder="Implementation" 
                                         value={lessonImplementation} 
                                         onChange={(e) => setLessonImplementation(e.target.value)} 
-                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
                                     />
-                                     <textarea 
+                                    <textarea 
                                         placeholder="Real World Application" 
                                         value={lessonApplication} 
                                         onChange={(e) => setLessonApplication(e.target.value)} 
-                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
                                     />
-                                     <textarea 
+                                    <textarea 
                                         placeholder="Summary" 
                                         value={lessonSummary} 
                                         onChange={(e) => setLessonSummary(e.target.value)} 
-                                        className="mb-2 mr-5 p-2 border border-gray-300 rounded-badge"
+                                        className="mb-2 p-2 border border-gray-300 rounded-badge"
                                     />
                                     <button 
                                         type="submit" 
@@ -156,8 +156,11 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
                                 </form>
                             )}
                             <button 
-                            className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
-                            onClick={handleDeleteCourse}>Delete Course</button>
+                                className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
+                                onClick={handleDeleteCourse}
+                            >
+                                Delete Course
+                            </button>
                         </>
                     )}
                 </div>
@@ -165,4 +168,5 @@ const CourseCard: React.FC<{ course: Course; onRemoveCourse: (courseId: number) 
         </div>
     );
 };
+
 export default CourseCard;

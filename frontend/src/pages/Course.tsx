@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import CourseCard, { Course } from "../components/CourseCard";
-import AxiosLessonService from "../components/AxiosLessonService";
+import CourseCard from "../components/CourseCard";
 import AxiosEnrollmentService from "../components/AxiosEnrollmentService";
 import AuthService from "../components/AuthService";
+import { Course } from "../utils/types";
+import AxiosLessonService from "../components/AxiosLessonService";
 
 export default function MyCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  // Removed unused state variables
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -83,8 +84,9 @@ export default function MyCourses() {
           <CourseCard
             key={course.course_id}
             course={course}
-            onRemoveCourse={handleRemoveCourse}
-          />
+            onRemoveCourse={handleRemoveCourse} onSelectCourse={function (): void {
+              throw new Error("Function not implemented.");
+            } }          />
         ))}
       </div>
     </div>

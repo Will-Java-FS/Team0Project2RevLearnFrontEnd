@@ -1,77 +1,95 @@
 import { useEffect, useState } from "react";
-import CourseCard, { Lesson, Course } from "../components/CourseCard"; // Adjust the path to where the Card component is located
+import CourseCard from "../components/CourseCard";
+import { Course } from "../utils/types";
 import AxiosCourseService from "../components/AxiosCourseService";
-import AxiosLessonService from "../components/AxiosLessonService";
-import axios from "axios";
 import AxiosEnrollmentService from "../components/AxiosEnrollmentService";
 import AuthService from "../components/AuthService";
 
-// Show all courses for the user's program and be able to select one and go it's page
-// If user is teacher show a form to create a new course
-// Use authService to get logged in user's info, use the axios services for http requests
 export default function AllCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [allCourses, setAllCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
-  const [totalCards, setTotalCards] = useState<number>(4);
+  const [totalCards, setTotalCards] = useState<number>(0);
+  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
+  const [enrollmentStatus, setEnrollmentStatus] = useState<string>('Enrolled'); // Set a default status
   const itemsPerPage = 4; // Number of card components per page
   const totalPages = Math.ceil(totalCards / itemsPerPage);
-
-  // Dummy data for card components
-  // const cardData = Array.from({ length: totalCards }, (_, index) => ({
-  //   title: `Data Structures & Algorithms ${index + 1}`,
-  //   description:
-  //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc felis ligula.",
-  //   link: "https://example.com",
-  // }));
-
-  const dummyLessons: Lesson[] = [
-    { lesson_plan_id: 1, title: "Lesson 1", content: "Content 1", lp_created_at: "2021-09-01", lp_updated_at: "2021-09-01" },
-    { lesson_plan_id: 2, title: "Lesson 2", content: "Content 2", lp_created_at: "2021-09-02", lp_updated_at: "2021-09-02" },
-    { lesson_plan_id: 3, title: "Lesson 3", content: "Content 3", lp_created_at: "2021-09-03", lp_updated_at: "2021-09-03" }
-  ];
 
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
-        var courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
+        console.log('Fetching course data...');
+        const userId = AuthService.getLoggedInUserId();
+        let courseData: Course[] = [];
+
         if (AuthService.isLoggedInTeacher()) {
-          courseData = await AxiosCourseService.getAll();
+          // Fetch all courses for teachers
+          courseData = (await AxiosCourseService.getAll()) || [];
+        } else {
+          // Fetch courses the student is enrolled in
+          const enrollmentsData = await AxiosEnrollmentService.getEnrollments(userId);
+          if (enrollmentsData.length === 0) {
+            // If no enrollments, fetch all available courses for students to choose from
+            const allCoursesData = (await AxiosCourseService.getAll()) || [];
+            setAllCourses(allCoursesData);
+          } else {
+            // If enrolled, show only the courses the student is enrolled in
+            courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
+          }
         }
-        const courseWithLessonsData = await Promise.all(
-          courseData.map(async (course: Course) => {
-            const lessonsData = await AxiosLessonService.getAllByCourse(course.course_id);
-            return {
-              ...course,
-              lessons: lessonsData || [],
-            };
-          })
-        );
+
+        console.log('Course data fetched:', courseData);
         setTotalCards(courseData.length);
-        setCourses(courseWithLessonsData);
-        // console.log(dummyLessons);
-        // console.log(lessonsData);
-        
+        setCourses(courseData);
       } catch (error) {
         console.error("Error fetching course data:", error);
-        setError((error as Error).message)
+        setError((error as Error).message);
       }
     };
 
-    // if (AuthService.isLoggedIn()) 
-    fetchCourseData();
+    if (AuthService.isLoggedIn()) {
+      fetchCourseData();
+    }
   }, []);
 
+  const handleEnrollCourse = async () => {
+    if (selectedCourseId === null) {
+      alert("Please select a course to enroll.");
+      return;
+    }
 
-  const handleRemoveCourse = (courseId: number) => {
-    setCourses(courses.filter(course => course.course_id !== courseId));
+    try {
+      const result = await AxiosEnrollmentService.enrollInCourse(
+        AuthService.getLoggedInUserId(),
+        selectedCourseId,
+        enrollmentStatus
+      );
+
+      if (result) {
+        alert("Enrollment successful!");
+        // Refresh courses
+        const enrolledCourse = allCourses.find(course => course.course_id === selectedCourseId);
+        if (enrolledCourse) {
+          setCourses([...courses, enrolledCourse]);
+          setAllCourses(allCourses.filter(course => course.course_id !== selectedCourseId));
+        }
+      } else {
+        alert("Enrollment failed.");
+      }
+    } catch (error) {
+      setError("Failed to enroll in course");
+      console.error(error);
+    }
   };
 
-  // Get the card components for the current page
+  const handleAddCourse = (courseId: number) => {
+    setSelectedCourseId(courseId);
+  };
+
   const currentCards = courses.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   const handlePreviousPage = () => {
@@ -88,25 +106,23 @@ export default function AllCourses() {
 
   if (!AuthService.isLoggedIn()) {
     return (
-        <div className="flex flex-col items-center min-h-screen p-6">
-            <h5>Please log in to view your courses</h5>
-            <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</button>
-        </div>
+      <div className="flex flex-col items-center min-h-screen p-6">
+        <h5>Please log in to view your courses</h5>
+        <button onClick={() => window.location.href = "/login"} className="btn btn-nav-sm bg-primary text-white font-light text-left hover:text-secondary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300">Login</button>
+      </div>
     );
   }
 
-  if (courses.length === 0) {
+  if (courses.length === 0 && allCourses.length === 0) {
     return (
-        <div className="flex flex-col items-center min-h-screen p-6">
-            <h5>Unlock your potential today</h5>
-            <button onClick={() => window.location.href = "/allprograms"}
-              className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
-                Our Programs
-            </button>
-        </div>
+      <div className="flex flex-col items-center min-h-screen p-6">
+        <h5>Unlock your potential today</h5>
+        <button onClick={() => window.location.href = "/allprograms"} className="btn text-white bg-primary glass hover:bg-accent transition duration-300 py-2.5 px-5 rounded shadow-md hover:translate-y-[-2px]">
+          Our Programs
+        </button>
+      </div>
     );
   }
-
 
   return (
     <div className="flex flex-col items-center min-h-screen p-6">
@@ -116,10 +132,30 @@ export default function AllCourses() {
           <CourseCard
             key={course.course_id}
             course={course}
-            onRemoveCourse={handleRemoveCourse}
+            onRemoveCourse={() => {}}
+            onSelectCourse={() => handleAddCourse(course.course_id)}
           />
         ))}
       </div>
+      {allCourses.length > 0 && (
+        <div className="flex flex-col items-center mb-4">
+          <h3>Available Courses:</h3>
+          <select
+            id="availableCourses"
+            onChange={(e) => setSelectedCourseId(Number(e.target.value))}
+          >
+            <option value="">Select a course</option>
+            {allCourses.map((course) => (
+              <option key={course.course_id} value={course.course_id}>
+                {course.courseName}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleEnrollCourse} className="btn bg-primary text-white mt-2">
+            Add Course
+          </button>
+        </div>
+      )}
       <div className="flex justify-between items-center w-full max-w-md px-4">
         <button
           onClick={handlePreviousPage}
