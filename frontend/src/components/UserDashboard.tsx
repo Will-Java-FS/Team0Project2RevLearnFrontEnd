@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import AxiosCourseService from "./AxiosCourseService";
-import UserCard from './UserCard'; // Import the updated UserCard component
+import AxiosEnrollmentService from "./AxiosEnrollmentService";
+import UserCard from "./UserCard";
 import axios from "axios";
 import AuthService from "./AuthService";
 
-// User interface definition
 interface User {
   id: number;
   userId: number;
@@ -24,7 +23,6 @@ interface User {
   };
 }
 
-// Course interface definition
 interface Course {
   course_id: number;
   courseName: string;
@@ -40,10 +38,13 @@ export default function UserDashboard() {
   const [loadingUser, setLoadingUser] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 4; // Set the number of courses per page
+  const totalPages = Math.ceil(courses.length / itemsPerPage);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const userId = AuthService.getLoggedInUserId(); // Get the logged-in user ID from AuthService
+      const userId = AuthService.getLoggedInUserId();
       if (userId !== -1) {
         const userUrl = `http://localhost:8080/user/${userId}`;
         console.log("Fetching user details from:", userUrl);
@@ -67,59 +68,103 @@ export default function UserDashboard() {
   }, []);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchEnrolledCourses = async () => {
       setLoadingCourses(true);
       try {
-        const coursesData = await AxiosCourseService.getAll();
-        if (coursesData) {
-          setCourses(coursesData);
+        const userId = AuthService.getLoggedInUserId();
+        if (userId !== -1) {
+          const enrollmentsData = await AxiosEnrollmentService.getEnrollments(userId);
+          const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
+          setCourses(courseData);
         } else {
-          setError("No courses found.");
+          setError("User is not logged in.");
         }
       } catch (err) {
-        setError("Failed to fetch courses.");
-        console.error("Failed to fetch courses:", err);
+        setError("Failed to fetch enrolled courses.");
+        console.error("Failed to fetch enrolled courses:", err);
       } finally {
         setLoadingCourses(false);
       }
     };
-    fetchCourses();
+
+    if (AuthService.isLoggedIn()) {
+      fetchEnrolledCourses();
+    }
   }, []);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   const renderCourseList = () => {
     if (loadingCourses) return <p>Loading courses...</p>;
-    if (error) return <p className="text-red-500">{error}</p>;
+    if (error) return <p className="text-xl font-sans text-red-500">{error}</p>;
     if (courses.length === 0) return <p>No courses available.</p>;
 
+    // Calculate the index of courses to show on the current page
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentCourses = courses.slice(startIndex, startIndex + itemsPerPage);
+
     return (
-      <div className="flex flex-col space-y-4">
-        {courses.map((course) => (
-          <div
-            key={course.course_id}
-            className="card bg-base-200 w-full shadow-xl border-b-2 border-gray-300"
+      <div className="container flex flex-col space-y-4 w-full max-w-4xl">
+        <ul className="list-none p-0">
+          {currentCourses.map((course) => (
+            <li
+              key={course.course_id}
+              className="mb-4 bg-base-200 w-full shadow-xl border-b-2 border-gray-300 p-4 rounded-lg"
+            >
+              <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-col justify-between">
+                  <h2 className="text-lg font-bold mb-2">{course.courseName}</h2>
+                  <p className="mb-2">{course.description}</p>
+                  <p className="mb-1">
+                    <strong>Teacher ID:</strong> {course.teacherId}
+                  </p>
+                  <p className="mb-1">
+                    <strong>Created At:</strong>{" "}
+                    {new Date(course.course_created_at).toLocaleString()}
+                  </p>
+                  <p className="mb-1">
+                    <strong>Updated At:</strong>{" "}
+                    {new Date(course.course_updated_at).toLocaleString()}
+                  </p>
+                </div>
+                <div className="flex-shrink-0 ml-4">
+                  <button className="btn btn-primary">Click here</button>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {/* Pagination Controls */}
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className="btn btn-secondary"
           >
-            <div className="card-body flex flex-row items-center justify-between">
-              <div className="flex flex-col justify-between">
-                <h2 className="card-title">{course.courseName}</h2>
-                <p>{course.description}</p>
-                <p>
-                  <strong>Teacher ID:</strong> {course.teacherId}
-                </p>
-                <p>
-                  <strong>Created At:</strong>{" "}
-                  {new Date(course.course_created_at).toLocaleString()}
-                </p>
-                <p>
-                  <strong>Updated At:</strong>{" "}
-                  {new Date(course.course_updated_at).toLocaleString()}
-                </p>
-              </div>
-              <div className="card-actions">
-                <button className="btn btn-primary">Click here</button>
-              </div>
-            </div>
-          </div>
-        ))}
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="btn btn-secondary"
+          >
+            Next
+          </button>
+        </div>
       </div>
     );
   };
@@ -133,16 +178,13 @@ export default function UserDashboard() {
         <h3 className="text-xl">Your Programs</h3>
       </div>
 
-      {/* Loading and Error States */}
       {loadingUser ? <p>Loading user data...</p> : null}
-      {!loadingUser && user && <UserCard user={user} />} {/* Use the updated UserCard component */}
+      {!loadingUser && user && <UserCard user={user} />}
 
-      {/* Displaying Course List */}
       <div className="text-center my-4 text-xl font-sans text-red-500">
         {renderCourseList()}
       </div>
 
-      {/* Progress Tracker */}
       <div className="mt-8 text-center">
         <h2 className="text-2xl">Progress Tracker</h2>
         <div className="mt-6 w-3/4 mx-auto">
