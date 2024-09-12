@@ -1,21 +1,4 @@
-import { ReactNode } from "react";
-
-// Result types for registration and login
-export interface RegisterResult {
-  success: boolean;
-  message?: string;
-}
-
-export interface LoginResult {
-  success: boolean;
-  message?: string;
-  token?: string;
-  username?: string;
-  userId?: number;
-  role?: string;
-  program?: Program;
-  error?: string; // Optional: Include error messages if necessary
-}
+// utils/types.ts
 
 // Program interface
 export interface Program {
@@ -28,7 +11,7 @@ export interface User {
   userId: number;
   email: string;
   username: string;
-  passwordHash: string;
+  passwordHash?: string; // Optional since it should not be sent in requests
   firstName: string;
   lastName: string;
   userCreatedAt: string;
@@ -103,7 +86,7 @@ export interface Course {
   program: Program; // Ensure 'program' is included
   course_created_at: string;
   course_updated_at: string;
-  lessons: Lesson[];
+  lessons?: Lesson[]; // Optional lessons field
 }
 
 // Lesson interface
@@ -128,3 +111,20 @@ export interface EnrollmentPayload {
 export type Props = {
   users?: User[];
 };
+
+// Result types for registration and login
+export interface RegisterResult {
+  success: boolean;
+  message?: string;
+}
+
+export interface LoginResult {
+  success: boolean;
+  message?: string;
+  token?: string;
+  username?: string;
+  userId?: number;
+  role?: string;
+  program?: Program;
+  error?: string; // Optional: Include error messages if necessary
+}

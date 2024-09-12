@@ -5,7 +5,7 @@ import AuthService from './AuthService';
 import { Course, User, EnrollmentPayload } from '../utils/types';
 
 const EnrollUserForm: React.FC = () => {
-  const [userId, setUserId] = useState<number>(AuthService.getLoggedInUserId());
+  const [userId] = useState<number>(AuthService.getLoggedInUserId());
   const [courseId, setCourseId] = useState<number>(0);
   const [courses, setCourses] = useState<Course[]>([]);
   const [enrollmentStatus, setEnrollmentStatus] = useState<string>('');
@@ -91,8 +91,8 @@ const EnrollUserForm: React.FC = () => {
         user: {
           ...userDetails,
           program: {
-            programId: userDetails.program.programId,
-            programName: userDetails.program.programName
+            programId: userDetails.program ? userDetails.program.programId : 0,
+            programName: userDetails.program?.programName ?? ''
           }
         },
         course: {
@@ -109,7 +109,7 @@ const EnrollUserForm: React.FC = () => {
       // Send request
       const result = await AxiosEnrollmentService.enrollInCourseWithDetails(payload);
 
-      if (result.success) {
+      if (result) {
         alert("Enrollment successful!");
         // Optionally reset form or redirect user
       } else {

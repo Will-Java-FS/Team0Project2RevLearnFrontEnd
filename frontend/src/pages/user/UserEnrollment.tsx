@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AxiosEnrollmentService from "../../components/AxiosEnrollmentService";
 import AuthService from "../../components/AuthService";
 import CourseCard from "../../components/CourseCard";
-import { Course } from "../../utils/types";
+import { Course, EnrollmentPayload } from "../../utils/types";
 
 const UserEnrollment: React.FC = () => {
   const [enrolledCourses, setEnrolledCourses] = useState<Course[]>([]);
@@ -40,41 +40,33 @@ const UserEnrollment: React.FC = () => {
       alert("Please select a course to enroll.");
       return;
     }
-
+  
     try {
       const userId = AuthService.getLoggedInUserId();
-      const user = AuthService.getLoggedInUserDetails(); // Now this method exists
+      const user = AuthService.getLoggedInUserDetails();
+  
+      if (!user) {
+        alert("User details not found.");
+        return;
+      }
+  
       const course = availableCourses.find(course => course.course_id === selectedCourseId);
-
+  
       if (!course) {
         alert("Selected course not found.");
         return;
       }
-
-      const enrollmentPayload = {
+  
+      const enrollmentPayload: EnrollmentPayload = {
         enroll_id: 0,
-        user: {
-          userId: user.userId,
-          email: user.email,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          userCreatedAt: user.userCreatedAt,
-          userUpdatedAt: user.userUpdatedAt,
-          role: user.role,
-          program: user.program,
-        },
-        course: course,
+        user,
+        course,
         enrollment_status: "Enrolled",
         payment_status: "Pending",
       };
-
-      const result = await AxiosEnrollmentService.enrollInCourse(
-        userId,
-        selectedCourseId.toString(),
-        enrollmentPayload
-      );
-
+  
+      const result = await AxiosEnrollmentService.enrollInCourseWithDetails(enrollmentPayload);
+  
       if (result) {
         alert("Enrollment successful!");
         const updatedEnrollments = await AxiosEnrollmentService.getEnrollments(userId);
@@ -87,6 +79,7 @@ const UserEnrollment: React.FC = () => {
       console.error(error);
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center min-h-screen p-6">
