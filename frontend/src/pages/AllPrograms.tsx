@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import AuthService from "../components/AuthService";
+import AxiosProgramService from "../components/AxiosProgramService";
 
 interface Program {
   programId: number;
@@ -13,15 +13,14 @@ export default function AllPrograms() {
   useEffect(() => {
     // Fetch all programs using AxiosProgramService
     const fetchPrograms = async () => {
-      axios
-        .get("http://localhost:8080/programs")
-        .then((response: { data: Program[] }) => {
-          setPrograms(response.data);
-        })
-        .catch((error: any) => {
-          console.error("Error fetching programs:", error);
-        });
+      const fetchedPrograms = await AxiosProgramService.getAll();
+      if (fetchedPrograms) {
+        setPrograms(fetchedPrograms);
+      } else {
+        console.error("Failed to fetch programs");
+      }
     };
+
     fetchPrograms();
   }, []);
 
@@ -32,7 +31,7 @@ export default function AllPrograms() {
     programId: number;
     programName: string;
   }) {
-    if (programId == AuthService.getLoggedInUserProgramId()) {
+    if (programId === AuthService.getLoggedInUserProgramId()) {
       return (
         <div
           key={programId}
@@ -62,6 +61,7 @@ export default function AllPrograms() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {programs.map((program) => (
           <Item
+            key={program.programId} // Add key prop here
             programId={program.programId}
             programName={program.programName}
           />

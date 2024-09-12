@@ -33,7 +33,7 @@ export default function UserDashboard() {
     const fetchUserDetails = async () => {
       const userId = AuthService.getLoggedInUserId(); // Get logged-in user ID from AuthService
       if (userId !== -1) {
-        const userUrl = `http://localhost:8080/user/${userId}`; // Construct API URL
+        const userUrl = `http://54.205.97.225:8080/user/${userId}`; // Construct API URL
         console.log("Fetching user details from:", userUrl);
 
         try {

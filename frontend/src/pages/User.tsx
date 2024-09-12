@@ -12,7 +12,7 @@ const User = () => {
 
     if (userId !== -1) {
       // Fetch user data from the server using the user ID
-      fetch(`http://localhost:8080/user/${userId}`, {
+      fetch(`http://54.205.97.225:8080/user/${userId}`, {
         headers: {
           Authorization: localStorage.getItem("token") ?? "", // Pass the token for authorization or use an empty string as default
         },

@@ -37,9 +37,8 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className={`menu menu-sm dropdown-content font-poppins font-light border-2 border-primary bg-base-200 rounded-box z-[1] mt-3 w-48 p-2 shadow ${
-              isMenuOpen ? "block" : "hidden"
-            }`}
+            className={`menu menu-sm dropdown-content font-poppins font-light border-2 border-primary bg-base-200 rounded-box z-[1] mt-3 w-48 p-2 shadow ${isMenuOpen ? "block" : "hidden"
+              }`}
           >
             {/* Menu Links */}
             <li>
@@ -96,6 +95,14 @@ const Navbar = () => {
                 className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
               >
                 Courses
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/course"
+                className="btn btn-nav-sm btn-ghost font-light text-left hover:text-primary hover:shadow-lg hover:shadow-primary/70 transition-shadow duration-300"
+              >
+                My Courses
               </Link>
             </li>
             <li>

@@ -16,7 +16,7 @@ const UserEditForm: React.FC = () => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/user/${id}`);
+        const response = await axios.get(`http://54.205.97.225:8080/user/${id}`);
         setFormData(response.data);
       } catch (err) {
         setError("Failed to fetch user data. Please try again.");
@@ -27,7 +27,7 @@ const UserEditForm: React.FC = () => {
 
     const fetchPrograms = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/programs");
+        const response = await axios.get("http://54.205.97.225:8080/programs");
         setPrograms(response.data);
       } catch (err) {
         setError("Failed to fetch programs. Please try again.");
@@ -69,7 +69,7 @@ const UserEditForm: React.FC = () => {
     if (formData) {
       try {
         await axios.put(
-          `http://localhost:8080/user/update/${formData.userId}`,
+          `http://54.205.97.225:8080/user/update/${formData.userId}`,
           formData,
         );
         console.log("User saved:", formData);
