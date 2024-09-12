@@ -128,3 +128,18 @@ export interface LoginResult {
   program?: Program;
   error?: string; // Optional: Include error messages if necessary
 }
+export interface Lesson {
+
+  lesson_id: number;
+
+  lessonName: string;
+
+  description: string;
+
+  real_world_application: string;
+
+  implementation: string;
+
+  summary: string;
+
+}

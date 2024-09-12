@@ -14,7 +14,7 @@ import UserEditForm from "./pages/user/UserEditForm";
 import AllPrograms from "./pages/AllPrograms";
 import AllCourses from "./pages/AllCourses";
 import MyCourses from "./pages/Course";
-import UserEnrollment from "./pages/user/UserEnrollment";
+import ProgramList from "./components/program/ProgramList";
 
 const App = () => {
   return (
@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/lesson/:id" element={<Lesson />} />
           <Route path="/forum" element={<Forum />} />
           <Route path="/user" element={<User />} />
-          <Route path="/test" element={<UserEnrollment />} />
+          <Route path="/test" element={<ProgramList/>} />
           <Route path="/user/edit/:id" element={<UserEditForm />} />
           <Route path="/forumpost" element={<ForumPost />} />
           <Route path="/*" element={<ErrorPage />} /> {/* Handles undefined routes */}

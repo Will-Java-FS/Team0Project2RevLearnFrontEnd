@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
-import CourseCard from "../components/CourseCard";
+import CourseCard from "../components/CourseCard"; // Assuming the CourseCard component is imported correctly
 import AxiosEnrollmentService from "../components/AxiosEnrollmentService";
 import AuthService from "../components/AuthService";
-import { Course } from "../utils/types";
+import { Course } from "../utils/types"; // Adjust the path based on your project structure
 import AxiosLessonService from "../components/AxiosLessonService";
 
 export default function MyCourses() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
         const enrollmentsData = await AxiosEnrollmentService.getEnrollments(AuthService.getLoggedInUserId());
         const courseData = enrollmentsData.map((enrollment: { course: Course }) => enrollment.course);
+        
+        // Fetch lessons for each course
         const courseWithLessonsData = await Promise.all(
           courseData.map(async (course: Course) => {
             const lessonsData = await AxiosLessonService.getAllByCourse(course.course_id);
@@ -27,6 +30,8 @@ export default function MyCourses() {
       } catch (error) {
         console.error("Error fetching course data:", error);
         setError((error as Error).message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -48,6 +53,10 @@ export default function MyCourses() {
         </button>
       </div>
     );
+  }
+
+  if (loading) {
+    return <div className="flex flex-col items-center min-h-screen p-6">Loading your courses...</div>;
   }
 
   if (error) {
@@ -74,7 +83,7 @@ export default function MyCourses() {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen p-6">
+    <div className="flex flex-col items-center min-full p-6">
       <h1 className="text-2xl font-bold mb-4">List of Your Courses</h1>
       <div className="flex flex-col space-y-4 w-full max-w-4xl">
         {courses.map((course) => (

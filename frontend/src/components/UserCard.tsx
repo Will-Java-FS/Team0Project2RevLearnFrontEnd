@@ -44,6 +44,11 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
     navigate(`/user/edit/${userId}`);
   };
 
+  // Generate avatar URL
+  const generateAvatarUrl = (firstName: string, lastName: string) => {
+    return `https://avatar.iran.liara.run/username?username=${firstName}${lastName}`;
+  };
+
   if (loadingUser) return <p>Loading user data...</p>;
   if (error) return <p>{error}</p>;
 
@@ -53,7 +58,7 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
       <div className="flex justify-center mt-4">
         <img
           className="h-24 w-24 rounded-full object-cover border-2 border-primary"
-          src={"https://avatar.iran.liara.run/public"} // Fallback if profilePicture is undefined
+          src={user.firstName && user.lastName ? generateAvatarUrl(user.firstName, user.lastName) : "https://avatar.iran.liara.run/public"} // Use dynamic avatar URL
           alt="User Profile"
         />
       </div>
@@ -67,12 +72,12 @@ const UserCard: React.FC<UserCardProps> = ({ user: initialUser }) => {
           <span className="font-semibold">Role:</span> {user.role}
         </p>
         <p className="text-light text-sm mt-1">
-        <span className="font-semibold">Username: </span>
-        {user.username}</p>
-        {/* <p className="text-gray-500 mt-1">Email: {user.email}</p> */}
+          <span className="font-semibold">Username: </span>
+          {user.username}
+        </p>
         {/* Conditionally render the program name if program is not null */}
         <p className="text-light text-sm m-1">
-        <span className="font-semibold">Program:</span> {user.program ? user.program.programName : "No Program Assigned"}
+          <span className="font-semibold">Program:</span> {user.program ? user.program.programName : "No Program Assigned"}
         </p>
         <p className="text-gray-400 text-sm mt-1">
           Joined on: {new Date(user.userCreatedAt).toLocaleDateString()}
