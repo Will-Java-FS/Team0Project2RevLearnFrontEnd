@@ -5,8 +5,6 @@ import AuthService from "./AuthService";
 import { useNavigate } from "react-router-dom";
 import { Course } from '../utils/types';
 
-
-
 export interface Lesson {
     lesson_plan_id: number;
     title: string;
@@ -31,6 +29,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
     const [lessonSummary, setLessonSummary] = useState("");
     const navigate = useNavigate();
 
+    // Ensure lessons is always an array
+    const lessons = course.lessons ?? [];
+
     const toggleShowAllLessons = () => setShowAllLessons(!showAllLessons);
     const toggleLessonForm = () => setShowLessonForm(!showLessonForm);
 
@@ -54,7 +55,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
                 lessonSummary
             );
             if (newLesson) {
-                course.lessons.push(newLesson);
+                lessons.push(newLesson); // Update lessons array
                 setShowLessonForm(false);
                 setLessonTitle("");
                 setLessonDescription("");
@@ -79,9 +80,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
                 </h5>
                 <p className="text-sm line-clamp-3">{course.description}</p>
                 <div className="mt-5">
-                    {course.lessons.length > 0 && <h3 className="text-sm font-semibold line-clamp-3">Lessons</h3>}
+                    {lessons.length > 0 && <h3 className="text-sm font-semibold line-clamp-3">Lessons</h3>}
                     <ul className="text-sm">
-                        {(showAllLessons ? course.lessons : course.lessons.slice(0, 1)).map((lesson) => (
+                        {(showAllLessons ? lessons : lessons.slice(0, 1)).map((lesson) => (
                             <button 
                                 key={lesson.lesson_plan_id}
                                 className="relative flex w-full p-3 mb-2 flex-col rounded-badge bg-base-100 bg-clip-border shadow-sm overflow-hidden text-left hover:bg-base-300"
@@ -96,7 +97,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, onRemoveCourse, onSelec
             </div>
             <div className="p-4 pt-0 space-y-4">
                 <div className="flex">
-                    {course.lessons.length > 1 && (
+                    {lessons.length > 1 && (
                         <button 
                             className="block w-full text-center rounded-btn bg-primary py-2 px-4 text-xs font-bold uppercase shadow-md transition-all hover:shadow-lg hover:bg-accent focus:outline-none focus:ring-2 focus:ring-orange-500"
                             onClick={toggleShowAllLessons}
